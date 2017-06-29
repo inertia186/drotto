@@ -29,7 +29,7 @@ module DrOtto
     end
     
     def test_backoff
-      assert DrOtto.find_bids
+      assert DrOtto.find_bids(0)
     end
   end
 end

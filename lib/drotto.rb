@@ -16,18 +16,18 @@ module DrOtto
   
   BLOCK_OVERLAP = 45 # for overlap between votes
   
-  def block_span
-    base_block_span + BLOCK_OVERLAP
+  def block_span(offset = BLOCK_OVERLAP)
+    base_block_span + offset
   end
   
   def backoff
     2
   end
 
-  def find_bids
+  def find_bids(offset)
     block_num = head_block
     time = block_time
-    starting_block = block_num - block_span
+    starting_block = block_num - block_span(offset)
     bids = []
     
     info "Looking for new bids starting at block #{starting_block} (current time: #{time}) ..."
@@ -111,9 +111,11 @@ module DrOtto
   end
   
   def run
+    elapsed = 0
     loop do
-      elapsed = find_bids
-      sleep (base_block_span * 3) + elapsed
+      offset = [elapsed / 3, base_block_span].min
+      elapsed = find_bids(offset)
+      sleep (base_block_span * 3) - elapsed
     end
   end
 end
