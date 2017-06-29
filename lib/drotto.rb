@@ -113,7 +113,7 @@ module DrOtto
   def run
     loop do
       elapsed = find_bids
-      sleep base_block_span / 3 + elapsed
+      sleep (base_block_span * 3) + elapsed
     end
   end
 end
