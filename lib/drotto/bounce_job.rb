@@ -55,7 +55,7 @@ module DrOtto
     # Bounce a transfer if it hasn't aready been bounced, unless it's too old
     # to process.
     def shall_bounce?(transactions, tx)
-      id = tx.trx_id
+      id_to_bounce = tx.trx_id
       memo = tx['op'].last['memo']
       timestamp = Time.parse(tx.timestamp + 'Z')
       @newest_timestamp ||= transactions.map do |tx|
@@ -70,7 +70,7 @@ module DrOtto
         return false
       end
       
-      debug "Checking if #{id} is in memo history."
+      debug "Checking if #{id_to_bounce} is in memo history."
       
       @memos ||= transactions.map do |tx|
         type = tx.last['op'].first
@@ -87,9 +87,13 @@ module DrOtto
         m
       end.compact
       
-      if @memos.include? memo
-        debug "Already bounced."
-        return false
+      # binding.pry
+      
+      @memos.each do |memo|
+        if memo =~ /.*\(ID:#{id_to_bounce}\)$/
+          debug "Already bounced."
+          return false
+        end
       end
       
       true
