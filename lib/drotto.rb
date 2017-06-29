@@ -30,10 +30,12 @@ module DrOtto
     starting_block = block_num - block_span
     bids = []
     
-    info "Looking for new bids starting at block #{starting_block} (#{time}) ..."
+    info "Looking for new bids starting at block #{starting_block} (current time: #{time}) ..."
     
     loop do
       begin
+        job = BounceJob.new(10000)
+        
         api.get_blocks(starting_block..block_num) do |block, number|
           starting_block = number
           timestamp = block.timestamp
@@ -55,7 +57,8 @@ module DrOtto
               next if author.nil? || permlink.nil?
               next if voted?(author, permlink)
               next unless amount =~ / #{minimum_bid_asset}$/
-              next unless amount.split(' ').first.to_f < minimum_bid_amount
+              next if amount.split(' ').first.to_f < minimum_bid_amount
+              next if job.bounced?(id)
               
               info "Bid from #{from} for #{amount}."
               
