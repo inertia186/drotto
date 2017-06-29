@@ -1,0 +1,98 @@
+module DrOtto
+  class BounceJob
+    include Utils
+    
+    def initialize(limit)
+      @limit = limit
+    end
+    
+    def perform(pretend = false)
+      @limit ||= 200
+      response = api.get_account_history(account_name, -@limit, @limit)
+      transactions = response.result
+      
+      transactions.each do |tx|
+        type = tx.last['op'].first
+        next unless type == 'transfer'
+        
+        id = tx.last.trx_id
+        op = tx.last['op'].last
+        from = op.from
+        to = op.to
+        amount = op.amount
+        memo = op.memo
+        timestamp = op.timestamp
+          
+        next unless to == account_name
+        
+        author, permlink = parse_slug(memo) rescue [nil, nil]
+        next if author.nil? || permlink.nil?
+        next unless comment(author, permlink).author == author
+        next if voted?(author, permlink)
+        next unless shall_bounce?(transactions, tx.last)
+        
+        debug "Need to bounce (original memo: #{memo}):"
+        
+        bounce(from, amount, id) unless pretend
+      end
+    end
+    
+    def bounce(from, amount, id)
+      transfer = {
+        type: :transfer,
+        from: account_name,
+        to: from,
+        amount: amount,
+        memo: "Unable to accept bid.  (ID:#{id})"
+      }
+      
+      tx = Radiator::Transaction.new(chain_options.merge(wif: active_wif))
+      tx.operations << transfer
+      
+      debug tx.process(true)
+    end
+  private
+    # Bounce a transfer if it hasn't aready been bounced, unless it's too old
+    # to process.
+    def shall_bounce?(transactions, tx)
+      id = tx.trx_id
+      memo = tx['op'].last['memo']
+      timestamp = Time.parse(tx.timestamp + 'Z')
+      @newest_timestamp ||= transactions.map do |tx|
+        Time.parse(tx.last.timestamp + 'Z')
+      end.max
+      @oldest_timestamp ||= transactions.map do |tx|
+        Time.parse(tx.last.timestamp + 'Z')
+      end.min
+      
+      if (timestamp - @oldest_timestamp) < 1000
+        debug "Too old to bounce."
+        return false
+      end
+      
+      debug "Checking if #{id} is in memo history."
+      
+      @memos ||= transactions.map do |tx|
+        type = tx.last['op'].first
+        next unless type == 'transfer'
+        
+        id = tx.last.trx_id
+        op = tx.last['op'].last
+        f = op['from']
+        m = op['memo']
+        
+        next unless f == account_name
+        next if m.empty?
+          
+        m
+      end.compact
+      
+      if @memos.include? memo
+        debug "Already bounced."
+        return false
+      end
+      
+      true
+    end
+  end
+end

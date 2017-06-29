@@ -1,0 +1,28 @@
+:drotto:
+  # mode: head - the last block
+  # mode: irreversible - the block that is confirmed by 2/3 of all block
+  # producers and is thus irreversible!
+  :block_mode: irreversible
+  
+  # Account name for voting.
+  :account_name: social
+  
+  # Posting wif is used to vote reply with a confirm comment.  See
+  # `support/confirm.md` to customize confir comment.
+  :posting_wif: 5JrvPrQeBBvCRdjv29iDvkwn3EQYZ9jqfAHzrCyUvfbEbRkrYFC
+  
+  # Active wif is only used in bounce mode to return funds.  Please transfer
+  # funds out of your wallet before using bounce mode.
+  :active_wif: 5JrvPrQeBBvCRdjv29iDvkwn3EQYZ9jqfAHzrCyUvfbEbRkrYFC
+  
+  # Batch vote weight is split between the bidders.  This value also sets the
+  # batch timespan.  E.g.: Setting 100.00 % results in one batch every 2.4
+  # hours; 50.00 % results in one batch every 1.2 hours; so on.
+  :batch_vote_weight: 100.00 %
+  
+  # Minimum bid amount.
+  :minimum_bid: 2.000 SBD
+
+:chain_options:
+  :chain: steem
+  :url: https://steemd.steemit.com
