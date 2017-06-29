@@ -132,26 +132,26 @@ module DrOtto
         tx.operations << vote
         tx.operations << comment
         
-        response = begin
-          tx.process(true)
+        response = nil
+        
+        begin
+          response = tx.process(true)
         rescue => e
           info "Unable to vote and comment, retrying with just vote: #{e}"
-          nil
         end
         
-        response = if response.nil? || !!response.error
+        if response.nil? || !!response.error
           info "Retrying with just vote: #{response}"
           tx.operations = [vote]
           
           begin
-            tx.process(true)
+            response = tx.process(true)
           rescue => e
             info "Unable to vote: #{e}"
-            false
           end
         end
         
-        info response
+        info response unless response.nil?
       end
     end
     
