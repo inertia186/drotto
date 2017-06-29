@@ -121,7 +121,7 @@ Dr. Otto will now return the funds as they arrive in the wallet.  You can also j
 $ rake bounce_once
 ```
 
-Both `bounce` modes accept a limit value as argument, which is especially useful for `bounce_once`.  The default limit is to go back `200` transaction in history.  You can set up to `10000`, if you need to go back further for some reason.
+Both `bounce` modes accept a limit value as argument, which is especially useful for `bounce_once`.  The default limit is to go back `200` transactions in the history.  You can set up to `10000`, if you need to go back further for some reason.
 
 ```bash
 $ rake bounce_once[10000]
