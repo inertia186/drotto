@@ -4,14 +4,13 @@ module DrOtto
     
     def initialize(limit)
       @limit = limit
+      @limit ||= 200
+      response = api.get_account_history(account_name, -@limit, @limit)
+      @transactions = response.result
     end
     
     def perform(pretend = false)
-      @limit ||= 200
-      response = api.get_account_history(account_name, -@limit, @limit)
-      transactions = response.result
-      
-      transactions.each do |tx|
+      @transactions.each do |tx|
         type = tx.last['op'].first
         next unless type == 'transfer'
         
@@ -29,7 +28,8 @@ module DrOtto
         next if author.nil? || permlink.nil?
         next unless comment(author, permlink).author == author
         next if voted?(author, permlink)
-        next unless shall_bounce?(transactions, tx.last)
+        next unless shall_bounce?(tx.last)
+        next if bounced?(id)
         
         debug "Need to bounce (original memo: #{memo}):"
         
@@ -51,28 +51,9 @@ module DrOtto
       
       debug tx.process(true)
     end
-  private
-    # Bounce a transfer if it hasn't aready been bounced, unless it's too old
-    # to process.
-    def shall_bounce?(transactions, tx)
-      id_to_bounce = tx.trx_id
-      memo = tx['op'].last['memo']
-      timestamp = Time.parse(tx.timestamp + 'Z')
-      @newest_timestamp ||= transactions.map do |tx|
-        Time.parse(tx.last.timestamp + 'Z')
-      end.max
-      @oldest_timestamp ||= transactions.map do |tx|
-        Time.parse(tx.last.timestamp + 'Z')
-      end.min
-      
-      if (timestamp - @oldest_timestamp) < 1000
-        debug "Too old to bounce."
-        return false
-      end
-      
-      debug "Checking if #{id_to_bounce} is in memo history."
-      
-      @memos ||= transactions.map do |tx|
+    
+    def bounced?(id_to_check)
+      @memos ||= @transactions.map do |tx|
         type = tx.last['op'].first
         next unless type == 'transfer'
         
@@ -87,16 +68,37 @@ module DrOtto
         m
       end.compact
       
-      # binding.pry
-      
       @memos.each do |memo|
-        if memo =~ /.*\(ID:#{id_to_bounce}\)$/
-          debug "Already bounced."
-          return false
+        if memo =~ /.*\(ID:#{id_to_check}\)$/
+          debug "Already bounced: #{id_to_check}"
+          return true
         end
       end
       
-      true
+      false
+    end
+    
+    # Bounce a transfer if it hasn't aready been bounced, unless it's too old
+    # to process.
+    def shall_bounce?(tx)
+      id_to_bounce = tx.trx_id
+      memo = tx['op'].last['memo']
+      timestamp = Time.parse(tx.timestamp + 'Z')
+      @newest_timestamp ||= @transactions.map do |tx|
+        Time.parse(tx.last.timestamp + 'Z')
+      end.max
+      @oldest_timestamp ||= @transactions.map do |tx|
+        Time.parse(tx.last.timestamp + 'Z')
+      end.min
+      
+      if (timestamp - @oldest_timestamp) < 1000
+        debug "Too old to bounce."
+        return false
+      end
+      
+      debug "Checking if #{id_to_bounce} is in memo history."
+      
+      !bounced?(id_to_bounce)
     end
   end
 end
