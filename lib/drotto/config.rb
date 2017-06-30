@@ -2,6 +2,10 @@ module DrOtto
   module Config
     MAX_BASE_BLOCK_SPAN = 2880
     
+    DEFAULT_CHAIN_OPTIONS = {
+      logger: Logger.new('drotto.log')
+    }
+    
     @@override_config = nil
     
     def override_config(override_config)
@@ -52,7 +56,7 @@ module DrOtto
     end
     
     def chain_options
-      config[:chain_options].dup
+      config[:chain_options].dup.merge(DEFAULT_CHAIN_OPTIONS)
     end
     
     def base_block_span
