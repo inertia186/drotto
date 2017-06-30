@@ -90,7 +90,7 @@ module DrOtto
     if bids.size == 0
       info 'No bids collected.'
     else
-      info "Bids collected.  Ready to vote for:"
+      info "Bids collected.  Ready to vote.  Processing bids: #{bids.size}"
       vote(bids)
     end
     

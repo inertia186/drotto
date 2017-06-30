@@ -31,7 +31,7 @@ module DrOtto
         next unless shall_bounce?(tx.last)
         next if bounced?(id)
         
-        debug "Need to bounce (original memo: #{memo}):"
+        warning "Need to bounce #{amount} (original memo: #{memo})"
         
         bounce(from, amount, id) unless pretend
       end

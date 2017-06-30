@@ -6,6 +6,10 @@ module DrOtto
   module Utils
     include Config
     
+    def semaphore
+       @semaphore ||= Mutex.new
+    end
+    
     def build_logging_output(key, msg, detail)
       output = {key => msg}
       output[:backtrace] = detail.backtrace if defined? detail.backtrace
@@ -14,22 +18,30 @@ module DrOtto
     
     def info(msg, detail = nil)
       output = build_logging_output :INF, msg, detail
-      ap(output, {multiline: !!(defined? detail.backtrace), color: {string: :green}})
+      semaphore.synchronize do
+        ap(output, {multiline: !!(defined? detail.backtrace), color: {string: :green}})
+      end
     end
     
     def warning(msg, detail = nil)
       output = build_logging_output :WRN, msg, detail
-      ap(output, {multiline: !!(defined? detail.backtrace), color: {string: :yellow}})
+      semaphore.synchronize do
+        ap(output, {multiline: !!(defined? detail.backtrace), color: {string: :yellow}})
+      end
     end
     
     def error(msg, detail = nil)
       output = build_logging_output :ERR, msg, detail
-      ap(output, {multiline: !!(defined? detail.backtrace), color: {string: :red}})
+      semaphore.synchronize do
+        ap(output, {multiline: !!(defined? detail.backtrace), color: {string: :red}})
+      end
     end
     
     def debug(msg, detail = nil)
       output = build_logging_output :DBG, msg, detail
-      ap(output, {multiline: !!(defined? detail.backtrace), color: {string: :yellowish}})
+      semaphore.synchronize do
+        ap(output, {multiline: !!(defined? detail.backtrace), color: {string: :yellowish}})
+      end
     end
     
     def parse_slug(slug)
