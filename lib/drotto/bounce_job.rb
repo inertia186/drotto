@@ -38,18 +38,32 @@ module DrOtto
     end
     
     def bounce(from, amount, id)
-      transfer = {
-        type: :transfer,
-        from: account_name,
-        to: from,
-        amount: amount,
-        memo: "Unable to accept bid.  (ID:#{id})"
-      }
-      
-      tx = Radiator::Transaction.new(chain_options.merge(wif: active_wif))
-      tx.operations << transfer
-      
-      debug tx.process(true)
+      thread = Thread.new do
+        loop do
+          transfer = {
+            type: :transfer,
+            from: account_name,
+            to: from,
+            amount: amount,
+            memo: "Unable to accept bid.  (ID:#{id})"
+          }
+          
+          tx = Radiator::Transaction.new(chain_options.merge(wif: active_wif))
+          tx.operations << transfer
+          
+          response = tx.process(true)
+          
+          if !!response && !!response.error
+            message = response.error.message
+            if message.to_s =~ /missing required active authority/
+              error "Failed transfer: Check active key."
+              break
+            end
+          end
+          
+          break
+        end
+      end
     end
     
     def bounced?(id_to_check)
