@@ -22,8 +22,17 @@ module DrOtto
     
     def test_parse_slug
       author, permlink = parse_slug '@author/permlink'
+      
       assert_equal 'author', author
       assert_equal 'permlink', permlink
+    end
+    
+    def test_parse_slug_to_comment
+      url = 'https://steemit.com/chainbb-general/@howtostartablog/the-joke-is-always-in-the-comments-8-sbd-contest#@btcvenom/re-howtostartablog-the-joke-is-always-in-the-comments-8-sbd-contest-20170624t115213474z'
+      author, permlink = parse_slug url
+      
+      assert_equal 'btcvenom', author
+      assert_equal 're-howtostartablog-the-joke-is-always-in-the-comments-8-sbd-contest-20170624t115213474z', permlink
     end
     
     def test_merge

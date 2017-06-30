@@ -28,7 +28,7 @@ module DrOtto
     end
     
     def test_vote
-      bid = {
+      bid1 = {
         from: 'from',
         author: 'author',
         permlink: 'permlink',
@@ -39,9 +39,48 @@ module DrOtto
         trx_id: 'id'
       }
       
-      bids = [bid, bid, bid]
+      bid2 = {
+        from: 'from',
+        author: 'author',
+        permlink: 'permlink',
+        parent_permlink: 'parent_permlink',
+        parent_author: 'parent_author',
+        amount: '0.200 SBD',
+        timestamp: 'timestamp',
+        trx_id: 'id'
+      }
       
-      assert_equal bids, vote(bids)
+      bid3 = {
+        from: 'from',
+        author: 'author',
+        permlink: 'permlink',
+        parent_permlink: 'parent_permlink',
+        parent_author: 'parent_author',
+        amount: '0.020 SBD',
+        timestamp: 'timestamp',
+        trx_id: 'id'
+      }
+      
+      expected_stacked_bid = {
+        from: ['from', 'from', 'from'],
+        author: 'author',
+        permlink: 'permlink',
+        parent_permlink: 'parent_permlink',
+        parent_author: 'parent_author',
+        amount: ['2.000 SBD', '0.200 SBD', '0.020 SBD'],
+        timestamp: 'timestamp',
+        trx_id: 'id'
+      }
+      
+      bids = vote([bid1, bid2, bid3])
+      assert_equal 1, bids.size
+      assert_equal expected_stacked_bid[:from], bids.first[:from]
+      assert_equal expected_stacked_bid[:author], bids.first[:author]
+      assert_equal expected_stacked_bid[:permlink], bids.first[:permlink]
+      assert_equal expected_stacked_bid[:parent_permlink], bids.first[:parent_permlink]
+      assert_equal expected_stacked_bid[:amount], bids.first[:amount]
+      assert_equal expected_stacked_bid[:timestamp], bids.first[:timestamp]
+      assert_equal expected_stacked_bid[:trx_id], bids.first[:trx_id]
     end
     
     def test_vote_invalid
@@ -56,13 +95,15 @@ module DrOtto
         trx_id: ''
       }
       
-      assert_raises FloatDomainError do
-        vote([bid])
-      end
+      refute_nil vote([bid])
     end
     
     def test_voted?
-      refute voted?('inertia', 'machintosh-napintosh')
+      refute voted?('inertia', 'macintosh-napintosh')
+    end
+    
+    def test_can_vote?
+      refute can_vote?('inertia', 'macintosh-napintosh')
     end
   end
 end
