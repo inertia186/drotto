@@ -26,51 +26,6 @@ module DrOtto
       assert_equal 'permlink', permlink
     end
     
-    def test_comment
-      assert comment('inertia', 'machintosh-napintosh')
-      
-      # c.cov: memoization
-      assert comment('inertia', 'machintosh-napintosh')
-    end
-    
-    def test_vote
-      bid = {
-        from: 'from',
-        author: 'author',
-        permlink: 'permlink',
-        parent_permlink: 'parent_permlink',
-        parent_author: 'parent_author',
-        amount: '2.000 SBD',
-        timestamp: 'timestamp',
-        trx_id: 'id'
-      }
-      
-      bids = [bid, bid, bid]
-      
-      assert_equal bids, vote(bids)
-    end
-    
-    def test_vote_invalid
-      bid = {
-        from: '',
-        author: '',
-        permlink: '',
-        parent_permlink: '',
-        parent_author: '',
-        amount: '',
-        timestamp: '',
-        trx_id: ''
-      }
-      
-      assert_raises FloatDomainError do
-        vote([bid])
-      end
-    end
-    
-    def test_voted?
-      refute voted?('inertia', 'machintosh-napintosh')
-    end
-    
     def test_merge
       merge_options = {
         markup: :html,

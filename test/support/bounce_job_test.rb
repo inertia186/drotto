@@ -2,7 +2,7 @@ require 'test_helper'
 
 module DrOtto
   class DrOttoTest < DrOtto::Test
-    include Utils
+    include Config
     
     def setup
       override_config(

@@ -1,6 +1,6 @@
 module DrOtto
   class BounceJob
-    include Utils
+    include Chain
     
     def initialize(limit)
       @limit = limit

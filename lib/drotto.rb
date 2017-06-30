@@ -7,10 +7,10 @@ Bundler.require
 
 module DrOtto
   require 'drotto/version'
-  require 'drotto/utils'
+  require 'drotto/chain'
   require 'drotto/bounce_job'
   
-  include Utils
+  include Chain
   
   extend self
   
