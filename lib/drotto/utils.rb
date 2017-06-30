@@ -6,12 +6,30 @@ module DrOtto
   module Utils
     include Config
     
-    def info(msg)
-      ap msg
+    def build_logging_output(key, msg, detail)
+      output = {key => msg}
+      output[:backtrace] = detail.backtrace if defined? detail.backtrace
+      output
     end
     
-    def debug(msg)
-      ap msg
+    def info(msg, detail = nil)
+      output = build_logging_output :INF, msg, detail
+      ap(output, {multiline: !!(defined? detail.backtrace), color: {string: :green}})
+    end
+    
+    def warning(msg, detail = nil)
+      output = build_logging_output :WRN, msg, detail
+      ap(output, {multiline: !!(defined? detail.backtrace), color: {string: :yellow}})
+    end
+    
+    def error(msg, detail = nil)
+      output = build_logging_output :ERR, msg, detail
+      ap(output, {multiline: !!(defined? detail.backtrace), color: {string: :red}})
+    end
+    
+    def debug(msg, detail = nil)
+      output = build_logging_output :DBG, msg, detail
+      ap(output, {multiline: !!(defined? detail.backtrace), color: {string: :yellowish}})
     end
     
     def parse_slug(slug)
