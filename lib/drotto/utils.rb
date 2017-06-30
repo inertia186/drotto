@@ -15,7 +15,7 @@ module DrOtto
     end
     
     def parse_slug(slug)
-      slug = slug.split('@').last
+      slug = slug.downcase.split('@').last
       author_name = slug.split('/')[0]
       permlink = slug.split('/')[1..-1].join('/')
       permlink = permlink.split('?')[0]
