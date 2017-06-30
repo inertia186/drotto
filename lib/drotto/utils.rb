@@ -34,7 +34,11 @@ module DrOtto
       merged = comment_body
       
       options.each do |k, v|
-        merged = merged.gsub("${#{k}}", v.to_s)
+        merged = case k
+        when :from
+          merged.gsub("${#{k}}", [v].flatten.join(', @'))
+        else; merged.gsub("${#{k}}", v.to_s)
+        end
       end
 
       case options[:markup]
