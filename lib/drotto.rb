@@ -55,6 +55,7 @@ module DrOtto
               
               author, permlink = parse_slug(memo) rescue [nil, nil]
               next if author.nil? || permlink.nil?
+              next unless can_vote?(author, permlink)
               next if voted?(author, permlink)
               next unless amount =~ / #{minimum_bid_asset}$/
               next if amount.split(' ').first.to_f < minimum_bid_amount
@@ -78,8 +79,7 @@ module DrOtto
           end
         end
       rescue => e
-        info "Retrying at block: #{starting_block} (#{e})"
-        info e.backtrace
+        warning "Retrying at block: #{starting_block} (#{e})", e
         sleep backoff
         redo
       end

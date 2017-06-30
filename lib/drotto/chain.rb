@@ -65,6 +65,17 @@ module DrOtto
       end
     end
     
+    def can_vote?(author, permlink)
+      return false if voted?(author, permlink)
+      
+      comment = comment(author, permlink)
+      return false if comment.author == ''
+      return false unless comment.allow_votes
+      
+      cashout_time = Time.parse(comment.cashout_time + 'Z')
+      cashout_time > Time.now.utc
+    end
+    
     def vote(bids)
       total = bids.map { |bid| bid[:amount].split(' ').first.to_i }.reduce(0, :+)
       
