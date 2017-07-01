@@ -72,6 +72,7 @@ module DrOtto
           break
         end
       end
+      thread.join()
     end
     
     def bounced?(id_to_check)
