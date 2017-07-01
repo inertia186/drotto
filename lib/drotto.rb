@@ -24,7 +24,7 @@ module DrOtto
     2
   end
 
-  def find_bids(offset)
+  def find_bids(offset = BLOCK_OVERLAP)
     block_num = head_block
     time = block_time
     starting_block = block_num - block_span(offset)
@@ -109,6 +109,10 @@ module DrOtto
       BounceJob.new(limit).perform
       sleep 3
     end
+  end
+  
+  def run_once
+    elapsed = find_bids
   end
   
   def run
