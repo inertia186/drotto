@@ -173,9 +173,11 @@ module DrOtto
                 break
               elsif message.to_s =~ /You may only comment once every 20 seconds./
                 warning "Retrying vote/comment: commenting too quickly."
+                sleep 20
                 redo
               elsif message.to_s =~ /Can only vote once every 3 seconds./
                 warning "Retrying vote: voting too quickly."
+                sleep 3
                 redo
               elsif message.to_s =~ /Voting weight is too small, please accumulate more voting power or steem power./
                 error "Failed vote: voting weight too small"
