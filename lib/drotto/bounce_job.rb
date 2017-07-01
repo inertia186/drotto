@@ -32,6 +32,7 @@ module DrOtto
         
         author, permlink = parse_slug(memo) rescue [nil, nil]
         next if author.nil? || permlink.nil?
+        next unless can_vote?(author, permlink)
         next unless comment(author, permlink).author == author
         next if voted?(author, permlink)
         next unless shall_bounce?(tx)

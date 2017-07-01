@@ -66,6 +66,14 @@ module DrOtto
       end
     end
     
+    # Check to see if it's even possible to vote on a post.  Possible reasons
+    # to return false include:
+    #
+    # * Already voted.
+    # * Post does not exist.
+    # * API temporarily cannot locate post.
+    # * Post does not allow votes.
+    # * Cashout time already passed.
     def can_vote?(author, permlink)
       return false if voted?(author, permlink)
       
