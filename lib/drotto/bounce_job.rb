@@ -10,6 +10,8 @@ module DrOtto
     end
     
     def perform(pretend = false)
+      totals = {}
+      
       @transactions.each do |tx|
         type = tx.last['op'].first
         next unless type == 'transfer'
@@ -31,9 +33,15 @@ module DrOtto
         next unless shall_bounce?(tx.last)
         next if bounced?(id)
         
+        totals[amount.split(' ').last] ||= 0
+        totals[amount.split(' ').last] += amount.split(' ').first.to_f
         warning "Need to bounce #{amount} (original memo: #{memo})"
         
         bounce(from, amount, id) unless pretend
+      end
+      
+      totals.each do |k, v|
+        warning "Need to bounce total: #{v} #{k}"
       end
     end
     

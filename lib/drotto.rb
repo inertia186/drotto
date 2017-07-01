@@ -30,7 +30,8 @@ module DrOtto
     starting_block = block_num - block_span(offset)
     bids = []
     
-    info "Looking for new bids starting at block #{starting_block} (current time: #{time}) ..."
+    info "Looking for new bids starting at block #{starting_block} and (current time: #{time}) ..."
+    info "Last block in this timeframe is: #{block_num} (#{block_num - starting_block} blocks)."
     
     loop do
       begin
@@ -95,7 +96,7 @@ module DrOtto
     end
     
     elapsed = (Time.now.utc - time).to_i
-    info "Bidding closed for current timeframe, took #{elapsed} seconds to run."
+    info "Bidding closed for current timeframe at block #{block_num}, took #{elapsed} seconds to run."
     elapsed
   end
   
