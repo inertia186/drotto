@@ -11,7 +11,7 @@ module DrOtto
     
     def perform(pretend = false)
       block_num = head_block
-      end_block_num = head_block - base_block_span
+      end_block_num = head_block - (base_block_span * 1.25)
       totals = {}
       transaction = Radiator::Transaction.new(chain_options.merge(wif: active_wif))
       
