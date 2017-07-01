@@ -10,39 +10,31 @@ module DrOtto
        @semaphore ||= Mutex.new
     end
     
-    def build_logging_output(key, msg, detail)
-      output = {key => msg}
-      output[:backtrace] = detail.backtrace if defined? detail.backtrace
-      output
-    end
-    
-    def info(msg, detail = nil)
-      output = build_logging_output :INF, msg, detail
+    def console(mode, msg, detail = nil)
+      color = case mode
+      when :INF then :green
+      when :WRN then :yellow
+      when :ERR then :red
+      when :DBG then :yellowish
+      else; :pale
+      end
+      
+      output = {mode => msg}
+      
+      unless detail.nil?
+        output[:detail] = detail
+        output[:backtrace] = detail.backtrace rescue nil
+      end
+      
       semaphore.synchronize do
-        ap(output, {multiline: !!(defined? detail.backtrace), color: {string: :green}})
+        ap(output, {multiline: output.size > 1, color: {string: color}})
       end
     end
     
-    def warning(msg, detail = nil)
-      output = build_logging_output :WRN, msg, detail
-      semaphore.synchronize do
-        ap(output, {multiline: !!(defined? detail.backtrace), color: {string: :yellow}})
-      end
-    end
-    
-    def error(msg, detail = nil)
-      output = build_logging_output :ERR, msg, detail
-      semaphore.synchronize do
-        ap(output, {multiline: !!(defined? detail.backtrace), color: {string: :red}})
-      end
-    end
-    
-    def debug(msg, detail = nil)
-      output = build_logging_output :DBG, msg, detail
-      semaphore.synchronize do
-        ap(output, {multiline: !!(defined? detail.backtrace), color: {string: :yellowish}})
-      end
-    end
+    def info(msg, detail = nil); console(:INF, msg, detail); end
+    def warning(msg, detail = nil); console(:WRN, msg, detail); end
+    def error(msg, detail = nil); console(:ERR, msg, detail); end
+    def debug(msg, detail = nil); console(:DBG, msg, detail); end
     
     def parse_slug(slug)
       slug = slug.downcase.split('@').last

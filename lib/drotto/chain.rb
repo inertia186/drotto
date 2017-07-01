@@ -58,9 +58,10 @@ module DrOtto
       voters = comment.active_votes
       
       if voters.map(&:voter).include? account_name
-        debug "Already voted for: #{author}/#{permlink}"
+        debug "Already voted for: #{author}/#{permlink} (id: #{comment.id})"
         true
       else
+        # debug "No vote found for: #{author}/#{permlink} (id: #{comment.id})"
         false
       end
     end
@@ -194,6 +195,9 @@ module DrOtto
               elsif message.to_s =~ /unknown key/
                 error "Failed vote: unknown key (testing?)"
                 break
+              elsif message.to_s =~ /tapos_block_summary/
+                warning "Retrying vote/comment: tapos_block_summary (?)"
+                redo
               elsif message.to_s =~ /signature is not canonical/
                 warning "Retrying vote/comment: signature was not canonical (bug in Radiator?)"
                 redo
