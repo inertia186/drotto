@@ -40,28 +40,23 @@ module DrOtto
       Time.parse(properties.time + 'Z')
     end
     
-    def comment(author, permlink)
-      @comments ||= {}
+    def find_comment(author, permlink)
+      response = api.get_content(author, permlink)
+      comment = response.result
       
-      @comments.delete(@comments.keys.sample) if @comments.size > 50
+      trace comment
       
-      if !!@comments[author => permlink]
-        @comments[author => permlink]
-      else
-        response = api.get_content(author, permlink)
-        @comments[author => permlink] = response.result
-      end
+      comment unless comment.id ==  0
     end
     
-    def voted?(author, permlink)
-      comment = comment(author, permlink)
+    def voted?(comment)
       voters = comment.active_votes
       
       if voters.map(&:voter).include? account_name
-        debug "Already voted for: #{author}/#{permlink} (id: #{comment.id})"
+        debug "Already voted for: #{comment.author}/#{comment.permlink} (id: #{comment.id})"
         true
       else
-        # debug "No vote found for: #{author}/#{permlink} (id: #{comment.id})"
+        # debug "No vote found for: #{comment.author}/#{comment.permlink} (id: #{comment.id})"
         false
       end
     end
@@ -74,10 +69,8 @@ module DrOtto
     # * API temporarily cannot locate post.
     # * Post does not allow votes.
     # * Cashout time already passed.
-    def can_vote?(author, permlink)
-      return false if voted?(author, permlink)
-      
-      comment = comment(author, permlink)
+    def can_vote?(comment)
+      return false if voted?(comment)
       return false if comment.author == ''
       return false unless comment.allow_votes
       
@@ -122,19 +115,19 @@ module DrOtto
         # We are using asynchronous voting because sometimes the blockchain
         # rejects votes that happen too quickly.
         bid[:thread] = Thread.new do
+          from = bid[:from]
+          amount = bid[:amount].map{ |a| a.split(' ').first.to_f }.reduce(0, :+)
+          author = bid[:author]
+          permlink = bid[:permlink]
+          parent_permlink = bid[:parent_permlink]
+          parent_author = bid[:parent_author]
+          timestamp = bid[:timestamp]
+          coeff = (amount.to_f / total.to_f)
+            
+          debug "Total: #{total}; amount: #{amount}"
+          debug "Voting for #{author}/#{permlink} with a coefficnent of #{coeff}."
+        
           loop do
-            from = bid[:from]
-            amount = bid[:amount].map{ |a| a.split(' ').first.to_f }.reduce(0, :+)
-            author = bid[:author]
-            permlink = bid[:permlink]
-            parent_permlink = bid[:parent_permlink]
-            parent_author = bid[:parent_author]
-            timestamp = bid[:timestamp]
-            coeff = (amount.to_f / total.to_f)
-            
-            debug "Total: #{total}; amount: #{amount}"
-            debug "Voting for #{author}/#{permlink} with a coefficnent of #{coeff}."
-            
             vote = {
               type: :vote,
               voter: account_name,

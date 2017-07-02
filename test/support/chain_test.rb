@@ -21,10 +21,11 @@ module DrOtto
     end
     
     def test_comment
-      assert comment('inertia', 'machintosh-napintosh')
-      
-      # c.cov: memoization
-      assert comment('inertia', 'machintosh-napintosh')
+      refute_nil find_comment('inertia', 'macintosh-napintosh')
+    end
+    
+    def test_comment_bogus
+      assert_nil find_comment('bogus', 'bogus')
     end
     
     def test_vote
@@ -99,11 +100,13 @@ module DrOtto
     end
     
     def test_voted?
-      refute voted?('inertia', 'macintosh-napintosh')
+      comment = find_comment('inertia', 'macintosh-napintosh')
+      refute voted?(comment)
     end
     
     def test_can_vote?
-      refute can_vote?('inertia', 'macintosh-napintosh')
+      comment = find_comment('inertia', 'macintosh-napintosh')
+      refute can_vote?(comment)
     end
   end
 end

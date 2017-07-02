@@ -30,7 +30,7 @@ module DrOtto
     starting_block = block_num - block_span(offset)
     bids = []
     
-    info "Looking for new bids starting at block #{starting_block} and (current time: #{time}) ..."
+    info "Looking for new bids to #{account_name}; starting at block #{starting_block}; current time: #{time} ..."
     info "Last block in this timeframe is: #{block_num} (#{block_num - starting_block} blocks)."
     
     loop do
@@ -56,15 +56,16 @@ module DrOtto
               
               author, permlink = parse_slug(memo) rescue [nil, nil]
               next if author.nil? || permlink.nil?
-              next unless can_vote?(author, permlink)
-              next if voted?(author, permlink)
+              comment = find_comment(author, permlink)
+              next if comment.nil?
+              
+              next unless can_vote?(comment)
+              next if voted?(comment)
               next unless amount =~ / #{minimum_bid_asset}$/
               next if amount.split(' ').first.to_f < minimum_bid_amount
               next if job.bounced?(id)
               
               info "Bid from #{from} for #{amount}."
-              
-              comment = comment(author, permlink)
               
               bids << {
                 from: from,

@@ -32,9 +32,12 @@ module DrOtto
         
         author, permlink = parse_slug(memo) rescue [nil, nil]
         next if author.nil? || permlink.nil?
-        next unless can_vote?(author, permlink)
-        next unless comment(author, permlink).author == author
-        next if voted?(author, permlink)
+        comment = find_comment(author, permlink)
+        next if comment.nil?
+        
+        next unless can_vote?(comment)
+        next unless comment.author == author
+        next if voted?(comment)
         next unless shall_bounce?(tx)
         next if bounced?(id)
         
@@ -46,7 +49,7 @@ module DrOtto
       end
       
       totals.each do |k, v|
-        warning "Need to bounce total: #{v} #{k}"
+        info "Need to bounce total: #{v} #{k}"
       end
       
       return true if transaction.operations.size == 0
