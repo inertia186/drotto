@@ -6,6 +6,19 @@ module DrOtto
   module Utils
     include Config
     
+    LOGGING_LEVELS = {
+      ERR: 1, # error
+      WRN: 2, # warn
+      INF: 3, # info
+      DBG: 4, # debug
+      TRC: 5, # trace
+    }
+    
+    def log_level
+      level = ENV['LOG'].to_s.upcase.to_sym || :DBG
+      LOGGING_LEVELS[level] || 4
+    end
+    
     def semaphore
        @semaphore ||= Mutex.new
     end
@@ -26,15 +39,24 @@ module DrOtto
         output[:backtrace] = detail.backtrace rescue nil
       end
       
-      semaphore.synchronize do
-        ap(output, {multiline: output.size > 1, color: {string: color}})
+      multiline = if mode == :TRC
+        true
+      else
+        output.size > 1
+      end
+      
+      if log_level >= (LOGGING_LEVELS[mode] || 4)
+        semaphore.synchronize do
+          ap(output, {multiline: multiline, color: {string: color}})
+        end
       end
     end
     
+    def trace(msg, detail = nil); console(:TRC, msg, detail); end
+    def debug(msg, detail = nil); console(:DBG, msg, detail); end
     def info(msg, detail = nil); console(:INF, msg, detail); end
     def warning(msg, detail = nil); console(:WRN, msg, detail); end
     def error(msg, detail = nil); console(:ERR, msg, detail); end
-    def debug(msg, detail = nil); console(:DBG, msg, detail); end
     
     def parse_slug(slug)
       slug = slug.downcase.split('@').last
