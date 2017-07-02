@@ -21,7 +21,7 @@ module DrOtto
   end
   
   def backoff
-    2
+    Random.rand(3..20)
   end
 
   def find_bids(offset = BLOCK_OVERLAP)
@@ -82,6 +82,7 @@ module DrOtto
         end
       rescue => e
         warning "Retrying at block: #{starting_block} (#{e})", e
+        reset_api
         sleep backoff
         redo
       end
@@ -93,7 +94,7 @@ module DrOtto
       info 'No bids collected.'
     else
       info "Bids collected.  Ready to vote.  Processing bids: #{bids.size}"
-      vote(bids)
+      @threads = vote(bids)
     end
     
     elapsed = (Time.now.utc - time).to_i
@@ -114,6 +115,21 @@ module DrOtto
   
   def run_once
     elapsed = find_bids
+    
+    unless @threads.nil?
+      loop do
+        alive = @threads.map do |thread|
+          thread if thread.alive?
+        end.compact
+        
+        if alive.size > 0
+          info "Still voting: #{alive.size}"
+          sleep Random.rand(3..20) # stagger procssing
+        else
+          break
+        end
+      end
+    end
   end
   
   def run
