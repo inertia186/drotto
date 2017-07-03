@@ -46,6 +46,14 @@ module DrOtto
       end
       
       if log_level >= (LOGGING_LEVELS[mode] || 4)
+        case mode
+        when :INF then logger.info msg
+        when :WRN then logger.warn msg
+        when :ERR then logger.error msg
+        when :DBG then logger.debug msg
+        else; logger.debug msg
+        end
+        
         semaphore.synchronize do
           ap(output, {multiline: multiline, color: {string: color}})
         end

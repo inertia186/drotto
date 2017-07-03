@@ -2,8 +2,10 @@ module DrOtto
   module Config
     MAX_BASE_BLOCK_SPAN = 2880
     
+    DEFAULT_LOGGER = Logger.new('drotto.log')
+    
     DEFAULT_CHAIN_OPTIONS = {
-      logger: Logger.new('drotto.log')
+      logger: DEFAULT_LOGGER
     }
     
     @@override_config = nil
@@ -61,6 +63,10 @@ module DrOtto
     
     def base_block_span
       [1, (MAX_BASE_BLOCK_SPAN * (batch_vote_weight / 10000.0)).to_i].max
+    end
+    
+    def logger
+      DEFAULT_LOGGER
     end
   end
 end

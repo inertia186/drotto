@@ -73,7 +73,8 @@ module DrOtto
         trx_id: 'id'
       }
       
-      bids = vote([bid1, bid2, bid3])
+      result = vote([bid1, bid2, bid3])
+      bids = result.keys
       assert_equal 1, bids.size
       assert_equal expected_stacked_bid[:from], bids.first[:from]
       assert_equal expected_stacked_bid[:author], bids.first[:author]

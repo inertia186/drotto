@@ -94,7 +94,8 @@ module DrOtto
       info 'No bids collected.'
     else
       info "Bids collected.  Ready to vote.  Processing bids: #{bids.size}"
-      @threads = vote(bids)
+      result = vote(bids)
+      @threads = result.values
     end
     
     elapsed = (Time.now.utc - time).to_i

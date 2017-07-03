@@ -86,7 +86,7 @@ module DrOtto
       # First, we need a total of all bids for this batch.  This will be used to
       # figure out how much each bid is allocated.
       total = bids.map { |bid| bid[:amount].split(' ').first.to_f }.reduce(0, :+)
-      threads = []
+      result = {}
       
       # Vote stacking is where multiple bids are created for the same post.  Any
       # number of transfers from any number of accounts can bid on the same
@@ -118,7 +118,7 @@ module DrOtto
       bids.each do |bid|
         # We are using asynchronous voting because sometimes the blockchain
         # rejects votes that happen too quickly.
-        threads << Thread.new do
+        thread = Thread.new do
           from = bid[:from]
           amount = bid[:amount].map{ |a| a.split(' ').first.to_f }.reduce(0, :+)
           author = bid[:author]
@@ -226,9 +226,11 @@ module DrOtto
             break
           end
         end
+        
+        result[bid] = thread
       end
       
-      threads
+      result
     end
   end
 end
