@@ -114,7 +114,8 @@ module DrOtto
   end
   
   def run_once
-    elapsed = find_bids
+    offset = (base_block_span * 0.10).to_i
+    elapsed = find_bids(offset)
     
     unless @threads.nil?
       loop do
