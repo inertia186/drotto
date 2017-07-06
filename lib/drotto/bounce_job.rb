@@ -9,6 +9,8 @@ module DrOtto
     end
     
     def init_transactions
+      return unless @transactions.nil?
+      
       response = nil
       
       if @limit.to_i > 0
