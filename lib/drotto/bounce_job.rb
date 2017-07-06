@@ -132,7 +132,7 @@ module DrOtto
             needs_bounce = true
           end
           
-          unless comment.author == author
+          if !!comment && comment.author != author
             debug "Sanity check failed.  Comment author not the author parsed.  Original memo: #{memo}"
             needs_bounce = true
           end
