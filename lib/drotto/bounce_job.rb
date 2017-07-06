@@ -145,9 +145,16 @@ module DrOtto
               needs_bounce = true
             end
             
-            if bounced?(id)
-              debug "Already bounced transaction (???): #{id}"
-              needs_bounce = true
+            # Final check.  Don't bounce if already bounced.  This should only
+            # happen under a race condition (rarely).  So we hold off dumping
+            # the transactions in memory until we actually need to know.
+            if needs_bounce
+              @transactions = nil # dump
+              
+              if bounced?(id)
+                debug "Already bounced transaction: #{id}"
+                needs_bounce = false
+              end
             end
             
             if needs_bounce
@@ -162,9 +169,11 @@ module DrOtto
                   error "Failed transfer: Check active key."
                 end
               end
-            else
-              info "Allowing #{amount} (original memo: #{memo})"
+              
+              next
             end
+              
+            info "Allowing #{amount} (original memo: #{memo})"
           end
         end
       rescue => e
