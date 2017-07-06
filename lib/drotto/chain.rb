@@ -139,7 +139,14 @@ module DrOtto
         end
       end
       
-      bids = stacked_bids.values
+      bids = stacked_bids.values.sort_by do |b|
+        b[:amount].map do |a|
+          a.split(' ').first.to_f
+        end.reduce(0, :+)
+      end.reverse
+      
+      debug bids.first
+      start = Time.now.utc.to_i
       
       bids.each do |bid|
         # We are using asynchronous voting because sometimes the blockchain
@@ -158,6 +165,9 @@ module DrOtto
           debug "Voting for #{author}/#{permlink} with a coefficnent of #{coeff}."
         
           loop do
+            elapsed = Time.now.utc.to_i - start
+            break if (base_block_span * 3) < elapsed
+            
             vote = {
               type: :vote,
               voter: account_name,
@@ -229,6 +239,9 @@ module DrOtto
                 break
               elsif message.to_s =~ /tapos_block_summary/
                 warning "Retrying vote/comment: tapos_block_summary (?)"
+                redo
+              elsif message.to_s =~ /now < trx.expiration/
+                warning "Retrying vote/comment: now < trx.expiration (?)"
                 redo
               elsif message.to_s =~ /signature is not canonical/
                 warning "Retrying vote/comment: signature was not canonical (bug in Radiator?)"
