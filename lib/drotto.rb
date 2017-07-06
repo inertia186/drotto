@@ -20,10 +20,6 @@ module DrOtto
     base_block_span + offset
   end
   
-  def backoff
-    Random.rand(3..20)
-  end
-
   def find_bids(offset = BLOCK_OVERLAP)
     block_num = head_block
     time = block_time
@@ -112,6 +108,10 @@ module DrOtto
       BounceJob.new(limit).perform
       sleep 3
     end
+  end
+  
+  def bounce_stream
+    BounceJob.new.stream
   end
   
   def run_once

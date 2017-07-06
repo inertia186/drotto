@@ -25,5 +25,10 @@ module DrOtto
     def test_report
       assert @job.perform(pretend: true)
     end
+    
+    def test_stream
+      count = 10
+      assert_equal count, @job.stream(count)
+    end
   end
 end

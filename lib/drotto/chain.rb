@@ -8,8 +8,30 @@ module DrOtto
       @api = nil
     end
     
+    def backoff
+      Random.rand(3..20)
+    end
+    
     def api
-      @api ||= Radiator::Api.new(chain_options)
+      with_api
+    end
+    
+    def with_api(&block)
+      loop do
+        @api ||= Radiator::Api.new(chain_options)
+        
+        return @api if block.nil?
+        
+        begin
+          yield @api
+          break
+        rescue => e
+          warning "API exception, retrying (#{e})", e
+          reset_api
+          sleep backoff
+          redo
+        end
+      end
     end
     
     def reset_properties
@@ -25,7 +47,8 @@ module DrOtto
       
       return @properties unless @properties.nil?
       
-      response = api.get_dynamic_global_properties
+      response = nil
+      with_api { |api| response = api.get_dynamic_global_properties }
       response.result.tap do |properties|
         @latest_properties = Time.parse(properties.time + 'Z')
         @properties = properties
@@ -45,7 +68,8 @@ module DrOtto
     end
     
     def find_comment(author, permlink)
-      response = api.get_content(author, permlink)
+      response = nil
+      with_api { |api| response = api.get_content(author, permlink) }
       comment = response.result
       
       trace comment
@@ -54,6 +78,7 @@ module DrOtto
     end
     
     def voted?(comment)
+      return false if comment.nil?
       voters = comment.active_votes
       
       if voters.map(&:voter).include? account_name
@@ -74,6 +99,7 @@ module DrOtto
     # * Post does not allow votes.
     # * Cashout time already passed.
     def can_vote?(comment)
+      return false if comment.nil?
       return false if voted?(comment)
       return false if comment.author == ''
       return false unless comment.allow_votes

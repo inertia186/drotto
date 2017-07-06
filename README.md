@@ -127,6 +127,12 @@ Both `bounce` modes accept a limit value as argument, which is especially useful
 $ rake bounce_once[10000]
 ```
 
+You can also use `bounce_stream` to immediately bounce transfers that are invalid.  The advantage of this is that bounced transactions are returned right when they happen if they cannot be processed rather than wait for the batch.
+
+```bash
+$ rake bounce_stream
+```
+
 ##### Report Mode
 
 Same as `bounce_once` but only for reporting without doing the transfers.

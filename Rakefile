@@ -29,20 +29,21 @@ end
 
 task :report, :limit do |t, args|
   limit = args[:limit]
-  limit = limit.to_i unless limit.nil?
   DrOtto.bounce_once(limit, pretend: true)
 end
 
 task :bounce_once, :limit do |t, args|
-  limit = args[:limit]
-  limit = limit.to_i unless limit.nil?
+  limit = args[:limit] || '200'
   DrOtto.bounce_once(limit)
 end
 
 task :bounce, :limit do |t, args|
-  limit = args[:limit]
-  limit = limit.to_i unless limit.nil?
+  limit = args[:limit] || '200'
   DrOtto.bounce(limit)
+end
+
+task :bounce_stream do
+  DrOtto.bounce_stream
 end
 
 task :run do
