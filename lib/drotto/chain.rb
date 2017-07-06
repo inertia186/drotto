@@ -145,7 +145,6 @@ module DrOtto
         end.reduce(0, :+)
       end.reverse
       
-      debug bids.first
       start = Time.now.utc.to_i
       
       bids.each do |bid|
@@ -204,7 +203,9 @@ module DrOtto
             
             begin
               sleep Random.rand(3..20) # stagger procssing
-              response = tx.process(true)
+              semaphore.synchronize do
+                response = tx.process(true)
+              end
             rescue => e
               warning "Unable to vote and comment, retrying with just vote: #{e}", e
             end
@@ -254,7 +255,9 @@ module DrOtto
               tx.operations = [vote]
               
               begin
-                response = tx.process(true)
+                semaphore.synchronize do
+                  response = tx.process(true)
+                end
               rescue => e
                 error "Unable to vote: #{e}", e
               end
