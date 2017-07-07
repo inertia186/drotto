@@ -156,7 +156,8 @@ module DrOtto
         total_weight += effective_weight
         break if total_weight > batch_vote_weight
         
-        debug "Total: #{total}; amount: #{amount}; total_weight: #{total_weight}; effective_weight: #{effective_weight}"
+        debug "Total: #{total}; amount: #{amount};"
+        debug "total_weight: #{total_weight}; effective_weight: #{effective_weight}"
             
         # We are using asynchronous voting because sometimes the blockchain
         # rejects votes that happen too quickly.
