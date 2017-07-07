@@ -31,6 +31,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'yard'
   spec.add_development_dependency 'byebug'
   spec.add_development_dependency 'pry'
+  spec.add_development_dependency 'delorean'
 
   spec.add_dependency 'radiator'
   spec.add_dependency 'awesome_print'
