@@ -26,9 +26,29 @@ module DrOtto
       assert @job.perform(pretend: true)
     end
     
+    def test_report_today
+      job = BounceJob.new('today')
+      
+      assert job.perform(pretend: true)
+    end
+    
     def test_stream
       count = 10
       assert_equal count, @job.stream(count)
     end
+    
+    def test_bounce
+      assert @job.bounce('from', 'amount', 'id')
+    end
+    
+    def test_bounced?
+      refute @job.bounced?('id')
+    end
+    
+    # def test_shall_bounce?
+    #   Struct.new("Transaction", :trx_id, :op)
+    #   
+    #   refute @job.shall_bounce?(tx)
+    # end
   end
 end

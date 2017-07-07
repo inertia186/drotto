@@ -22,6 +22,7 @@ require 'yaml'
 require 'pry'
 require 'typhoeus/adapters/faraday'
 require 'securerandom'
+require 'delorean'
 
 if !!ENV['VCR']
   VCR.configure do |c|

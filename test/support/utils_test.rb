@@ -20,6 +20,40 @@ module DrOtto
       )
     end
     
+    def test_name_error
+      assert_raises NameError do
+        assert reset_api
+      end
+    end
+    
+    def test_trace
+      assert_nil trace "trace"
+    end
+    
+    def test_debug
+      assert_nil debug "debug"
+    end
+    
+    def test_info
+      assert_nil info "info"
+    end
+    
+    def test_info_detail
+      assert_nil info("info", Exception.new)
+    end
+    
+    def test_warning
+      assert_nil warning "warning"
+    end
+    
+    def test_error
+      assert_nil error "error"
+    end
+    
+    def test_unknown_type
+      assert_nil console(:BOGUS, "unknown_type")
+    end
+    
     def test_parse_slug
       author, permlink = parse_slug '@author/permlink'
       

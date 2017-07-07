@@ -20,6 +20,30 @@ module DrOtto
       )
     end
     
+    def test_reset_api
+      assert_nil reset_api
+    end
+    
+    def test_backoff
+      assert backoff
+    end
+    
+    def test_reset_properties
+      assert_nil reset_properties
+    end
+    
+    def test_properties
+      assert properties
+    end
+    
+    def test_properties_timeout
+      assert properties
+      
+      Delorean.jump 31 do
+        assert properties
+      end
+    end
+    
     def test_comment
       refute_nil find_comment('inertia', 'macintosh-napintosh')
     end
@@ -97,7 +121,9 @@ module DrOtto
         trx_id: ''
       }
       
-      refute_nil vote([bid])
+      assert_raises FloatDomainError do
+        refute_nil vote([bid])
+      end
     end
     
     def test_voted?
