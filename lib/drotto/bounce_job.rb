@@ -98,7 +98,9 @@ module DrOtto
     def stream(max_ops = -1)
       @limit ||= 200
       stream = Radiator::Stream.new(chain_options.dup)
-      count = 0 
+      count = 0
+      
+      info "Streaming bids to #{account_name}; starting at block #{head_block}; current time: #{block_time} ..."
       
       begin
         stream.transactions do |tx, id|
@@ -168,6 +170,8 @@ module DrOtto
                 if message.to_s =~ /missing required active authority/
                   error "Failed transfer: Check active key."
                 end
+              else
+                debug "Bounced", response
               end
               
               next
