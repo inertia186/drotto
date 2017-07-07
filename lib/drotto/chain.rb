@@ -146,21 +146,28 @@ module DrOtto
       end.reverse
       
       start = Time.now.utc.to_i
+      total_weight = 0
       
       bids.each do |bid|
+        amount = bid[:amount].map{ |a| a.split(' ').first.to_f }.reduce(0, :+)
+        coeff = (amount.to_f / total.to_f)
+        effective_weight = (weight = batch_vote_weight * coeff).to_i
+        
+        total_weight += effective_weight
+        break if total_weight > batch_vote_weight
+        
+        debug "Total: #{total}; amount: #{amount}; total_weight: #{total_weight}; effective_weight: #{effective_weight}"
+            
         # We are using asynchronous voting because sometimes the blockchain
         # rejects votes that happen too quickly.
         thread = Thread.new do
           from = bid[:from]
-          amount = bid[:amount].map{ |a| a.split(' ').first.to_f }.reduce(0, :+)
           author = bid[:author]
           permlink = bid[:permlink]
           parent_permlink = bid[:parent_permlink]
           parent_author = bid[:parent_author]
           timestamp = bid[:timestamp]
-          coeff = (amount.to_f / total.to_f)
             
-          debug "Total: #{total}; amount: #{amount}"
           debug "Voting for #{author}/#{permlink} with a coefficnent of #{coeff}."
         
           loop do
@@ -172,7 +179,7 @@ module DrOtto
               voter: account_name,
               author: author,
               permlink: permlink,
-              weight: (weight = batch_vote_weight * coeff).to_i
+              weight: effective_weight
             }
             
             merge_options = {
@@ -223,6 +230,9 @@ module DrOtto
                 warning "Retrying vote: voting too quickly."
                 sleep Random.rand(3..6) # stagger retry
                 redo
+              elsif message.to_s =~ /STEEMIT_MAX_PERMLINK_LENGTH: permlink is too long/
+                error "Failed comment: permlink too long; only vote"
+                # just flunking comment
               elsif message.to_s =~ /Voting weight is too small, please accumulate more voting power or steem power./
                 error "Failed vote: voting weight too small"
                 break
@@ -251,7 +261,7 @@ module DrOtto
             end
 
             if response.nil? || !!response.error
-              warning "Unknown problem while voting.  Retrying with just vote: #{response}"
+              warning "Problem while voting.  Retrying with just vote: #{response}"
               tx.operations = [vote]
               
               begin
