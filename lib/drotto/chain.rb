@@ -146,7 +146,7 @@ module DrOtto
       end.reverse
       
       start = Time.now.utc.to_i
-      total_weight = 0
+      total_weight = reserve_vote_weight
       
       bids.each do |bid|
         amount = bid[:amount].map{ |a| a.split(' ').first.to_f }.reduce(0, :+)
@@ -157,7 +157,7 @@ module DrOtto
         break if total_weight > batch_vote_weight
         
         debug "Total: #{total}; amount: #{amount};"
-        debug "total_weight: #{total_weight}; effective_weight: #{effective_weight}"
+        debug "total_weight: #{total_weight}; effective_weight: #{effective_weight}; reserve_vote_weight: #{reserve_vote_weight}"
             
         # We are using asynchronous voting because sometimes the blockchain
         # rejects votes that happen too quickly.

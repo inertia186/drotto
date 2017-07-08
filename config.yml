@@ -20,6 +20,11 @@
   # hours; 50.00 % results in one batch every 1.2 hours; so on.
   :batch_vote_weight: 100.00 %
   
+  # This is the amount to of voting weight to reserve in each voting batch.
+  # Normally, this should be set to 0.00 % unless this account often casts votes
+  # outside of Dr. Otto.
+  :reserve_vote_weight: 0.00 %
+  
   # Minimum bid amount.
   :minimum_bid: 2.000 SBD
 

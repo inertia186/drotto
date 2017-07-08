@@ -45,6 +45,10 @@ module DrOtto
       (config[:drotto][:batch_vote_weight].to_f * 100).to_i
     end
     
+    def reserve_vote_weight
+      (config[:drotto][:reserve_vote_weight].to_f * 100).to_i
+    end
+    
     def minimum_bid
       config[:drotto][:minimum_bid]
     end
