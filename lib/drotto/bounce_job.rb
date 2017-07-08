@@ -102,88 +102,90 @@ module DrOtto
       
       info "Streaming bids to #{account_name}; starting at block #{head_block}; current time: #{block_time} ..."
       
-      begin
-        stream.transactions do |tx, id|
-          tx.operations.each do |type, op|
-            count = count + 1
-            return count if max_ops > 0 && max_ops <= count
-            next unless type == 'transfer'
-            needs_bounce = false
-            
-            from = op.from
-            to = op.to
-            amount = op.amount
-            memo = op.memo
-            timestamp = op.timestamp
+      loop do
+        begin
+          stream.transactions do |tx, id|
+            tx.operations.each do |type, op|
+              count = count + 1
+              return count if max_ops > 0 && max_ops <= count
+              next unless type == 'transfer'
+              needs_bounce = false
               
-            next unless to == account_name
-            
-            author, permlink = parse_slug(memo) rescue [nil, nil]
-            
-            if author.nil? || permlink.nil?
-              debug "Bad memo.  Original memo: #{memo}"
-              needs_bounce = true
-            end
-            
-            comment = find_comment(author, permlink)
-            
-            if comment.nil?
-              debug "No such comment.  Original memo: #{memo}"
-              needs_bounce = true
-            end
-            
-            unless can_vote?(comment)
-              debug "Cannot vote.  Original memo: #{memo}"
-              needs_bounce = true
-            end
-            
-            if !!comment && comment.author != author
-              debug "Sanity check failed.  Comment author not the author parsed.  Original memo: #{memo}"
-              needs_bounce = true
-            end
-            
-            if voted?(comment)
-              debug "Already voted.  Original memo: #{memo}"
-              needs_bounce = true
-            end
-            
-            # Final check.  Don't bounce if already bounced.  This should only
-            # happen under a race condition (rarely).  So we hold off dumping
-            # the transactions in memory until we actually need to know.
-            if needs_bounce
-              @transactions = nil # dump
-              
-              if bounced?(id)
-                debug "Already bounced transaction: #{id}"
-                needs_bounce = false
-              end
-            end
-            
-            if needs_bounce
-              transaction = Radiator::Transaction.new(chain_options.merge(wif: active_wif))
-              transaction.operations << bounce(from, amount, id)
-              response = transaction.process(true)
-              
-              if !!response && !!response.error
-                message = response.error.message
+              from = op.from
+              to = op.to
+              amount = op.amount
+              memo = op.memo
+              timestamp = op.timestamp
                 
-                if message.to_s =~ /missing required active authority/
-                  error "Failed transfer: Check active key."
-                end
-              else
-                debug "Bounced", response
+              next unless to == account_name
+              
+              author, permlink = parse_slug(memo) rescue [nil, nil]
+              
+              if author.nil? || permlink.nil?
+                debug "Bad memo.  Original memo: #{memo}"
+                needs_bounce = true
               end
               
-              next
-            end
+              comment = find_comment(author, permlink)
               
-            info "Allowing #{amount} (original memo: #{memo})"
+              if comment.nil?
+                debug "No such comment.  Original memo: #{memo}"
+                needs_bounce = true
+              end
+              
+              unless can_vote?(comment)
+                debug "Cannot vote.  Original memo: #{memo}"
+                needs_bounce = true
+              end
+              
+              if !!comment && comment.author != author
+                debug "Sanity check failed.  Comment author not the author parsed.  Original memo: #{memo}"
+                needs_bounce = true
+              end
+              
+              if voted?(comment)
+                debug "Already voted.  Original memo: #{memo}"
+                needs_bounce = true
+              end
+              
+              # Final check.  Don't bounce if already bounced.  This should only
+              # happen under a race condition (rarely).  So we hold off dumping
+              # the transactions in memory until we actually need to know.
+              if needs_bounce
+                @transactions = nil # dump
+                
+                if bounced?(id)
+                  debug "Already bounced transaction: #{id}"
+                  needs_bounce = false
+                end
+              end
+              
+              if needs_bounce
+                transaction = Radiator::Transaction.new(chain_options.merge(wif: active_wif))
+                transaction.operations << bounce(from, amount, id)
+                response = transaction.process(true)
+                
+                if !!response && !!response.error
+                  message = response.error.message
+                  
+                  if message.to_s =~ /missing required active authority/
+                    error "Failed transfer: Check active key."
+                  end
+                else
+                  debug "Bounced", response
+                end
+                
+                next
+              end
+                
+              info "Allowing #{amount} (original memo: #{memo})"
+            end
           end
+        rescue => e
+          warning e.inspect, e
+          reset_api
+          sleep backoff
         end
-      rescue => e
-        warning e.inspect, e
-        reset_api
-        sleep backoff
       end
     end
     
