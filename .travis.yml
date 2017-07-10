@@ -1,0 +1,12 @@
+language: ruby
+rvm:
+  - "2.0.0"
+  - "2.1.5"
+  - "2.2.1"
+  - "2.3.0"
+script: TESTOPTS="--verbose" bundle exec rake test
+# addons:
+#   code_climate:
+#     repo_token: 
+notifications:
+  slack: galacticaactual:rhAXgZ68aoikbxBBA05xIUVC
