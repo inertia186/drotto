@@ -88,6 +88,7 @@ Edit the `config.yml` file.
   :posting_wif: <posting wif here>
   :active_wif: <active wif here>
   :batch_vote_weight: 100.00 %
+  :reserve_vote_weight: 0.00 %
   :minimum_bid: 2.000 SBD
 
 :chain_options:
@@ -213,3 +214,10 @@ If you're using Dr. Otto, I'd love to hear from you.  Drop me a line and tell me
 ## License
 
 I don't believe in intellectual "property".  If you do, consider Dr. Otto as licensed under a Creative Commons [![CC0](http://i.creativecommons.org/p/zero/1.0/80x15.png)](http://creativecommons.org/publicdomain/zero/1.0/) License.
+
+---
+
+Also see:
+
+* [Dr. Otto Technical Update](https://steemit.com/radiator/@inertia/dr-otto-technical-update)
+* [Dr. Otto: Vote Bidding Bot](https://steemit.com/radiator/@inertia/dr-otto-vote-bidding-bot)
