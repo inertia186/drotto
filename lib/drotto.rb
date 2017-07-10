@@ -99,6 +99,23 @@ module DrOtto
     elapsed
   end
   
+  def join_threads
+    unless @threads.nil?
+      loop do
+        alive = @threads.map do |thread|
+          thread if thread.alive?
+        end.compact
+        
+        if alive.size > 0
+          info "Still voting: #{alive.size}"
+          sleep Random.rand(3..20) # stagger procssing
+        else
+          break
+        end
+      end
+    end
+  end
+  
   def bounce_once(limit = nil, options = {})
     BounceJob.new(limit).perform(!!options[:pretend])
   end
@@ -119,21 +136,7 @@ module DrOtto
     
     offset = (base_block_span * 0.10).to_i
     elapsed = find_bids(offset)
-    
-    unless @threads.nil?
-      loop do
-        alive = @threads.map do |thread|
-          thread if thread.alive?
-        end.compact
-        
-        if alive.size > 0
-          info "Still voting: #{alive.size}"
-          sleep Random.rand(3..20) # stagger procssing
-        else
-          break
-        end
-      end
-    end
+    join_threads
   end
   
   def run
@@ -145,6 +148,7 @@ module DrOtto
       
       offset = (base_block_span * 0.10).to_i
       elapsed = find_bids(offset)
+      join_threads
     end
   end
   
