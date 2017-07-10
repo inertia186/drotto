@@ -1,6 +1,11 @@
 module DrOtto
   require 'drotto/utils'
   
+  VOTE_RECHARGE_PER_DAY = 20.0
+  VOTE_RECHARGE_PER_HOUR = VOTE_RECHARGE_PER_DAY / 24
+  VOTE_RECHARGE_PER_MINUTE = VOTE_RECHARGE_PER_HOUR / 60
+  VOTE_RECHARGE_PER_SEC = VOTE_RECHARGE_PER_MINUTE / 60
+
   module Chain
     include Utils
     
@@ -285,6 +290,33 @@ module DrOtto
       
       result
     end
+    
+    def current_voting_power
+      response = nil
+      with_api do |api|
+        response = api.get_accounts([account_name])
+      end
+      
+      account = response.result.first
+      voting_power = account.voting_power / 100.0
+      last_vote_time = Time.parse(account.last_vote_time + 'Z')
+      voting_elapse = Time.now.utc - last_vote_time
+      current_voting_power = voting_power + (voting_elapse * VOTE_RECHARGE_PER_SEC)
+      current_voting_power = [100.0, current_voting_power].min
+      diff = current_voting_power - voting_power
+      recharge = ((100.0 - current_voting_power) / VOTE_RECHARGE_PER_SEC) / 60
+      
+      debug "Remaining voting power: #{('%.2f' % current_voting_power)} % (recharged #{('%.2f' % diff)} % since last vote)"
+      
+      if voting_elapse > 0 && recharge > 0
+        debug "Last vote: #{voting_elapse.to_i / 60} minutes ago; #{('%.1f' % recharge)} minutes remain until 100.00 %"
+      else
+        if voting_elapse > 0
+          debug "Last vote: #{voting_elapse.to_i / 60} minutes ago; #{('%.1f' % recharge.abs)} minutes of recharge power unused in 100.00 %"
+        end
+      end
+      
+      current_voting_power
+    end
   end
 end
-

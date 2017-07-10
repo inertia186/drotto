@@ -115,6 +115,8 @@ module DrOtto
   end
   
   def run_once
+    return if current_voting_power < 100.0
+    
     offset = (base_block_span * 0.10).to_i
     elapsed = find_bids(offset)
     
@@ -135,11 +137,18 @@ module DrOtto
   end
   
   def run
-    elapsed = 0
     loop do
+      if current_voting_power < 100.0
+        sleep 60
+        redo
+      end
+      
       offset = [elapsed / 3, base_block_span].min
       elapsed = find_bids(offset)
-      sleep (base_block_span * 3) - elapsed
     end
+  end
+  
+  def state
+    current_voting_power
   end
 end

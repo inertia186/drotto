@@ -53,3 +53,7 @@ end
 task :run_once do
   DrOtto.run_once
 end
+
+task :state do
+  DrOtto.state
+end

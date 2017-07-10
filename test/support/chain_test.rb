@@ -136,5 +136,9 @@ module DrOtto
       comment = find_comment('inertia', 'macintosh-napintosh')
       refute can_vote?(comment)
     end
+    
+    def test_current_voting_power
+      assert current_voting_power
+    end
   end
 end
