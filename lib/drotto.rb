@@ -143,7 +143,7 @@ module DrOtto
         redo
       end
       
-      offset = [elapsed / 3, base_block_span].min
+      offset = (base_block_span * 0.10).to_i
       elapsed = find_bids(offset)
     end
   end
