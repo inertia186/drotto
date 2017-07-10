@@ -27,7 +27,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'faraday'
   spec.add_development_dependency 'typhoeus'
   spec.add_development_dependency 'simplecov'
-  # spec.add_development_dependency 'codeclimate-test-reporter'
+  spec.add_development_dependency 'codeclimate-test-reporter', '~> 0.5.2'
   spec.add_development_dependency 'yard'
   spec.add_development_dependency 'byebug'
   spec.add_development_dependency 'pry'

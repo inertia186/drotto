@@ -2,13 +2,13 @@ $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 
 if ENV["HELL_ENABLED"] || ENV['CODECLIMATE_REPO_TOKEN']
   require 'simplecov'
-  # if ENV['CODECLIMATE_REPO_TOKEN']
-  #   require "codeclimate-test-reporter"
-  #   SimpleCov.start CodeClimate::TestReporter.configuration.profile
-  #   CodeClimate::TestReporter.start
-  # else
+  if ENV['CODECLIMATE_REPO_TOKEN']
+    require "codeclimate-test-reporter"
+    SimpleCov.start CodeClimate::TestReporter.configuration.profile
+    CodeClimate::TestReporter.start
+  else
     SimpleCov.start
-  # end
+  end
   SimpleCov.merge_timeout 3600
 end
 

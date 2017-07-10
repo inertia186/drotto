@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/inertia186/drotto.svg?branch=master)](https://travis-ci.org/inertia186/radiator)
+[![Code Climate](https://codeclimate.com/github/inertia186/drotto/badges/gpa.svg)](https://codeclimate.com/github/inertia186/drotto)
+[![Test Coverage](https://codeclimate.com/github/inertia186/drotto/badges/coverage.svg)](https://codeclimate.com/github/inertia186/drotto)
+
 drotto
 ======
 
