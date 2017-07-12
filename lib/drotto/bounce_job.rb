@@ -19,6 +19,7 @@ module DrOtto
         with_api { |api| response = api.get_account_history(account_name, -10000, 10000) }
       end
       
+      @memos = nil
       @transactions = response.result
     end
     
