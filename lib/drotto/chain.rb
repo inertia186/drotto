@@ -153,6 +153,26 @@ module DrOtto
       start = Time.now.utc.to_i
       total_weight = reserve_vote_weight
       
+      # Initial pass to remove bids that don't meet the criteria.  Doing this in
+      # a separate pass speeds up processing when, for example, there are spam
+      # bids with very low impact.
+      bids = bids.map do |bid|
+        amount = bid[:amount].map{ |a| a.split(' ').first.to_f }.reduce(0, :+)
+        coeff = (amount.to_f / total.to_f)
+        effective_weight = (weight = batch_vote_weight * coeff).to_i
+        
+        if effective_weight < min_effective_weight
+          # Bid didn't meet min_effective_weight, remove it from the total so it
+          # doesn't impact everybody else's bids in the same batch.
+          debug "Removing bid from #{bid[:from].join(', ')}, effective_weight too low: #{effective_weight}"
+          total -= amount.to_f
+          next
+        end
+        
+        bid # This bid is accepted.
+      end.compact
+      
+      # Final pass, actual voting.
       bids.each do |bid|
         amount = bid[:amount].map{ |a| a.split(' ').first.to_f }.reduce(0, :+)
         coeff = (amount.to_f / total.to_f)

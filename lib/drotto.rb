@@ -31,49 +31,13 @@ module DrOtto
     
     loop do
       begin
-        job = BounceJob.new(10000)
+        job = BounceJob.new('today')
         
         api.get_blocks(starting_block..block_num) do |block, number|
           starting_block = number
-          timestamp = block.timestamp
           
           block.transactions.each_with_index do |tx, index|
-            id = block['transaction_ids'][index]
-              
-            tx.operations.each do |type, op|
-              next unless type == 'transfer'
-              
-              from = op.from
-              to = op.to
-              amount = op.amount
-              memo = op.memo
-              
-              next unless to == account_name
-              
-              author, permlink = parse_slug(memo) rescue [nil, nil]
-              next if author.nil? || permlink.nil?
-              comment = find_comment(author, permlink)
-              next if comment.nil?
-              
-              next unless can_vote?(comment)
-              next if voted?(comment)
-              next unless amount =~ / #{minimum_bid_asset}$/
-              next if amount.split(' ').first.to_f < minimum_bid_amount
-              next if job.bounced?(id)
-              
-              info "Bid from #{from} for #{amount}."
-              
-              bids << {
-                from: from,
-                author: author,
-                permlink: permlink,
-                parent_permlink: comment.parent_permlink,
-                parent_author: comment.parent_author,
-                amount: amount,
-                timestamp: timestamp,
-                trx_id: id
-              }
-            end
+            process_bid(block, tx, index, job, bids)
           end
         end
       rescue => e
@@ -97,6 +61,46 @@ module DrOtto
     elapsed = (Time.now.utc - time).to_i
     info "Bidding closed for current timeframe at block #{block_num}, took #{elapsed} seconds to run."
     elapsed
+  end
+  
+  def process_bid(block, tx, index, job, bids)
+    timestamp = block.timestamp
+    id = block['transaction_ids'][index]
+      
+    tx.operations.each do |type, op|
+      next unless type == 'transfer'
+      
+      from = op.from
+      to = op.to
+      amount = op.amount
+      memo = op.memo
+      
+      next unless to == account_name
+      
+      author, permlink = parse_slug(memo) rescue [nil, nil]
+      next if author.nil? || permlink.nil?
+      comment = find_comment(author, permlink)
+      next if comment.nil?
+      
+      next unless can_vote?(comment)
+      next if voted?(comment)
+      next unless amount =~ / #{minimum_bid_asset}$/
+      next if amount.split(' ').first.to_f < minimum_bid_amount
+      next if job.bounced?(id)
+      
+      info "Bid from #{from} for #{amount}."
+      
+      bids << {
+        from: from,
+        author: author,
+        permlink: permlink,
+        parent_permlink: comment.parent_permlink,
+        parent_author: comment.parent_author,
+        amount: amount,
+        timestamp: timestamp,
+        trx_id: id
+      }
+    end
   end
   
   def join_threads

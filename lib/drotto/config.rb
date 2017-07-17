@@ -26,31 +26,35 @@ module DrOtto
     end
     
     def block_mode
-      config[:drotto][:block_mode]
+      ENV['DROTTO_BLOCK_MODE'] || config[:drotto][:block_mode]
     end
     
     def account_name
-      config[:drotto][:account_name]
+      ENV['DROTTO_ACCOUNT_NAME'] || config[:drotto][:account_name]
     end
     
     def posting_wif
-      config[:drotto][:posting_wif]
+      ENV['DROTTO_POSTING_WIF'] || config[:drotto][:posting_wif]
     end
     
     def active_wif
-      config[:drotto][:active_wif]
+      ENV['DROTTO_ACTIVE_WIF'] || config[:drotto][:active_wif]
+    end
+    
+    def min_effective_weight
+      ((ENV['DROTTO_MIN_EFFECTIVE_WEIGHT'] || config[:drotto][:min_effective_weight]).to_f * 100).to_i
     end
     
     def batch_vote_weight
-      (config[:drotto][:batch_vote_weight].to_f * 100).to_i
+      (ENV['DROTTO_BATCH_VOTE_WEIGHT'] || (config[:drotto][:batch_vote_weight]).to_f * 100).to_i
     end
     
     def reserve_vote_weight
-      (config[:drotto][:reserve_vote_weight].to_f * 100).to_i
+      ((ENV['DROTTO_RESERVE_VOTE_WEIGHT'] || config[:drotto][:reserve_vote_weight]).to_f * 100).to_i
     end
     
     def minimum_bid
-      config[:drotto][:minimum_bid]
+      ENV['DROTTO_MINIMUM_BID'] || config[:drotto][:minimum_bid]
     end
     
     def minimum_bid_amount
@@ -62,7 +66,14 @@ module DrOtto
     end
     
     def chain_options
-      config[:chain_options].dup.merge(DEFAULT_CHAIN_OPTIONS)
+      chain_options = config[:chain_options].merge(DEFAULT_CHAIN_OPTIONS)
+      
+      chain = ENV['DROTTO_CHAIN_OPTIONS_CHAIN']
+      chain_options = chain_options.merge(chain: chain.to_s) if !!chain
+      url = ENV['DROTTO_CHAIN_OPTIONS_URL']
+      chain_options = chain_options.merge(url: url) if !!url
+      
+      chain_options.dup
     end
     
     def base_block_span
