@@ -24,6 +24,13 @@ module DrOtto
     end
     
     def perform(pretend = false)
+      
+      if voting_in_progress?
+        debug "Voting in progress, bounce suspended ..."
+        sleep 60
+        return
+      end
+      
       block_num = head_block
       end_block_num = head_block - (base_block_span * 1.25)
       totals = {}
@@ -106,6 +113,12 @@ module DrOtto
       loop do
         begin
           stream.transactions do |tx, id|
+            if voting_in_progress?
+              debug "Voting in progress, bounce stream suspended ..."
+              sleep 60
+              redo
+            end
+            
             tx.operations.each do |type, op|
               count = count + 1
               return count if max_ops > 0 && max_ops <= count

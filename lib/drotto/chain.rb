@@ -5,7 +5,12 @@ module DrOtto
   VOTE_RECHARGE_PER_HOUR = VOTE_RECHARGE_PER_DAY / 24
   VOTE_RECHARGE_PER_MINUTE = VOTE_RECHARGE_PER_HOUR / 60
   VOTE_RECHARGE_PER_SEC = VOTE_RECHARGE_PER_MINUTE / 60
-
+  
+  # Using a 16 hour threshold instead of 12 for safety.
+  CASHOUT_THRESHOLD_HOURS = 16
+  CASHOUT_THRESHOLD_MIN = CASHOUT_THRESHOLD_HOURS * 60
+  CASHOUT_THRESHOLD_SEC = CASHOUT_THRESHOLD_MIN * 60
+  
   module Chain
     include Utils
     
@@ -72,6 +77,20 @@ module DrOtto
       Time.parse(properties.time + 'Z')
     end
     
+    def voting_in_progress?
+      response = nil
+      with_api do |api|
+        response = api.get_accounts([account_name])
+      end
+      
+      account = response.result.first
+      
+      last_vote_time = Time.parse(account.last_vote_time + 'Z')
+      elapsed = Time.now.utc - last_vote_time
+      
+      elapsed < 300
+    end
+    
     def find_comment(author, permlink)
       response = nil
       with_api { |api| response = api.get_content(author, permlink) }
@@ -103,6 +122,7 @@ module DrOtto
     # * API temporarily cannot locate post.
     # * Post does not allow votes.
     # * Cashout time already passed.
+    # * Cashout time is 12 hours away.
     def can_vote?(comment)
       return false if comment.nil?
       return false if voted?(comment)
@@ -110,7 +130,11 @@ module DrOtto
       return false unless comment.allow_votes
       
       cashout_time = Time.parse(comment.cashout_time + 'Z')
-      cashout_time > Time.now.utc
+      can_vote = cashout_time - CASHOUT_THRESHOLD_SEC > Time.now.utc
+      
+      debug "Can vote: #{can_vote} (slug: @#{comment.author}/#{comment.permlink})"
+      
+      can_vote
     end
     
     def vote(bids)
