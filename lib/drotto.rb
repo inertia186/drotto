@@ -135,6 +135,10 @@ module DrOtto
     BounceJob.new.stream
   end
   
+  def manual_bounce(trx_id)
+    BounceJob.new.manual_bounce!(trx_id)
+  end
+  
   def run_once
     return if current_voting_power < 100.0
     

@@ -46,6 +46,10 @@ task :bounce_stream do
   DrOtto.bounce_stream
 end
 
+task :manual_bounce, :trx_id do |t, args|
+  DrOtto.manual_bounce(args[:trx_id])
+end
+
 task :run do
   DrOtto.run
 end

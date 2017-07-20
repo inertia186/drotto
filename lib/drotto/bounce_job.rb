@@ -263,5 +263,63 @@ module DrOtto
       
       !bounced?(id_to_bounce)
     end
+    
+    # This bypasses the usual validations and issues a bounce for a transaction.
+    def manual_bounce!(trx_id)
+      init_transactions
+      
+      totals = {}
+      transaction = Radiator::Transaction.new(chain_options.merge(wif: active_wif))
+      
+      @transactions.each do |index, tx|
+        type = tx['op'].first
+        next unless type == 'transfer'
+        
+        id = tx.trx_id
+        next unless id == trx_id
+        
+        op = tx['op'].last
+        from = op.from
+        to = op.to
+        amount = op.amount
+        memo = op.memo
+        timestamp = op.timestamp
+          
+        next unless to == account_name
+        
+        author, permlink = parse_slug(memo) rescue [nil, nil]
+        next if author.nil? || permlink.nil?
+        comment = find_comment(author, permlink)
+        next if comment.nil?
+        
+        next unless comment.author == author
+        
+        totals[amount.split(' ').last] ||= 0
+        totals[amount.split(' ').last] += amount.split(' ').first.to_f
+        warning "Need to bounce #{amount} (original memo: #{memo})"
+        
+        transaction.operations << bounce(from, amount, id)
+      end
+      
+      totals.each do |k, v|
+        info "Need to bounce total: #{v} #{k}"
+      end
+      
+      return true if transaction.operations.size == 0
+        
+      response = transaction.process(true)
+      
+      if !!response && !!response.error
+        message = response.error.message
+        
+        if message.to_s =~ /missing required active authority/
+          error "Failed transfer: Check active key."
+          
+          return false
+        end
+      end
+      
+      response
+    end
   end
 end
