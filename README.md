@@ -88,9 +88,10 @@ Edit the `config.yml` file.
   :posting_wif: <posting wif here>
   :active_wif: <active wif here>
   :batch_vote_weight: 100.00 %
+  :min_effective_weight: 0.25 %
   :reserve_vote_weight: 0.00 %
   :minimum_bid: 2.000 SBD
-
+  :blacklist: mikethemug
 :chain_options:
   :chain: steem
   :url: https://steemd.steemit.com

@@ -123,10 +123,13 @@ module DrOtto
     # * Post does not allow votes.
     # * Cashout time already passed.
     # * Cashout time is 12 hours away.
+    # * Blacklisted.
     def can_vote?(comment)
+      error blacklist
       return false if comment.nil?
       return false if voted?(comment)
       return false if comment.author == ''
+      return false if blacklist.include? comment.author
       return false unless comment.allow_votes
       
       cashout_time = Time.parse(comment.cashout_time + 'Z')

@@ -65,6 +65,10 @@ module DrOtto
       minimum_bid.split(' ').last
     end
     
+    def blacklist
+      (ENV['DROTTO_BLACKLIST'] || config[:drotto][:blacklist]).to_s.downcase.split(' ')
+    end
+    
     def chain_options
       chain_options = config[:chain_options].merge(DEFAULT_CHAIN_OPTIONS)
       

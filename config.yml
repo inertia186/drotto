@@ -33,6 +33,9 @@
   # Minimum bid amount.
   :minimum_bid: 2.000 SBD
 
+  
+  # List of account that shall not get votes, separated by spaces.
+  :blacklist: mikethemug
 :chain_options:
   :chain: steem
   :url: https://steemd.steemit.com

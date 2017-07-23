@@ -13,7 +13,8 @@ module DrOtto
           active_wif: '5JrvPrQeBBvCRdjv29iDvkwn3EQYZ9jqfAHzrCyUvfbEbRkrYFC',
           batch_vote_weight: '3.13 %',
           reserve_vote_weight: '0.00 %',
-          minimum_bid: '2.000 SBD'
+          minimum_bid: '2.000 SBD',
+          blacklist: 'mikethemug'
         }, chain_options: {
           chain: 'steem',
           url: 'https://steemd.steemit.com'
@@ -44,6 +45,11 @@ module DrOtto
     
     def test_bounced?
       refute @job.bounced?('id')
+    end
+    
+    def test_bid_stacking_no_bounce
+      # Multiple bids for the same slug should stack into one bid.  There should
+      # be no bounce for any of the bids that went into the stack.
     end
     
     # def test_shall_bounce?
