@@ -244,6 +244,8 @@ module DrOtto
     # Bounce a transfer if it hasn't aready been bounced, unless it's too old
     # to process.
     def shall_bounce?(tx)
+      return false if no_bounce.include? tx['op'].last['from']
+      
       id_to_bounce = tx.trx_id
       memo = tx['op'].last['memo']
       timestamp = Time.parse(tx.timestamp + 'Z')

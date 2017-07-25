@@ -14,7 +14,10 @@ module DrOtto
           batch_vote_weight: '3.13 %',
           reserve_vote_weight: '0.01 %',
           minimum_bid: '2.000 SBD',
-          blacklist: 'mikethemug'
+          blacklist: 'mikethemug',
+          no_bounce: 'bittrex poloniex openledger',
+          no_comment: 'bittrex poloniex openledger',
+          no_comment_fee: '1.00 %'
         }, chain_options: {
           chain: 'steem',
           url: 'https://steemd.steemit.com'
@@ -32,6 +35,14 @@ module DrOtto
     
     def test_minimum_bid_asset
       assert minimum_bid_asset
+    end
+    
+    def test_no_bounce
+      assert no_bounce
+    end
+    
+    def test_no_comment_fee
+      assert_equal 100, no_comment_fee
     end
   end
 end

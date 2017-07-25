@@ -69,6 +69,18 @@ module DrOtto
       (ENV['DROTTO_BLACKLIST'] || config[:drotto][:blacklist]).to_s.downcase.split(' ')
     end
     
+    def no_bounce
+      (ENV['DROTTO_NO_BOUNCE'] || config[:drotto][:no_bounce]).to_s.downcase.split(' ')
+    end
+    
+    def no_comment
+      (ENV['DROTTO_NO_COMMENT'] || config[:drotto][:no_comment]).to_s.downcase.split(' ')
+    end
+    
+    def no_comment_fee
+      ((ENV['DROTTO_NO_COMMENT_FEE'] || config[:drotto][:no_comment_fee]).to_f * 100).to_i
+    end
+    
     def chain_options
       chain_options = config[:chain_options].merge(DEFAULT_CHAIN_OPTIONS)
       

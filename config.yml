@@ -32,10 +32,18 @@
   
   # Minimum bid amount.
   :minimum_bid: 2.000 SBD
-
   
-  # List of account that shall not get votes, separated by spaces.
+  # List of accounts that shall not get votes, separated by spaces.
   :blacklist: mikethemug
+  
+  # List of accounts that shall not get bounced, separated by spaces.
+  :no_bounce: bittrex poloniex openledger
+  
+  # List of accounts that shall not get comments, separated by spaces.
+  :no_comment: bittrex poloniex openledger
+  
+  # How much to charge a bid for not commenting.
+  :no_comment_fee: 0.00 %
 :chain_options:
   :chain: steem
   :url: https://steemd.steemit.com

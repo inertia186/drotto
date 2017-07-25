@@ -125,7 +125,6 @@ module DrOtto
     # * Cashout time is 12 hours away.
     # * Blacklisted.
     def can_vote?(comment)
-      error blacklist
       return false if comment.nil?
       return false if voted?(comment)
       return false if comment.author == ''
@@ -257,7 +256,7 @@ module DrOtto
             
             tx = Radiator::Transaction.new(chain_options.merge(wif: posting_wif))
             tx.operations << vote
-            tx.operations << comment
+            tx.operations << comment unless no_comment.include? author
             
             response = nil
             

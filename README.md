@@ -92,6 +92,9 @@ Edit the `config.yml` file.
   :reserve_vote_weight: 0.00 %
   :minimum_bid: 2.000 SBD
   :blacklist: mikethemug
+  :no_bounce: bittrex poloniex openledger
+  :no_comment: bittrex poloniex openledger
+  :no_comment_fee: 0.00 %
 :chain_options:
   :chain: steem
   :url: https://steemd.steemit.com

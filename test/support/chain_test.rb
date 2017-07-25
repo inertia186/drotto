@@ -14,7 +14,10 @@ module DrOtto
           batch_vote_weight: '3.13 %',
           reserve_vote_weight: '0.00 %',
           minimum_bid: '2.000 SBD',
-          blacklist: 'mikethemug'
+          blacklist: 'mikethemug',
+          no_bounce: 'bittrex poloniex openledger',
+          no_comment: 'bittrex poloniex openledger',
+          no_comment_fee: '1.00 %'
         }, chain_options: {
           chain: 'steem',
           url: 'https://steemd.steemit.com'
@@ -101,6 +104,7 @@ module DrOtto
       
       result = vote([bid1, bid2, bid3])
       bids = result.keys
+      result.values.map { |thread| thread.join(1000) }
       assert_equal 1, bids.size
       assert_equal expected_stacked_bid[:from], bids.first[:from]
       assert_equal expected_stacked_bid[:author], bids.first[:author]
@@ -126,6 +130,24 @@ module DrOtto
       assert_raises FloatDomainError do
         refute_nil vote([bid])
       end
+    end
+    
+    def test_vote_for_anonymous_bid
+      bid = {
+        from: 'bittrex',
+        author: 'author',
+        permlink: 'permlink',
+        parent_permlink: 'parent_permlink',
+        parent_author: 'parent_author',
+        amount: '2.000 SBD',
+        timestamp: 'timestamp',
+        trx_id: 'id'
+      }
+      
+      result = vote([bid])
+      bids = result.keys
+      result.values.map { |thread| thread.join(1000) }
+      assert_equal 1, bids.size
     end
     
     def test_voted?

@@ -88,7 +88,15 @@ module DrOtto
       next if amount.split(' ').first.to_f < minimum_bid_amount
       next if job.bounced?(id)
       
-      info "Bid from #{from} for #{amount}."
+      if no_comment_fee > 0 && no_comment.include?(author)
+        a, asset = amount.split(' ')
+        a = a.to_f
+        fee = a * (no_comment_fee / 10000.0)
+        amount = "#{('%.3f' % (a - fee))} #{asset}"
+        info "Bid from #{from} for #{amount} (fee: #{fee} #{asset})."
+      else
+        info "Bid from #{from} for #{amount}."
+      end
       
       bids << {
         from: from,
