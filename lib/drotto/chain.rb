@@ -256,7 +256,7 @@ module DrOtto
             
             tx = Radiator::Transaction.new(chain_options.merge(wif: posting_wif))
             tx.operations << vote
-            tx.operations << comment unless no_comment.include? from
+            tx.operations << comment unless (no_comment & from).any?
             
             response = nil
             
