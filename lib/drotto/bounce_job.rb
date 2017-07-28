@@ -267,7 +267,7 @@ module DrOtto
     end
     
     # This bypasses the usual validations and issues a bounce for a transaction.
-    def manual_bounce!(trx_id)
+    def force_bounce!(trx_id)
       init_transactions
       
       totals = {}
@@ -318,9 +318,27 @@ module DrOtto
           error "Failed transfer: Check active key."
           
           return false
+        elsif message.to_s =~ /unknown key/
+          error "Failed vote: unknown key (testing?)"
+          
+          return false
+        elsif message.to_s =~ /tapos_block_summary/
+          warning "Retrying vote/comment: tapos_block_summary (?)"
+          
+          return false
+        elsif message.to_s =~ /now < trx.expiration/
+          warning "Retrying vote/comment: now < trx.expiration (?)"
+          
+          return false
+        elsif message.to_s =~ /signature is not canonical/
+          warning "Retrying vote/comment: signature was not canonical (bug in Radiator?)"
+          
+          return false
         end
       end
       
+      info response unless response.nil?
+
       response
     end
   end

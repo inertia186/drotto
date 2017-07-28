@@ -293,6 +293,7 @@ module DrOtto
                 break
               elsif message.to_s =~ /STEEMIT_UPVOTE_LOCKOUT_HF17/
                 error "Failed vote: upvote lockout (last twelve hours before payout)"
+                BounceJob.new.force_bounce!(bid[:trx_id]) if auto_bounce_on_lockout
                 break
               elsif message.to_s =~ /missing required posting authority/
                 error "Failed vote: Check posting key."

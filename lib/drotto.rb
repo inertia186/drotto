@@ -144,7 +144,7 @@ module DrOtto
   end
   
   def manual_bounce(trx_id)
-    BounceJob.new.manual_bounce!(trx_id)
+    BounceJob.new.force_bounce!(trx_id)
   end
   
   def run_once

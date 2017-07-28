@@ -47,6 +47,14 @@ module DrOtto
       refute @job.bounced?('id')
     end
     
+    def test_force_bounce
+      assert @job.force_bounce!('7e501f74e1bdd8dae9cdd2030b74ffbe5cc83615')
+    end
+    
+    def test_force_bounce_invalid
+      assert @job.force_bounce!('WRONG')
+    end
+    
     def test_bid_stacking_no_bounce
       # Multiple bids for the same slug should stack into one bid.  There should
       # be no bounce for any of the bids that went into the stack.

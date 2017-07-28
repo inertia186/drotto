@@ -81,6 +81,10 @@ module DrOtto
       ((ENV['DROTTO_NO_COMMENT_FEE'] || config[:drotto][:no_comment_fee]).to_f * 100).to_i
     end
     
+    def auto_bounce_on_lockout
+      (ENV['DROTTO_AUTO_BOUNCE_ON_LOCKOUT'] || config[:drotto][:auto_bounce_on_lockout]).to_s == 'true'
+    end
+    
     def chain_options
       chain_options = config[:chain_options].merge(DEFAULT_CHAIN_OPTIONS)
       
