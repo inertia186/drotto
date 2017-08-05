@@ -132,6 +132,7 @@ module DrOtto
               timestamp = op.timestamp
                 
               next unless to == account_name
+              next if no_bounce.include? from
               
               author, permlink = parse_slug(memo) rescue [nil, nil]
               
