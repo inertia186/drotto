@@ -13,6 +13,7 @@ module DrOtto
   
   module Chain
     include Krang::Chain
+    include Config
     include Utils
     
     def head_block
