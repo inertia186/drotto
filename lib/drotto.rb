@@ -1,4 +1,4 @@
-require 'radiator'
+require 'krang'
 require 'awesome_print'
 require 'yaml'
 # require 'pry'
