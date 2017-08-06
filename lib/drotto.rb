@@ -162,7 +162,7 @@ module DrOtto
         redo
       end
       
-      offset = (base_block_span * 0.10).to_i
+      offset = (base_block_span * 2.10).to_i
       elapsed = find_bids(offset)
       join_threads
     end

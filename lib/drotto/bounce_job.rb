@@ -32,7 +32,7 @@ module DrOtto
       end
       
       block_num = head_block
-      end_block_num = head_block - (base_block_span * 1.25)
+      end_block_num = head_block - (base_block_span * 2.2)
       totals = {}
       transaction = Radiator::Transaction.new(chain_options.merge(wif: active_wif))
       
