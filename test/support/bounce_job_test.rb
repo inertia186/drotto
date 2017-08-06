@@ -5,6 +5,8 @@ module DrOtto
     include Config
     
     def setup
+      app_key :drotto
+      agent_id AGENT_ID
       override_config(
         drotto: {
           block_mode: 'irreversible',

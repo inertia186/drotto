@@ -14,6 +14,9 @@ module DrOtto
   
   extend self
   
+  app_key :drotto
+  agent_id AGENT_ID
+  
   BLOCK_OVERLAP = 45 # for overlap between votes
   
   def block_span(offset = BLOCK_OVERLAP)

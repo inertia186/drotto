@@ -33,7 +33,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'delorean'
 
-  spec.add_dependency 'radiator'
-  spec.add_dependency 'awesome_print'
+  spec.add_dependency 'krang'
   spec.add_dependency 'rdiscount'
 end
