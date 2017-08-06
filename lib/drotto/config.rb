@@ -67,9 +67,5 @@ module DrOtto
     def base_block_span
       [1, (MAX_BASE_BLOCK_SPAN * (batch_vote_weight / 10000.0)).to_i].max
     end
-    
-    def logger
-      DEFAULT_LOGGER
-    end
   end
 end
