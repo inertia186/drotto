@@ -5,6 +5,9 @@ module DrOtto
     def initialize(limit = nil)
       @limit = limit
       
+      override_config DrOtto.config
+      app_key DrOtto.app_key
+      agent_id DrOtto.agent_id
       init_transactions unless @limit.nil?
     end
     

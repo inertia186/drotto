@@ -2,61 +2,36 @@ require 'test_helper'
 
 module DrOtto
   class ChainTest < DrOtto::Test
-    include Chain
-    
-    def setup
-      app_key :drotto
-      agent_id AGENT_ID
-      override_config(
-        drotto: {
-          block_mode: 'irreversible',
-          account_name: 'social',
-          posting_wif: '5JrvPrQeBBvCRdjv29iDvkwn3EQYZ9jqfAHzrCyUvfbEbRkrYFC',
-          active_wif: '5JrvPrQeBBvCRdjv29iDvkwn3EQYZ9jqfAHzrCyUvfbEbRkrYFC',
-          batch_vote_weight: '3.13 %',
-          reserve_vote_weight: '0.00 %',
-          minimum_bid: '2.000 SBD',
-          blacklist: 'mikethemug',
-          no_bounce: 'bittrex poloniex openledger',
-          no_comment: 'bittrex poloniex openledger',
-          no_comment_fee: '1.00 %'
-        }, chain_options: {
-          chain: 'steem',
-          url: 'https://steemd.steemit.com'
-        }
-      )
-    end
-    
     def test_reset_api
-      assert_nil reset_api
+      assert_nil DrOtto.reset_api
     end
     
     def test_backoff
-      assert backoff
+      assert DrOtto.backoff
     end
     
     def test_reset_properties
-      assert_nil reset_properties
+      assert_nil DrOtto.reset_properties
     end
     
     def test_properties
-      assert properties
+      assert DrOtto.properties
     end
     
     def test_properties_timeout
-      assert properties
+      assert DrOtto.properties
       
       Delorean.jump 31 do
-        assert properties
+        assert DrOtto.properties
       end
     end
     
     def test_comment
-      refute_nil find_comment('inertia', 'macintosh-napintosh')
+      refute_nil DrOtto.find_comment('inertia', 'macintosh-napintosh')
     end
     
     def test_comment_bogus
-      assert_nil find_comment('bogus', 'bogus')
+      assert_nil DrOtto.find_comment('bogus', 'bogus')
     end
     
     def test_vote
@@ -104,7 +79,7 @@ module DrOtto
         trx_id: 'id'
       }
       
-      result = vote([bid1, bid2, bid3])
+      result = DrOtto.vote([bid1, bid2, bid3])
       bids = result.keys
       result.values.map { |thread| thread.join(1000) }
       assert_equal 1, bids.size
@@ -130,7 +105,7 @@ module DrOtto
       }
       
       assert_raises FloatDomainError do
-        refute_nil vote([bid])
+        refute_nil DrOtto.vote([bid])
       end
     end
     
@@ -146,24 +121,24 @@ module DrOtto
         trx_id: 'id'
       }
       
-      result = vote([bid])
+      result = DrOtto.vote([bid])
       bids = result.keys
       result.values.map { |thread| thread.join(1000) }
       assert_equal 1, bids.size
     end
     
     def test_voted?
-      comment = find_comment('inertia', 'macintosh-napintosh')
-      refute voted?(comment)
+      comment = DrOtto.find_comment('inertia', 'macintosh-napintosh')
+      refute DrOtto.voted?(comment)
     end
     
     def test_can_vote?
-      comment = find_comment('inertia', 'macintosh-napintosh')
-      refute can_vote?(comment)
+      comment = DrOtto.find_comment('inertia', 'macintosh-napintosh')
+      refute DrOtto.can_vote?(comment)
     end
     
     def test_current_voting_power
-      assert current_voting_power
+      assert DrOtto.current_voting_power
     end
   end
 end

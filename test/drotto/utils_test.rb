@@ -2,64 +2,36 @@ require 'test_helper'
 
 module DrOtto
   class UtilsTest < DrOtto::Test
-    include Utils
-    
-    def setup
-      app_key :drotto
-      agent_id AGENT_ID
-      override_config(
-        drotto: {
-          block_mode: 'irreversible',
-          account_name: 'social',
-          posting_wif: '5JrvPrQeBBvCRdjv29iDvkwn3EQYZ9jqfAHzrCyUvfbEbRkrYFC',
-          active_wif: '5JrvPrQeBBvCRdjv29iDvkwn3EQYZ9jqfAHzrCyUvfbEbRkrYFC',
-          batch_vote_weight: '3.13 %',
-          reserve_vote_weight: '0.00 %',
-          minimum_bid: '2.000 SBD',
-          blacklist: 'mikethemug'
-        }, chain_options: {
-          chain: 'steem',
-          url: 'https://steemd.steemit.com'
-        }
-      )
-    end
-    
-    def test_name_error
-      assert_raises NameError do
-        assert reset_api
-      end
-    end
-    
     def test_trace
-      assert_nil trace "trace"
+      assert_nil DrOtto.trace "trace"
     end
     
     def test_debug
-      assert_nil debug "debug"
+      assert_nil DrOtto.debug "debug"
     end
     
     def test_info
-      assert_nil info "info"
+      assert_nil DrOtto.info "info"
     end
     
     def test_info_detail
-      assert_nil info("info", Exception.new)
+      assert_nil DrOtto.info("info", Exception.new)
     end
     
     def test_warning
-      assert_nil warning "warning"
+      assert_nil DrOtto.warning "warning"
     end
     
     def test_error
-      assert_nil error "error"
+      assert_nil DrOtto.error "error"
     end
     
     def test_unknown_type
-      assert_nil console(:BOGUS, "unknown_type")
+      assert_nil DrOtto.console(:BOGUS, "unknown_type")
     end
     
     def test_parse_slug
-      author, permlink = parse_slug '@author/permlink'
+      author, permlink = DrOtto.parse_slug '@author/permlink'
       
       assert_equal 'author', author
       assert_equal 'permlink', permlink
@@ -67,7 +39,7 @@ module DrOtto
     
     def test_parse_slug_to_comment
       url = 'https://steemit.com/chainbb-general/@howtostartablog/the-joke-is-always-in-the-comments-8-sbd-contest#@btcvenom/re-howtostartablog-the-joke-is-always-in-the-comments-8-sbd-contest-20170624t115213474z'
-      author, permlink = parse_slug url
+      author, permlink = DrOtto.parse_slug url
       
       assert_equal 'btcvenom', author
       assert_equal 're-howtostartablog-the-joke-is-always-in-the-comments-8-sbd-contest-20170624t115213474z', permlink
@@ -84,7 +56,7 @@ module DrOtto
       }
       
       expected_merge = "<p>This content_type has received a vote_weight_percent % vote_type from @account_name thanks to: @foo, @bar.</p>\n"
-      assert_equal expected_merge, merge(merge_options)
+      assert_equal expected_merge, DrOtto.merge(merge_options)
     end
     
     def test_merge_markdown
@@ -98,11 +70,11 @@ module DrOtto
       }
       
       expected_merge = "This content_type has received a vote_weight_percent % vote_type from @account_name thanks to: @foo, @bar.\n"
-      assert_equal expected_merge, merge(merge_options)
+      assert_equal expected_merge, DrOtto.merge(merge_options)
     end
     
     def test_merge_nil
-      refute merge
+      refute DrOtto.merge
     end
   end
 end

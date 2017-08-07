@@ -2,12 +2,8 @@ require 'test_helper'
 
 module DrOtto
   class DrOttoTest < DrOtto::Test
-    include Config
-    
     def setup
-      app_key :drotto
-      agent_id AGENT_ID
-      override_config(
+      DrOtto.override_config(
         drotto: {
           block_mode: 'irreversible',
           account_name: 'bittrex',
@@ -25,6 +21,8 @@ module DrOtto
           url: 'https://steemd.steemit.com'
         }
       )
+      DrOtto.app_key :drotto
+      DrOtto.agent_id AGENT_ID
     end
     
     def test_block_span
