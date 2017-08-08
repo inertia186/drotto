@@ -13,6 +13,11 @@ drotto
 
 ---
 
+#### New Features
+
+* **Added support for anonymous (aka proxied) bids.**  For example, if a bid comes from an exchange, Dr. Otto can be configured not to ever bounce these bids.  It can also be configured not to create a comment in this situation.  A fee can also be applied for this service, if desired.
+* **Added a maximum age of post.**  Bids not accepted are returned, if refunds are enabled.  Setting this avoids situations, for example, where someone bids 13 hours away from payout but the window is 11 hours away from payout, thus locked during the window.
+
 The default is that Dr. Otto will only vote in 10 batches a day.  Multiple users can bid in a voting batch.  If only one person bids, they get the entire upvote.  If two people bid an equal amount, they share the vote 50/50.  The higher the bid, the higher percentage for the upcoming vote batch.
 
 The bot operator can set any vote weight for the batch, which will affect the number of daily votes to bid on.  Therefore, each day per batch has:
@@ -87,6 +92,7 @@ Edit the `config.yml` file.
   :account_name: <voting account name here>
   :posting_wif: <posting wif here>
   :active_wif: <active wif here>
+  :max_age: 7200
   :batch_vote_weight: 100.00 %
   :min_effective_weight: 0.25 %
   :reserve_vote_weight: 0.00 %
@@ -95,6 +101,7 @@ Edit the `config.yml` file.
   :no_bounce: bittrex poloniex openledger
   :no_comment: bittrex poloniex openledger
   :no_comment_fee: 0.00 %
+  :auto_bounce_on_lockout: false
 :chain_options:
   :chain: steem
   :url: https://steemd.steemit.com
