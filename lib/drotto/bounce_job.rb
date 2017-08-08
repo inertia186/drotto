@@ -39,6 +39,11 @@ module DrOtto
       totals = {}
       transaction = Radiator::Transaction.new(chain_options.merge(wif: active_wif))
       
+      if @transactions.nil?
+        warning "Unable to read transactions for limit: #{@limit.inspect}"
+        return
+      end
+      
       @transactions.each do |index, tx|
         case @limit
         when 'today'
@@ -60,6 +65,11 @@ module DrOtto
         timestamp = op.timestamp
           
         next unless to == account_name
+        
+        if id.to_s.size == 0
+          warning "Empty id for transaction.", detail: tx
+          next
+        end
         
         author, permlink = parse_slug(memo) rescue [nil, nil]
         next if author.nil? || permlink.nil?
@@ -116,6 +126,11 @@ module DrOtto
       loop do
         begin
           stream.transactions do |tx, id|
+            if id.to_s.size == 0
+              warning "Found transaction with no id.", detail: tx
+              next
+            end
+            
             if voting_in_progress?
               debug "Voting in progress, bounce stream suspended ..."
               sleep 60
@@ -272,6 +287,11 @@ module DrOtto
     
     # This bypasses the usual validations and issues a bounce for a transaction.
     def force_bounce!(trx_id)
+      if trx_id.to_s.size == 0
+        warning "Empty transaction id."
+        return
+      end
+
       init_transactions
       
       totals = {}

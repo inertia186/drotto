@@ -68,7 +68,11 @@ module DrOtto
       can_vote = Time.now.utc - created < (max_age * 60)
       cashout_hours_from_now = ((cashout_time - Time.now.utc) / 60.0 / 60.0)
       
-      debug "Can vote: #{can_vote} (slug: @#{comment.author}/#{comment.permlink}); hours remaining: #{('%.1f' % cashout_hours_from_now)}"
+      if cashout_hours_from_now < 0
+        debug "Can vote: #{can_vote} (slug: @#{comment.author}/#{comment.permlink})"
+      else
+        debug "Can vote: #{can_vote} (slug: @#{comment.author}/#{comment.permlink}); hours remaining: #{('%.1f' % cashout_hours_from_now)}"
+      end
       
       can_vote
     end
