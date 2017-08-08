@@ -6,11 +6,6 @@ module DrOtto
   VOTE_RECHARGE_PER_MINUTE = VOTE_RECHARGE_PER_HOUR / 60
   VOTE_RECHARGE_PER_SEC = VOTE_RECHARGE_PER_MINUTE / 60
   
-  # Using a 16 hour threshold instead of 12 for safety.
-  CASHOUT_THRESHOLD_HOURS = 16
-  CASHOUT_THRESHOLD_MIN = CASHOUT_THRESHOLD_HOURS * 60
-  CASHOUT_THRESHOLD_SEC = CASHOUT_THRESHOLD_MIN * 60
-  
   module Chain
     include Krang::Chain
     include Config
@@ -59,7 +54,7 @@ module DrOtto
     # * API temporarily cannot locate post.
     # * Post does not allow votes.
     # * Cashout time already passed.
-    # * Cashout time is 12 hours away.
+    # * Cashout time is passed the threshold (to avoid 12-hour lock-out).
     # * Blacklisted.
     def can_vote?(comment)
       return false if comment.nil?
@@ -69,9 +64,11 @@ module DrOtto
       return false unless comment.allow_votes
       
       cashout_time = Time.parse(comment.cashout_time + 'Z')
-      can_vote = cashout_time - CASHOUT_THRESHOLD_SEC > Time.now.utc
+      created = Time.parse(comment.created + 'Z')
+      can_vote = Time.now.utc - created < (max_age * 60)
+      cashout_hours_from_now = ((cashout_time - Time.now.utc) / 60.0 / 60.0)
       
-      debug "Can vote: #{can_vote} (slug: @#{comment.author}/#{comment.permlink})"
+      debug "Can vote: #{can_vote} (slug: @#{comment.author}/#{comment.permlink}); hours remaining: #{('%.1f' % cashout_hours_from_now)}"
       
       can_vote
     end

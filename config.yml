@@ -15,6 +15,12 @@
   # funds out of your wallet before using bounce mode.
   :active_wif: 5JrvPrQeBBvCRdjv29iDvkwn3EQYZ9jqfAHzrCyUvfbEbRkrYFC
   
+  # Maximum age of post (in minutes).  Bids not accepted are returned, if
+  # refunds are enabled.  7,200 minutes is 5 days.  Setting this avoids
+  # situations, for example, where someone bids 13 hours away from payout but
+  # the window is 11 hours away from payout, thus locked during the window.
+  :max_age: 7200
+  
   # Batch vote weight is split between the bidders.  This value also sets the
   # batch timespan.  E.g.: Setting 100.00 % results in one batch every 2.4
   # hours; 50.00 % results in one batch every 1.2 hours; so on.

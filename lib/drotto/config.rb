@@ -20,6 +20,10 @@ module DrOtto
       default_value(:drotto_active_wif) || config[:drotto][:active_wif]
     end
     
+    def max_age
+      (default_value(:drotto_max_age) || config[:drotto][:max_age] || 7200).to_i 
+    end
+    
     def min_effective_weight
       ((default_value(:drotto_min_effective_weight) || config[:drotto][:min_effective_weight]).to_f * 100).to_i
     end
