@@ -76,7 +76,7 @@ module DrOtto
         comment = find_comment(author, permlink)
         next if comment.nil?
         
-        next unless can_vote?(comment)
+        next unless can_vote?(comment, use_cashout_time: true)
         next unless comment.author == author
         next if voted?(comment)
         next unless shall_bounce?(tx)
