@@ -153,7 +153,7 @@ module DrOtto
   def run_once
     return if current_voting_power < 100.0
     
-    offset = (base_block_span * 0.10).to_i
+    offset = (base_block_span * 2.10).to_i
     elapsed = find_bids(offset)
     join_threads
   end
