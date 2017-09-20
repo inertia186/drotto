@@ -32,7 +32,7 @@ GEM
     json (1.8.6)
     krang (0.0.1rc2)
       awesome_print (~> 1.8, >= 1.8.0)
-      radiator (~> 0.2, >= 0.2.2)
+      radiator (~> 0.2, >= 0.2.3rc3)
     little-plugger (1.1.4)
     logging (2.2.2)
       little-plugger (~> 1.1)
