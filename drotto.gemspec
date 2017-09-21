@@ -35,4 +35,5 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'krang'
   spec.add_dependency 'rdiscount'
+  spec.add_dependency 'steem_api'
 end

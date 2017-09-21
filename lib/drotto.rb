@@ -9,6 +9,7 @@ module DrOtto
   require 'drotto/version'
   require 'drotto/chain'
   require 'drotto/bounce_job'
+  require 'drotto/usage_job'
   
   include Chain
   
@@ -28,29 +29,38 @@ module DrOtto
     time = block_time
     starting_block = block_num - block_span(offset)
     bids = []
+    job = BounceJob.new('today', starting_block)
     
-    info "Looking for new bids to #{account_name}; starting at block #{starting_block}; current time: #{time} ..."
-    info "Last block in this timeframe is: #{block_num} (#{block_num - starting_block} blocks)."
-    
-    loop do
-      begin
-        job = BounceJob.new('today')
-        
-        api.get_blocks(starting_block..block_num) do |block, number|
-          starting_block = number
-          
-          block.transactions.each_with_index do |tx, index|
-            process_bid(block, tx, index, job, bids)
-          end
-        end
-      rescue => e
-        warning "Retrying at block: #{starting_block} (#{e})", e
-        reset_api
-        sleep backoff
-        redo
-      end
+    if job.transfer_ids.any?
+      info "Looking for new bids to #{account_name}; using account history; current time: #{time} ..."
+      info "Total transfers to check: #{job.transfer_ids.size}."
       
-      break
+      job.transfer_ids.each do |trx_id|
+        process_bid(job: job, id: trx_id, bids: bids)
+      end
+    else
+      info "Looking for new bids to #{account_name}; starting at block #{starting_block}; current time: #{time} ..."
+      info "Last block in this timeframe is: #{block_num} (#{block_num - starting_block} blocks)."
+      
+      loop do
+        begin
+          api.get_blocks(starting_block..block_num) do |block, number|
+            starting_block = number
+            timestamp = block.timestamp
+            block.transactions.each_with_index do |tx, index|
+              trx_id = block.transaction_ids[index]
+              process_bid(job: job, id: trx_id, tx: tx, timestamp: timestamp, bids: bids)
+            end
+          end
+        rescue => e
+          warning "Retrying at block: #{starting_block} (#{e})", e
+          reset_api
+          sleep backoff
+          redo
+        end
+        
+        break
+      end
     end
     
     if bids.size == 0
@@ -66,11 +76,16 @@ module DrOtto
     elapsed
   end
   
-  def process_bid(block, tx, index, job, bids)
-    timestamp = block.timestamp
-    id = block['transaction_ids'][index]
-      
-    tx.operations.each do |type, op|
+  def process_bid(options = {})
+    job = options[:job]
+    id = options[:id]
+    tx = options[:tx] || job.transfer(id)
+    timestamp = options[:timestamp]
+    bids = options[:bids]
+    
+    ops = !!tx.op ? [tx.op] : tx.operations
+    
+    ops.each do |type, op|
       next unless type == 'transfer'
       
       from = op.from
@@ -173,5 +188,9 @@ module DrOtto
   
   def state
     current_voting_power
+  end
+  
+  def usage(options = {})
+    UsageJob.new.perform(options)
   end
 end

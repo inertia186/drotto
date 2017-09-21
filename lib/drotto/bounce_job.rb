@@ -2,8 +2,11 @@ module DrOtto
   class BounceJob
     include Chain
     
-    def initialize(limit = nil)
+    VIRTUAL_OP_TRANSACTION_ID = '0000000000000000000000000000000000000000'
+    
+    def initialize(limit = nil, starting_block = nil)
       @limit = limit
+      @starting_block = starting_block
       
       override_config DrOtto.config
       app_key DrOtto.app_key
@@ -213,7 +216,7 @@ module DrOtto
         from: account_name,
         to: from,
         amount: amount,
-        memo: "Unable to accept bid.  (ID:#{id})"
+        memo: "#{bounce_memo}  (ID:#{id})"
       }
     end
     
@@ -344,6 +347,38 @@ module DrOtto
       info response unless response.nil?
 
       response
+    end
+    
+    def already_voted?(author, permlink)
+      @transactions.each do |index, trx|
+        return true if trx.op[0] == 'vote' && trx.op[1].author == author && trx.op[1].permlink == permlink
+      end
+      
+      false
+    end
+    
+    def transfer(trx_id)
+      @transactions.each do |index, trx|
+        return trx if trx_id == trx.trx_id
+      end
+    end
+    
+    def transfer_ids
+      init_transactions
+      
+      @transfer_ids ||= @transactions.map do |index, trx|
+        next if !!@starting_block && trx.block < @starting_block
+        
+        if trx.op[0] == 'transfer'
+          slug = trx.op[1].memo
+          next if slug.nil?
+          
+          author, permlink = parse_slug(slug) rescue [nil, nil]
+          next if author.nil? || permlink.nil?
+          
+          trx.trx_id unless already_voted?(author, permlink)
+        end
+      end.compact.uniq - [VIRTUAL_OP_TRANSACTION_ID]
     end
   end
 end

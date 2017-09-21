@@ -52,8 +52,15 @@
   :no_comment_fee: 0.00 %
   
   # Automatically bounce bids for posts that are locked out since they are
-  # 12-hours until cashout and cannot be upvoted.
+  # 12-hours until cashout and cannot be upvoted.  By default, the `max_age`
+  # option set at 7200 precludes the need to set this option to true.  But if
+  # you configure `max_age` to allow voting exacly up to the lock-out point,
+  # then it's handy to set this option to true because the blockchain will
+  # return a lockout error that drotto can use to safely initiate a bounce.
   :auto_bounce_on_lockout: false
+  
+  # Text used in memo if refunds are enabled.
+  :bounce_memo: Unable to accept bid.
 :chain_options:
   :chain: steem
   :url: https://steemd.steemit.com

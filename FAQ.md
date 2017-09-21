@@ -19,3 +19,5 @@ FAQ
 # Q: Can Dr. Otto be used for downvotes?
 # A: Yes, the bot operator can configure either upvotes or downvotes.
 
+# Q: Is there a configuration option for setting a maximum bid?
+# A: No.
