@@ -11,16 +11,18 @@ module DrOtto
     
     def perform(options = {})
       a = options[:account_name] || account_name
+      d = (options[:days] || '30').to_i
       publish = options[:publish] || false
       
-      bids = SteemApi::Tx::Transfer.where(to: a)
-      bids = bids.where('memo LIKE ?', '%@%') # looking for valid memos
+      transfers = SteemApi::Tx::Transfer.where(to: a)
+      transfers = transfers.where('timestamp > ?', d.days.ago)
+      
+      bids = transfers.where('memo LIKE ?', '%@%') # looking for valid memos
       bids = bids.group(:from)
       bid_sums = bids.sum(:amount)
       bid_counts = bids.count
       
-      refunds = SteemApi::Tx::Transfer.where(from: a)
-      refunds = refunds.where('memo LIKE ?', '%ID:%')
+      refunds = transfers.where('memo LIKE ?', '%ID:%')
       refunds = refunds.group(:to)
       refund_sums = refunds.sum(:amount)
       refund_counts = refunds.count
