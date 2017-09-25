@@ -15,8 +15,11 @@ drotto
 
 #### New Features
 
-* **Added support for anonymous (aka proxied) bids.**  For example, if a bid comes from an exchange, Dr. Otto can be configured not to ever bounce these bids.  It can also be configured not to create a comment in this situation.  A fee can also be applied for this service, if desired.
-* **Added a maximum age of post.**  Bids not accepted are returned, if refunds are enabled.  Setting this avoids situations, for example, where someone bids 13 hours away from payout but the window is 11 hours away from payout, thus locked during the window.
+This is mostly a performance update.  The main change is to use `get_account_history` for finding new bids (which is 10 times faster), then fall back on block-by-block evaluation if no bids are found in history.
+
+Also added `rake usage` to get usage totals for one month.  Or, use `rake usage[bot_name,90]` to look at usage for three months back.
+
+---
 
 The default is that Dr. Otto will only vote in 10 batches a day.  Multiple users can bid in a voting batch.  If only one person bids, they get the entire upvote.  If two people bid an equal amount, they share the vote 50/50.  The higher the bid, the higher percentage for the upcoming vote batch.
 
@@ -72,7 +75,7 @@ $ gem install bundler
 
 I've tested it on various versions of ruby.  The oldest one I got it to work was:
 
-`ruby 2.0.0p645 (2015-04-13 revision 50299) [x86_64-darwin14.4.0]`
+`ruby 2.2.2p95 (2015-04-13 revision 50295) [x86_64-darwin14]`
 
 First, clone this git and install the dependencies:
 
@@ -201,9 +204,9 @@ Make sure the `.yml` file contains the correct voting key and account name (`soc
 
 Is there a list of nodes?
 
-##### Solution: Yes, special thanks to @ripplerm.
+##### Solution: Yes:
 
-https://ripplerm.github.io/steem-servers/
+https://steem-third-party.github.io/steem-servers
 
 ---
 

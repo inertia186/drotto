@@ -61,3 +61,7 @@ end
 task :state do
   DrOtto.state
 end
+
+task :usage, :account_name, :days do |t, args|
+  DrOtto.usage(args)
+end

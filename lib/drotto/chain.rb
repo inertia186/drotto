@@ -133,7 +133,7 @@ module DrOtto
       bids = bids.map do |bid|
         amount = bid[:amount].map{ |a| a.split(' ').first.to_f }.reduce(0, :+)
         coeff = (amount.to_f / total.to_f)
-        effective_weight = (weight = batch_vote_weight * coeff).to_i
+        effective_weight = (weight = batch_vote_weight * coeff).to_i.abs
         
         if effective_weight < min_effective_weight
           # Bid didn't meet min_effective_weight, remove it from the total so it
@@ -153,7 +153,7 @@ module DrOtto
         effective_weight = (weight = batch_vote_weight * coeff).to_i
         
         total_weight += effective_weight
-        break if total_weight > batch_vote_weight
+        break if total_weight > batch_vote_weight.abs
         
         debug "Total: #{total}; amount: #{amount};"
         debug "total_weight: #{total_weight}; effective_weight: #{effective_weight}; reserve_vote_weight: #{reserve_vote_weight}"
