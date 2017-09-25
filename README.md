@@ -233,5 +233,7 @@ I don't believe in intellectual "property".  If you do, consider Dr. Otto as lic
 
 Also see:
 
+* [drotto-0.0.1](https://steemit.com/youtube/@inertia/drotto-0-0-1)
+* [Benefits of Pay for Votes](https://steemit.com/curation/@inertia/benefits-of-pay-for-votes)
 * [Dr. Otto Technical Update](https://steemit.com/radiator/@inertia/dr-otto-technical-update)
 * [Dr. Otto: Vote Bidding Bot](https://steemit.com/radiator/@inertia/dr-otto-vote-bidding-bot)
