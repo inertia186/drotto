@@ -26,7 +26,8 @@ module DrOtto
       bid_sums = bids.sum(:amount)
       bid_counts = bids.count
       
-      refunds = transfers.where('memo LIKE ?', '%ID:%')
+      refunds = SteemApi::Tx::Transfer.where(from: a).where('memo LIKE ?', '%ID:%')
+      refunds = refunds.where('timestamp > ?', d.days.ago)
       refunds = refunds.group(:to)
       refund_sums = refunds.sum(:amount)
       refund_counts = refunds.count
