@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     drotto (0.0.2a)
-      krang (= 0.0.1rc7)
+      krang (= 0.0.1rc8)
       rdiscount
       steem_api
 
@@ -52,9 +52,9 @@ GEM
       domain_name (~> 0.5)
     i18n (0.8.6)
     json (1.8.6)
-    krang (0.0.1rc7)
+    krang (0.0.1rc8)
       awesome_print (~> 1.8, >= 1.8.0)
-      radiator (~> 0.2, >= 0.2.3a)
+      radiator (~> 0.2, >= 0.2.3b)
     little-plugger (1.1.4)
     logging (2.2.2)
       little-plugger (~> 1.1)
@@ -79,7 +79,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
     public_suffix (3.0.0)
-    radiator (0.2.3)
+    radiator (0.2.3b)
       bitcoin-ruby (= 0.0.11)
       ffi (= 1.9.18)
       hashie (~> 3.5, >= 3.5.5)
