@@ -80,7 +80,7 @@ module DrOtto
         next if comment.nil?
         
         next unless can_vote?(comment)
-        next if too_old(comment, use_cashout_time: true)
+        next if too_old?(comment, use_cashout_time: true)
         next unless comment.author == author
         next if voted?(comment)
         next unless shall_bounce?(tx)
