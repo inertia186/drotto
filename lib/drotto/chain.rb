@@ -56,34 +56,38 @@ module DrOtto
     # * Cashout time already passed.
     # * Cashout time is passed the threshold (to avoid 12-hour lock-out).
     # * Blacklisted.
-    def can_vote?(comment, options = {use_cashout_time: false})
+    def can_vote?(comment)
       return false if comment.nil?
       return false if voted?(comment)
       return false if comment.author == ''
       return false if blacklist.include? comment.author
       return false unless comment.allow_votes
       
+      true
+    end
+    
+    def too_old?(comment, options = {use_cashout_time: false})
       use_cashout_time = options[:use_cashout_time] || false
       cashout_time = Time.parse(comment.cashout_time + 'Z')
       
       if use_cashout_time
-        can_vote = cashout_time > Time.now.utc
+        too_old = cashout_time < Time.now.utc
        
-        debug "Cashout Time Passed: #{!can_vote} (slug: @#{comment.author}/#{comment.permlink})"
+        debug "Cashout Time Passed: #{too_old} (slug: @#{comment.author}/#{comment.permlink})"
         
-        can_vote
+        too_old
       else
         created = Time.parse(comment.created + 'Z')
-        can_vote = Time.now.utc - created < (max_age * 60)
+        too_old = Time.now.utc - created > (max_age * 60)
         cashout_hours_from_now = ((cashout_time - Time.now.utc) / 60.0 / 60.0)
         
         if cashout_hours_from_now < 0
-          debug "Can vote: #{can_vote} (slug: @#{comment.author}/#{comment.permlink})"
+          debug "Too old: #{too_old} (slug: @#{comment.author}/#{comment.permlink})"
         else
-          debug "Can vote: #{can_vote} (slug: @#{comment.author}/#{comment.permlink}); hours remaining: #{('%.1f' % cashout_hours_from_now)}"
+          debug "Too old: #{too_old} (slug: @#{comment.author}/#{comment.permlink}); hours remaining: #{('%.1f' % cashout_hours_from_now)}"
         end
         
-        can_vote
+        too_old
       end
     end
     

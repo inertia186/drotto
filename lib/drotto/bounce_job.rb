@@ -79,7 +79,8 @@ module DrOtto
         comment = find_comment(author, permlink)
         next if comment.nil?
         
-        next unless can_vote?(comment, use_cashout_time: true)
+        next unless can_vote?(comment)
+        next if too_old(comment, use_cashout_time: true)
         next unless comment.author == author
         next if voted?(comment)
         next unless shall_bounce?(tx)
@@ -121,7 +122,7 @@ module DrOtto
     # a future timeframe.
     def stream(max_ops = -1)
       @limit ||= 200
-      stream = Radiator::Stream.new(chain_options.dup)
+      stream = Radiator::Stream.new(chain_options)
       count = 0
       
       info "Streaming bids to #{account_name}; starting at block #{head_block}; current time: #{block_time} ..."
@@ -134,12 +135,6 @@ module DrOtto
               next
             end
             
-            if voting_in_progress?
-              debug "Voting in progress, bounce stream suspended ..."
-              sleep 60
-              redo
-            end
-            
             tx.operations.each do |type, op|
               count = count + 1
               return count if max_ops > 0 && max_ops <= count
@@ -150,8 +145,7 @@ module DrOtto
               to = op.to
               amount = op.amount
               memo = op.memo
-              timestamp = op.timestamp
-                
+              
               next unless to == account_name
               next if no_bounce.include? from
               
@@ -169,18 +163,13 @@ module DrOtto
                 needs_bounce = true
               end
               
-              unless can_vote?(comment)
-                debug "Cannot vote.  Original memo: #{memo}"
+              if too_old?(comment)
+                debug "Cannot vote, too old.  Original memo: #{memo}"
                 needs_bounce = true
               end
               
               if !!comment && comment.author != author
                 debug "Sanity check failed.  Comment author not the author parsed.  Original memo: #{memo}"
-                needs_bounce = true
-              end
-              
-              if voted?(comment)
-                debug "Already voted.  Original memo: #{memo}"
                 needs_bounce = true
               end
               

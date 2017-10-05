@@ -101,6 +101,7 @@ module DrOtto
       next if comment.nil?
       
       next unless can_vote?(comment)
+      next if too_old?(comment)
       next if voted?(comment)
       next unless amount =~ / #{minimum_bid_asset}$/
       next if amount.split(' ').first.to_f < minimum_bid_amount
