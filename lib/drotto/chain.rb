@@ -67,6 +67,8 @@ module DrOtto
     end
     
     def too_old?(comment, options = {use_cashout_time: false})
+      return false if comment.nil?
+      
       use_cashout_time = options[:use_cashout_time] || false
       cashout_time = Time.parse(comment.cashout_time + 'Z')
       

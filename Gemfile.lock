@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    drotto (0.0.2b)
+    drotto (0.0.2c)
       krang (= 0.0.1rc9)
       rdiscount
       steem_api
@@ -15,7 +15,7 @@ GEM
       activemodel (= 5.1.4)
       activesupport (= 5.1.4)
       arel (~> 8.0)
-    activerecord-sqlserver-adapter (5.1.1)
+    activerecord-sqlserver-adapter (5.1.2)
       activerecord (~> 5.1.0)
       tiny_tds
     activesupport (5.1.4)

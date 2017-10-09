@@ -306,11 +306,20 @@ module DrOtto
         next unless to == account_name
         
         author, permlink = parse_slug(memo) rescue [nil, nil]
-        next if author.nil? || permlink.nil?
-        comment = find_comment(author, permlink)
-        next if comment.nil?
         
-        next unless comment.author == author
+        if author.nil? || permlink.nil?
+          warning "Could not find author or permlink with memo: #{memo}"
+        end
+        
+        comment = find_comment(author, permlink)
+        
+        if comment.nil?
+          warning "Could not find comment with author and permlink: #{author}/#{permlink}"
+        end
+        
+        unless comment.author == author
+          warning "Comment author and memo author do not match: #{comment.author} != #{author}"
+        end
         
         totals[amount.split(' ').last] ||= 0
         totals[amount.split(' ').last] += amount.split(' ').first.to_f
