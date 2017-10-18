@@ -28,6 +28,10 @@ module DrOtto
       ((default_value(:drotto_min_effective_weight) || config[:drotto][:min_effective_weight]).to_f * 100).to_i
     end
     
+    def max_effective_weight
+      ((default_value(:drotto_max_effective_weight) || config[:drotto][:max_effective_weight]).to_f * 100).to_i
+    end
+    
     def batch_vote_weight
       (default_value(:drotto_batch_vote_weight) || (config[:drotto][:batch_vote_weight]).to_f * 100).to_i
     end

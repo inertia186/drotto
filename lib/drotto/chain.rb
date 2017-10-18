@@ -104,6 +104,10 @@ module DrOtto
       # post.
       stacked_bids = {}
       
+      # If we find a bid that qualifis as maximum, only this bid is processed in
+      # the current window and all others are processed later.
+      max_bid = nil
+      
       bids.each do |bid|
         stacked_bids[bid[:author] => bid[:permlink]] ||= {}
         stacked_bid = stacked_bids[bid[:author] => bid[:permlink]]
@@ -144,13 +148,27 @@ module DrOtto
         if effective_weight < min_effective_weight
           # Bid didn't meet min_effective_weight, remove it from the total so it
           # doesn't impact everybody else's bids in the same batch.
-          debug "Removing bid from #{bid[:from].join(', ')}, effective_weight too low: #{effective_weight}"
+          info "Removing bid from #{bid[:from].join(', ')}, effective_weight too low: #{effective_weight}"
           total -= amount.to_f
           next
         end
         
+        if max_effective_weight > 0.0 && effective_weight >= max_effective_weight
+          # Setting this value only once, in order of bid receipt.
+          info "Only processing bid from #{bid[:from].join(', ')}, effective_weight maximum found: #{effective_weight} (max_effective_weight: #{max_effective_weight})."
+          
+          max_bid ||= bid
+        end
+        
         bid # This bid is accepted.
       end.compact
+      
+      if !!max_bid
+        # Max bid override now in effect; all other bids shall be rescinded.
+        total = max_bid[:amount].map{ |a| a.split(' ').first.to_f }.reduce(0, :+)
+  
+        bids = [max_bid]
+      end
       
       # Final pass, actual voting.
       bids.each do |bid|
@@ -161,9 +179,9 @@ module DrOtto
         total_weight += effective_weight
         break if total_weight > batch_vote_weight.abs
         
-        debug "Total: #{total}; amount: #{amount};"
-        debug "total_weight: #{total_weight}; effective_weight: #{effective_weight}; reserve_vote_weight: #{reserve_vote_weight}"
-            
+        info "Total: #{total}; amount: #{amount};"
+        info "total_weight: #{total_weight}; effective_weight: #{effective_weight}; reserve_vote_weight: #{reserve_vote_weight}"
+        
         # We are using asynchronous voting because sometimes the blockchain
         # rejects votes that happen too quickly.
         thread = Thread.new do
@@ -174,7 +192,7 @@ module DrOtto
           parent_author = bid[:parent_author]
           timestamp = bid[:timestamp]
             
-          debug "Voting for #{author}/#{permlink} with a coefficnent of #{coeff}."
+          info "Voting for #{author}/#{permlink} with a coefficnent of #{coeff}."
         
           loop do
             elapsed = Time.now.utc.to_i - start
@@ -309,13 +327,13 @@ module DrOtto
       diff = current_voting_power - voting_power
       recharge = ((100.0 - current_voting_power) / VOTE_RECHARGE_PER_SEC) / 60
       
-      debug "Remaining voting power: #{('%.2f' % current_voting_power)} % (recharged #{('%.2f' % diff)} % since last vote)"
+      info "Remaining voting power: #{('%.2f' % current_voting_power)} % (recharged #{('%.2f' % diff)} % since last vote)"
       
       if voting_elapse > 0 && recharge > 0
-        debug "Last vote: #{voting_elapse.to_i / 60} minutes ago; #{('%.1f' % recharge)} minutes remain until 100.00 %"
+        info "Last vote: #{voting_elapse.to_i / 60} minutes ago; #{('%.1f' % recharge)} minutes remain until 100.00 %"
       else
         if voting_elapse > 0
-          debug "Last vote: #{voting_elapse.to_i / 60} minutes ago; #{('%.1f' % recharge.abs)} minutes of recharge power unused in 100.00 %"
+          info "Last vote: #{voting_elapse.to_i / 60} minutes ago; #{('%.1f' % recharge.abs)} minutes of recharge power unused in 100.00 %"
         end
       end
       

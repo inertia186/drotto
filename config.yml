@@ -31,6 +31,14 @@
   # the total.
   :min_effective_weight: 0.25 %
   
+  # When calculating a window, a bid that reaches this weight will take the
+  # entire window.  All other bids will be processed in the next window.  This
+  # will address situations where people "over-bid" which shocks the window.
+  # The highest bid that is equal to or greater than this weight gets its own
+  # window and delays the rest of the bids.  If there's a tie, the window goes
+  # to the oldest bid.
+  # :max_effective_weight: 75.00 %
+  
   # This is the amount to of voting weight to reserve in each voting batch.
   # Normally, this should be set to 0.00 % unless this account often casts votes
   # outside of Dr. Otto.
