@@ -5,6 +5,8 @@ require 'yaml'
 
 Bundler.require
 
+defined? Thread.report_on_exception and Thread.report_on_exception = true
+
 module DrOtto
   require 'drotto/version'
   require 'drotto/chain'
