@@ -39,6 +39,9 @@
   # Minimum bid amount.
   :minimum_bid: 2.000 SBD
   
+  # Set this true to allow bids for comments as well as root posts.
+  :allow_comment_bids: false
+  
   # List of accounts that shall not get votes, separated by spaces.
   :blacklist: mikethemug
   

@@ -56,12 +56,18 @@ module DrOtto
     # * Cashout time already passed.
     # * Cashout time is passed the threshold (to avoid 12-hour lock-out).
     # * Blacklisted.
+    # * When comment (reply) bids are disabled.
     def can_vote?(comment)
       return false if comment.nil?
       return false if voted?(comment)
       return false if comment.author == ''
       return false if blacklist.include? comment.author
       return false unless comment.allow_votes
+      
+      if !allow_comment_bids && comment.parent_author != ''
+        debug "Cannot vote for comment (slug: @#{comment.author}/#{comment.permlink})"
+        return false
+      end
       
       true
     end
