@@ -86,6 +86,11 @@ module DrOtto
         next unless shall_bounce?(tx)
         next if bounced?(id)
         
+        if ignored?(amount)
+          debug "Ignoring #{amount} (original memo: #{memo})"
+          next
+        end
+
         totals[amount.split(' ').last] ||= 0
         totals[amount.split(' ').last] += amount.split(' ').first.to_f
         warning "Need to bounce #{amount} (original memo: #{memo})"
@@ -148,6 +153,7 @@ module DrOtto
               
               next unless to == account_name
               next if no_bounce.include? from
+              next if ignored?(amount)
               
               author, permlink = parse_slug(memo) rescue [nil, nil]
               
@@ -168,6 +174,11 @@ module DrOtto
                 needs_bounce = true
               end
               
+              if !allow_comment_bids && comment.parent_author != ''
+                debug "Cannot vote for comment (slug: @#{comment.author}/#{comment.permlink})"
+                needs_bounce = true
+              end
+
               if !!comment && comment.author != author
                 debug "Sanity check failed.  Comment author not the author parsed.  Original memo: #{memo}"
                 needs_bounce = true
@@ -222,6 +233,10 @@ module DrOtto
         amount: amount,
         memo: "#{bounce_memo}  (ID:#{id})"
       }
+    end
+    
+    def ignored?(amount)
+      ignore_asset == amount.split(' ').last
     end
     
     def bounced?(id_to_check)

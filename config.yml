@@ -47,6 +47,13 @@
   # Minimum bid amount.
   :minimum_bid: 2.000 SBD
   
+  # Set this true to allow bids for comments as well as root posts.
+  :allow_comment_bids: false
+  
+  # Completely ignore this asset when processing bounce.  This is mainly if you
+  # want to accept donations in a different asset.
+  :ignore_asset: STEEM
+  
   # List of accounts that shall not get votes, separated by spaces.
   :blacklist: mikethemug
   

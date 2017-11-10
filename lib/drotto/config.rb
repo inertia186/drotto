@@ -52,6 +52,14 @@ module DrOtto
       minimum_bid.split(' ').last
     end
     
+    def allow_comment_bids
+      (default_value(:allow_comment_bids) || config[:drotto][:allow_comment_bids]).to_s == 'true'
+    end
+    
+    def ignore_asset
+      default_value(:ignore_asset) || config[:drotto][:ignore_asset]
+    end
+    
     def blacklist
       (default_value(:drotto_blacklist) || config[:drotto][:blacklist]).to_s.downcase.split(' ')
     end
