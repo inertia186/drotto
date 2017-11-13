@@ -418,7 +418,7 @@ module DrOtto
     end
     
     def max_limit
-      if chain_options[:chain] == :golos
+      if chain_options[:chain] == 'golos'
         1000
       else
         10000
