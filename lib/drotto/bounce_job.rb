@@ -20,13 +20,16 @@ module DrOtto
       response = nil
       
       if @limit.to_i > 0
-        with_api { |api| response = api.get_account_history(account_name, -@limit.to_i, @limit.to_i) }
+        api.get_account_history(account_name, -@limit.to_i, @limit.to_i) do |history|
+          @transactions = history
+        end
       else
-        with_api { |api| response = api.get_account_history(account_name, -10000, 10000) }
+        api.get_account_history(account_name, -max_limit, max_limit) do |history|
+          @transactions = history
+        end
       end
       
       @memos = nil
-      @transactions = response.result
     end
     
     def perform(pretend = false)
@@ -412,6 +415,14 @@ module DrOtto
           trx.trx_id unless already_voted?(author, permlink)
         end
       end.compact.uniq - [VIRTUAL_OP_TRANSACTION_ID]
+    end
+    
+    def max_limit
+      if chain_options[:chain] == :golos
+        1000
+      else
+        10000
+      end
     end
   end
 end

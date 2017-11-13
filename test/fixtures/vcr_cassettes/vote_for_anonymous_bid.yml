@@ -1,0 +1,141 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://steemd.steemit.com/
+    body:
+      encoding: UTF-8
+      string: '{"jsonrpc":"2.0","params":["database_api","get_dynamic_global_properties",[]],"id":1,"method":"call"}'
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - radiator/0.3.12
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 13 Nov 2017 19:49:17 GMT
+      Content-Length:
+      - '1048'
+      Connection:
+      - keep-alive
+      Server:
+      - nginx
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Headers:
+      - DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range
+      Strict-Transport-Security:
+      - max-age=31557600; includeSubDomains; preload
+    body:
+      encoding: UTF-8
+      string: '{"id":1,"result":{"id":0,"head_block_number":17194727,"head_block_id":"01065ee753469b285998d33feebdcfb9f70c9389","time":"2017-11-13T19:49:15","current_witness":"riverhead","total_pow":514415,"num_pow_witnesses":172,"virtual_supply":"263287965.204
+        STEEM","current_supply":"259541360.569 STEEM","confidential_supply":"0.000
+        STEEM","current_sbd_supply":"3338224.730 SBD","confidential_sbd_supply":"0.000
+        SBD","total_vesting_fund_steem":"191499170.338 STEEM","total_vesting_shares":"393371516889.044318
+        VESTS","total_reward_fund_steem":"0.000 STEEM","total_reward_shares2":"0","pending_rewarded_vesting_shares":"383775814.506021
+        VESTS","pending_rewarded_vesting_steem":"186135.797 STEEM","sbd_interest_rate":1,"sbd_print_rate":10000,"maximum_block_size":65536,"current_aslot":17255785,"recent_slots_filled":"340282366920938463463374607431768211455","participation_count":128,"last_irreversible_block_num":17194709,"vote_power_reserve_rate":10,"current_reserve_ratio":200000000,"average_block_size":8820,"max_virtual_bandwidth":"264241152000000000000"}}'
+    http_version: 
+  recorded_at: Mon, 13 Nov 2017 19:49:17 GMT
+- request:
+    method: post
+    uri: https://steemd.steemit.com/
+    body:
+      encoding: UTF-8
+      string: '{"jsonrpc":"2.0","params":["database_api","get_block",[17194709]],"id":2,"method":"call"}'
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - radiator/0.3.12
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 13 Nov 2017 19:49:18 GMT
+      Content-Length:
+      - '7203'
+      Connection:
+      - keep-alive
+      Server:
+      - nginx
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Headers:
+      - DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range
+      Strict-Transport-Security:
+      - max-age=31557600; includeSubDomains; preload
+    body:
+      encoding: UTF-8
+      string: '{"id":2,"result":{"previous":"01065ed437b42b22f5fc109baa945a2d50b85e70","timestamp":"2017-11-13T19:48:21","witness":"thecryptodrive","transaction_merkle_root":"e8caa6c7d591d38ae169e217a8ad0bc7b2c4cde8","extensions":[],"witness_signature":"20413195111ddf8c13174b894efc6e4a0354986ba79e339aec72c1b7a0db083110385bfb86814ab78edf9cb3576a1c831b2448dfd1a70c84b41f286daff70273a3","transactions":[{"ref_block_num":24255,"ref_block_prefix":1846039075,"expiration":"2017-11-13T19:58:15","operations":[["vote",{"voter":"squirrelnv","author":"bitcoinflood","permlink":"bitcoin-rootstock-and-lumino-coming-soon","weight":10000}]],"extensions":[],"signatures":["1f6448b6022b8f4c92f85203014fcf7ff75d6b45612e23a6ebb7e313b096a4e54c4162ac579bd5caa07bcae6b56bc6a282fb8082a328a3acbfad413b2e91cf1e8e"]},{"ref_block_num":24275,"ref_block_prefix":4191261026,"expiration":"2017-11-13T19:48:30","operations":[["vote",{"voter":"luigi-tecnologo","author":"webdeals","permlink":"analisi-delle-cucine-presenti-nel-regno-unito-cucina-thailandese-ita","weight":400}]],"extensions":[],"signatures":["1b7a44c205fa9e180dc90aa23ab0491bc7cc03b4120aabf5c7e29c591ba408c26533e4bbcab2cab87b0e1da83cf1a95da23e210a39c28e558bccf9b16955c5652a"]},{"ref_block_num":24255,"ref_block_prefix":1846039075,"expiration":"2017-11-13T19:58:15","operations":[["comment",{"parent_author":"purepinay","parent_permlink":"re-rerez-re-purepinay-re-rerez-we-need-new-pokemon-gabby-games-rerez-20171113t154650134z","author":"rerez","permlink":"re-purepinay-re-rerez-re-purepinay-re-rerez-we-need-new-pokemon-gabby-games-rerez-20171113t194819357z","title":"","body":"Yup,
+        that''s me. :D","json_metadata":"{\"tags\":[\"gaming\"],\"app\":\"steemit/0.1\"}"}]],"extensions":[],"signatures":["1f71afcb715b1a8f272547a4970b58e7c196cc15c5528c4c6867fc0037a6d5c96648fa4541614c5ff88376ef3fb0628bce4c5a065df751ff59b097d49b80667dd2"]},{"ref_block_num":24275,"ref_block_prefix":4191261026,"expiration":"2017-11-13T19:48:30","operations":[["vote",{"voter":"followforupvotes","author":"krakonos","permlink":"predstavuji-vam-rodinu-krakonosovu","weight":3100}]],"extensions":[],"signatures":["1b688800c02f440beed52646741dc89fadd479736ac76beca3d06a5a9fd98f9a1c4186e4ca8213bb556b6650babb38f56ef805a9b4c8f2058fdc765ef385db2fbf"]},{"ref_block_num":24255,"ref_block_prefix":1846039075,"expiration":"2017-11-13T19:58:15","operations":[["custom_json",{"required_auths":[],"required_posting_auths":["arduan"],"id":"follow","json":"[\"follow\",{\"follower\":\"arduan\",\"following\":\"mrwise\",\"what\":[\"blog\"]}]"}]],"extensions":[],"signatures":["1f30aaa08d670c40425bb9ce314b78a8ca61ab07bcb13986a1d2800fd40cb45f8934434f16b4afdf0adc913a4db31a4bbfaa8a90269bbefd035ad3ef30859a705e"]},{"ref_block_num":24255,"ref_block_prefix":1846039075,"expiration":"2017-11-13T19:58:15","operations":[["vote",{"voter":"wonka","author":"pilot","permlink":"re-rabeyaislambithi-enjoy-travelling-to-singapore-with-us-bangla-20171113t045356137z","weight":10000}]],"extensions":[],"signatures":["1f3d0f2df3e5fd2f851891864e0b5647971dbd939ecdc4cf424d050bc1afd3b4767c906205cf94ac7253288496a54bf20239618e96cbf329126ce747fa8c9d962e"]},{"ref_block_num":24272,"ref_block_prefix":888805504,"expiration":"2017-11-13T19:49:15","operations":[["vote",{"voter":"leroy.linientreu","author":"saamychristen","permlink":"geographie-009-ein-paar-aspekte-des-kampfs-um-die-vorherrschaft-in-der-arktis","weight":10000}]],"extensions":[],"signatures":["1f60bb1c2f3ce603e4ecb52ded8413fe828c64590797a94f73c5650536ead582b565484c5bbc20fb827c3130b2eb6129a19a9fcf79a6796f4f0615b8f256390937"]},{"ref_block_num":24260,"ref_block_prefix":1036367101,"expiration":"2017-11-13T19:58:18","operations":[["vote",{"voter":"danielsaori","author":"udibekwe","permlink":"can-you-enlighten-us-how-to-profit-from-icos-investments","weight":1234}]],"extensions":[],"signatures":["1b5041b91686919e49dbef5217232b4f19d3b2de0ccafaba09624991d81f8a7e0b197465327e1226342870ec006edb461bcd9602b3e387c9401ac5318fc0f11c90"]},{"ref_block_num":24255,"ref_block_prefix":1846039075,"expiration":"2017-11-13T19:58:15","operations":[["custom_json",{"required_auths":[],"required_posting_auths":["arduan"],"id":"follow","json":"[\"follow\",{\"follower\":\"arduan\",\"following\":\"spunkpuppet\",\"what\":[\"blog\"]}]"}]],"extensions":[],"signatures":["2053750234de226206c19897989f2cd9f319eb8cb1159b8af1d5643cac625b0ebd75ff29adc04dcd4d2ac14a5c941d948a969ce8dcdf16ae64a421bbf61263f26b"]},{"ref_block_num":24260,"ref_block_prefix":1036367101,"expiration":"2017-11-13T19:58:18","operations":[["vote",{"voter":"kotturinn","author":"netuoso","permlink":"state-of-the-witness-12-words-from-a-truly-humbled-witness","weight":2069}]],"extensions":[],"signatures":["1c592ef3fa1c0aed903a3a3bde1d80c3fa6e9f1456d94f8faa13114f8446d56f2944c86032a5294bcf2832e8d88bb9e79ce327eec61ee5b2ad81b5e814f6769558"]},{"ref_block_num":24274,"ref_block_prefix":4091869042,"expiration":"2017-11-13T19:48:44","operations":[["vote",{"voter":"cinemagia","author":"rdp","permlink":"re-blade-runner-2049-tv-spot-aun-queda-una-pagin25125-20171113t194353","weight":10000}]],"extensions":[],"signatures":["1f69c8b2315c272f38af0c0d6e73e0bcea0bacd663fb00a78770d5fa04869a56586e65e57bec5711089af0e5d0757e0affa3d3acc94a44d482244ff8fb9a73e664"]},{"ref_block_num":24274,"ref_block_prefix":4091869042,"expiration":"2017-11-13T19:48:41","operations":[["vote",{"voter":"corvuscoraxx","author":"inber","permlink":"all-these-cozy-little-things-house-decoration-update","weight":635}]],"extensions":[],"signatures":["1f3c90d398b38eeaf5f07f9ba6e8f948d2f26b6e9976f69ffe93b8e747449c23e558ad01e998603e8ee73f708daf37b69c7460a754bfdabe5aec1f7dae118958e9"]},{"ref_block_num":24247,"ref_block_prefix":3803616802,"expiration":"2017-11-13T19:57:51","operations":[["custom_json",{"required_auths":[],"required_posting_auths":["mdshipu678"],"id":"follow","json":"[\"follow\",{\"follower\":\"mdshipu678\",\"following\":\"aabb\",\"what\":[\"blog\"]}]"}]],"extensions":[],"signatures":["1f7af9ceed7d7dc06ebebc2476f977dd1d8e5a87fcd09e7351b9a63265e9b8462b397e6c1fc12167370d19a97f6f941ed8465ac9a1cde3aebe2ad3d72fc3171994"]},{"ref_block_num":24273,"ref_block_prefix":4119791285,"expiration":"2017-11-13T19:49:18","operations":[["vote",{"voter":"oprashny","author":"crazyask","permlink":"how-to-stop-loving-someone","weight":10000}]],"extensions":[],"signatures":["1f275812de88922aa10d22d6f69e9ff53af4bff7d20ec4de41f3b9d2dfac8d641e2545d2d0d19b4b78722eaf414b8f25c7960569cb3af5deb47e1933f32f217a5a"]}],"block_id":"01065ed5050f99443b0865f2e14b60c199e879bb","signing_key":"STM8WtG3BskaEyfUjEmLpUWKZtDuy77FV28YG1r9DAWnJy9DFPWgw","transaction_ids":["aa9c9f94bc00e86813dfdbb76440e1db1f97efd3","a1ec1e33a58882c878f84cc7bb64695881a6ac01","861c3ae2b72ba5a39700d6091878ad86b8de6307","898803e861b0ab84f324f01298210949f1857b6f","ffd640356b46eea398dd60e6e905ac4720bb8cb1","be23eeaccafa1edbba7b0e297d006df635c961fd","3d0668c5c4dcca5b97454e21770de2b4a93ea942","658d580ff385f58b8da274aaaaaab8c9c032221d","1fd5ec614508688ade27b47f9b71c8761deadd51","d8c9f7a95cfa53d7a0072d86097bedc63531a3bf","2797dfb557df9a7afba821bc0857f00d782f0888","7340039baa84b6b0b5530e745f3cbb03554ad4d7","49d234951e51b6334ebe563ff765329a61488f94","26ae780036686d3a2ea54bd1fe596b46df3aa74f"]}}'
+    http_version: 
+  recorded_at: Mon, 13 Nov 2017 19:49:18 GMT
+- request:
+    method: post
+    uri: https://steemd.steemit.com/
+    body:
+      encoding: UTF-8
+      string: '{"jsonrpc":"2.0","params":["network_broadcast_api","broadcast_transaction_synchronous",[{"expiration":"2017-11-13T19:59:15","ref_block_num":24276,"ref_block_prefix":573289527,"operations":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":313}]],"extensions":[],"signatures":["1c6c06d0f491ab3c1905860474d124e13ad97149567529fa2ea083af67db861e7a1097ae9329c82960b278cdfec8299b95a9e96e50bdcbd356b6fd63774b4dee95"]}]],"id":1,"method":"call"}'
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - radiator/0.3.12
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 13 Nov 2017 19:49:18 GMT
+      Content-Length:
+      - '6032'
+      Connection:
+      - keep-alive
+      Server:
+      - nginx
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Headers:
+      - DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range
+      Strict-Transport-Security:
+      - max-age=31557600; includeSubDomains; preload
+    body:
+      encoding: UTF-8
+      string: '{"id":1,"error":{"code":1,"message":"3030000 tx_missing_posting_auth:
+        missing required posting authority\nMissing Posting Authority bittrex\n    {\"id\":\"bittrex\",\"posting\":{\"weight_threshold\":1,\"account_auths\":[],\"key_auths\":[[\"STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF\",1]]},\"active\":{\"weight_threshold\":1,\"account_auths\":[],\"key_auths\":[[\"STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF\",1]]},\"owner\":{\"weight_threshold\":1,\"account_auths\":[],\"key_auths\":[[\"STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF\",1]]}}\n    th_a  transaction.cpp:129
+        verify_authority\n\n    {\"ops\":[[\"vote\",{\"voter\":\"bittrex\",\"author\":\"author\",\"permlink\":\"permlink\",\"weight\":313}]],\"sigs\":[\"STM5ctejUsoZ9FwfCaVbNvWYYgNMBo9TVsHSE8wHrqAmNJi6sDctt\"]}\n    th_a  transaction.cpp:172
+        verify_authority\n\n    {\"*this\":{\"ref_block_num\":24276,\"ref_block_prefix\":573289527,\"expiration\":\"2017-11-13T19:59:15\",\"operations\":[[\"vote\",{\"voter\":\"bittrex\",\"author\":\"author\",\"permlink\":\"permlink\",\"weight\":313}]],\"extensions\":[],\"signatures\":[\"1c6c06d0f491ab3c1905860474d124e13ad97149567529fa2ea083af67db861e7a1097ae9329c82960b278cdfec8299b95a9e96e50bdcbd356b6fd63774b4dee95\"]}}\n    th_a  transaction.cpp:285
+        verify_authority\n\n    {\"trx\":{\"ref_block_num\":24276,\"ref_block_prefix\":573289527,\"expiration\":\"2017-11-13T19:59:15\",\"operations\":[[\"vote\",{\"voter\":\"bittrex\",\"author\":\"author\",\"permlink\":\"permlink\",\"weight\":313}]],\"extensions\":[],\"signatures\":[\"1c6c06d0f491ab3c1905860474d124e13ad97149567529fa2ea083af67db861e7a1097ae9329c82960b278cdfec8299b95a9e96e50bdcbd356b6fd63774b4dee95\"]}}\n    th_a  database.cpp:2896
+        _apply_transaction\n\n    {\"trx\":{\"ref_block_num\":24276,\"ref_block_prefix\":573289527,\"expiration\":\"2017-11-13T19:59:15\",\"operations\":[[\"vote\",{\"voter\":\"bittrex\",\"author\":\"author\",\"permlink\":\"permlink\",\"weight\":313}]],\"extensions\":[],\"signatures\":[\"1c6c06d0f491ab3c1905860474d124e13ad97149567529fa2ea083af67db861e7a1097ae9329c82960b278cdfec8299b95a9e96e50bdcbd356b6fd63774b4dee95\"]}}\n    th_a  database.cpp:660
+        push_transaction\n\n    {\"call.method\":\"call\",\"call.params\":[\"network_broadcast_api\",\"broadcast_transaction_synchronous\",[{\"expiration\":\"2017-11-13T19:59:15\",\"ref_block_num\":24276,\"ref_block_prefix\":573289527,\"operations\":[[\"vote\",{\"voter\":\"bittrex\",\"author\":\"author\",\"permlink\":\"permlink\",\"weight\":313}]],\"extensions\":[],\"signatures\":[\"1c6c06d0f491ab3c1905860474d124e13ad97149567529fa2ea083af67db861e7a1097ae9329c82960b278cdfec8299b95a9e96e50bdcbd356b6fd63774b4dee95\"]}]]}\n    th_a  websocket_api.cpp:124
+        on_message","data":{"code":3030000,"name":"tx_missing_posting_auth","message":"missing
+        required posting authority","stack":[{"context":{"level":"error","file":"transaction.cpp","line":129,"method":"verify_authority","hostname":"","thread_name":"th_a","timestamp":"2017-11-13T19:49:18"},"format":"Missing
+        Posting Authority ${id}","data":{"id":"bittrex","posting":{"weight_threshold":1,"account_auths":[],"key_auths":[["STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF",1]]},"active":{"weight_threshold":1,"account_auths":[],"key_auths":[["STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF",1]]},"owner":{"weight_threshold":1,"account_auths":[],"key_auths":[["STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF",1]]}}},{"context":{"level":"warn","file":"transaction.cpp","line":172,"method":"verify_authority","hostname":"","thread_name":"th_a","timestamp":"2017-11-13T19:49:18"},"format":"","data":{"ops":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":313}]],"sigs":["STM5ctejUsoZ9FwfCaVbNvWYYgNMBo9TVsHSE8wHrqAmNJi6sDctt"]}},{"context":{"level":"warn","file":"transaction.cpp","line":285,"method":"verify_authority","hostname":"","thread_name":"th_a","timestamp":"2017-11-13T19:49:18"},"format":"","data":{"*this":{"ref_block_num":24276,"ref_block_prefix":573289527,"expiration":"2017-11-13T19:59:15","operations":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":313}]],"extensions":[],"signatures":["1c6c06d0f491ab3c1905860474d124e13ad97149567529fa2ea083af67db861e7a1097ae9329c82960b278cdfec8299b95a9e96e50bdcbd356b6fd63774b4dee95"]}}},{"context":{"level":"warn","file":"database.cpp","line":2896,"method":"_apply_transaction","hostname":"","thread_name":"th_a","timestamp":"2017-11-13T19:49:18"},"format":"","data":{"trx":{"ref_block_num":24276,"ref_block_prefix":573289527,"expiration":"2017-11-13T19:59:15","operations":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":313}]],"extensions":[],"signatures":["1c6c06d0f491ab3c1905860474d124e13ad97149567529fa2ea083af67db861e7a1097ae9329c82960b278cdfec8299b95a9e96e50bdcbd356b6fd63774b4dee95"]}}},{"context":{"level":"warn","file":"database.cpp","line":660,"method":"push_transaction","hostname":"","thread_name":"th_a","timestamp":"2017-11-13T19:49:18"},"format":"","data":{"trx":{"ref_block_num":24276,"ref_block_prefix":573289527,"expiration":"2017-11-13T19:59:15","operations":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":313}]],"extensions":[],"signatures":["1c6c06d0f491ab3c1905860474d124e13ad97149567529fa2ea083af67db861e7a1097ae9329c82960b278cdfec8299b95a9e96e50bdcbd356b6fd63774b4dee95"]}}},{"context":{"level":"warn","file":"websocket_api.cpp","line":124,"method":"on_message","hostname":"","thread_name":"th_a","timestamp":"2017-11-13T19:49:18"},"format":"","data":{"call.method":"call","call.params":["network_broadcast_api","broadcast_transaction_synchronous",[{"expiration":"2017-11-13T19:59:15","ref_block_num":24276,"ref_block_prefix":573289527,"operations":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":313}]],"extensions":[],"signatures":["1c6c06d0f491ab3c1905860474d124e13ad97149567529fa2ea083af67db861e7a1097ae9329c82960b278cdfec8299b95a9e96e50bdcbd356b6fd63774b4dee95"]}]]}}]}}}'
+    http_version: 
+  recorded_at: Mon, 13 Nov 2017 19:49:18 GMT
+recorded_with: VCR 3.0.3

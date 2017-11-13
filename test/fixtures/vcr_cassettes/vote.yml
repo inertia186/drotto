@@ -1,0 +1,311 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://steemd.steemit.com/
+    body:
+      encoding: UTF-8
+      string: '{"jsonrpc":"2.0","params":["database_api","get_dynamic_global_properties",[]],"id":1,"method":"call"}'
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - radiator/0.3.12
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 13 Nov 2017 19:49:40 GMT
+      Content-Length:
+      - '1047'
+      Connection:
+      - keep-alive
+      Server:
+      - nginx
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Headers:
+      - DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range
+      Strict-Transport-Security:
+      - max-age=31557600; includeSubDomains; preload
+    body:
+      encoding: UTF-8
+      string: '{"id":1,"result":{"id":0,"head_block_number":17194735,"head_block_id":"01065eefe9e6b625055d23766233f1e5aa8d0468","time":"2017-11-13T19:49:39","current_witness":"liondani","total_pow":514415,"num_pow_witnesses":172,"virtual_supply":"263287983.136
+        STEEM","current_supply":"259541376.887 STEEM","confidential_supply":"0.000
+        STEEM","current_sbd_supply":"3338226.168 SBD","confidential_sbd_supply":"0.000
+        SBD","total_vesting_fund_steem":"191499175.226 STEEM","total_vesting_shares":"393371521326.113837
+        VESTS","total_reward_fund_steem":"0.000 STEEM","total_reward_shares2":"0","pending_rewarded_vesting_shares":"383781968.754754
+        VESTS","pending_rewarded_vesting_steem":"186138.793 STEEM","sbd_interest_rate":1,"sbd_print_rate":10000,"maximum_block_size":65536,"current_aslot":17255793,"recent_slots_filled":"340282366920938463463374607431768211455","participation_count":128,"last_irreversible_block_num":17194720,"vote_power_reserve_rate":10,"current_reserve_ratio":200000000,"average_block_size":8843,"max_virtual_bandwidth":"264241152000000000000"}}'
+    http_version: 
+  recorded_at: Mon, 13 Nov 2017 19:49:40 GMT
+- request:
+    method: post
+    uri: https://steemd.steemit.com/
+    body:
+      encoding: UTF-8
+      string: '{"jsonrpc":"2.0","params":["database_api","get_block",[17194720]],"id":2,"method":"call"}'
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - radiator/0.3.12
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 13 Nov 2017 19:49:40 GMT
+      Content-Length:
+      - '10642'
+      Connection:
+      - keep-alive
+      Server:
+      - nginx
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Headers:
+      - DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range
+      Strict-Transport-Security:
+      - max-age=31557600; includeSubDomains; preload
+    body:
+      encoding: UTF-8
+      string: '{"id":2,"result":{"previous":"01065edf32d87adf96b03b072db15ce84ecb7aee","timestamp":"2017-11-13T19:48:54","witness":"timcliff","transaction_merkle_root":"c9221e2c1063abe31209bac4468c55ab4b74b9d2","extensions":[],"witness_signature":"2063e03931116f71ff68833b74051a2c238d2a3c34accad07e49b79bca3b28c15a331bee88222ec887cf04dadcd6918807a6e891994697a828e3450b3109a0a0f0","transactions":[{"ref_block_num":24268,"ref_block_prefix":1043902677,"expiration":"2017-11-13T19:58:48","operations":[["vote",{"voter":"schmidthappens","author":"schmidthappens","permlink":"monochrome-monday-rotterdam-in-black-and-white","weight":10000}]],"extensions":[],"signatures":["1f7443f49af3c00579eda4f95e5289d291b6b9b2281f23dd2948c818eb0ba473b01cd3c16fb9348764c7d45f0ede05f91a0a3a97f09ae978e593d35c99ee6720bb"]},{"ref_block_num":24268,"ref_block_prefix":1043902677,"expiration":"2017-11-13T19:58:48","operations":[["comment",{"parent_author":"campervanelvis","parent_permlink":"re-everittdmickey-do-you-want-to-be-20171113t054116213z","author":"everittdmickey","permlink":"re-campervanelvis-re-everittdmickey-do-you-want-to-be-20171113t194850397z","title":"","body":"Are
+        you familiar with [Flying J Travel Centers]( https://pilotflyingj.com/)?\n
+        ![](https://steemitimages.com/DQmY1jWJCndMRvxwhGSWGDcb1XXLX5zMMEDq43KoFKYqBQL/image.png)\nthe
+        Flying J caters to [RV''s](  https://pilotflyingj.com/rv-services) \n ![](https://steemitimages.com/DQmS9C78CPzmdFXrJEhtWAuUg6A3wejFiXhr6Ph7KiPbHZe/image.png)\n..the
+        Pilots.... not so much.","json_metadata":"{\"tags\":[\"steemit\"],\"image\":[\"https://steemitimages.com/DQmY1jWJCndMRvxwhGSWGDcb1XXLX5zMMEDq43KoFKYqBQL/image.png\",\"https://steemitimages.com/DQmS9C78CPzmdFXrJEhtWAuUg6A3wejFiXhr6Ph7KiPbHZe/image.png\"],\"links\":[\"https://pilotflyingj.com/\",\"https://pilotflyingj.com/rv-services\"],\"app\":\"steemit/0.1\"}"}]],"extensions":[],"signatures":["1f271f12774ba28f96f68cce6312b62ddf732fb6fa9269deb6b8d3cdd7583e397e579343383cf7c1274eae7d087b3bb1ecf3e2811f18e8a9838c2076f7ec417a78"]},{"ref_block_num":24283,"ref_block_prefix":191265326,"expiration":"2017-11-13T19:49:48","operations":[["vote",{"voter":"iltyush","author":"imosco","permlink":"my-work-place","weight":10000}]],"extensions":[],"signatures":["1f6e8a3e98f5f986768e349ab490c2728ea3dbc127c413dd5a84eba4505c9ac92b7fb6f09638876585e79b59ad1314a3887b72c6c4173344fbe5f44b50ad742bed"]},{"ref_block_num":24268,"ref_block_prefix":1043902677,"expiration":"2017-11-13T19:58:48","operations":[["claim_reward_balance",{"account":"buildawhale","reward_steem":"0.000
+        STEEM","reward_sbd":"0.000 SBD","reward_vests":"26622.118082 VESTS"}]],"extensions":[],"signatures":["200d653343b835e8faacc35ec324b7980c9651906275e01c29b8e4f00dfac4ad6b2990d9fc47a7db06f794ec945dd135724888a82fd55e7c1339ef199b71be882c"]},{"ref_block_num":24268,"ref_block_prefix":1043902677,"expiration":"2017-11-13T19:58:48","operations":[["vote",{"voter":"sarnaly","author":"abdulwazed","permlink":"the-mummy-my-dear-movie","weight":10000}]],"extensions":[],"signatures":["1f087097fb681c8936f170c7a8f151dcfa4c6c02bb00f7f1b3ad0747480c11eb73191d1f91c646948b3cf01906314745adec276ec08c14215370b14611030838cf"]},{"ref_block_num":24268,"ref_block_prefix":1043902677,"expiration":"2017-11-13T19:58:51","operations":[["vote",{"voter":"kishan","author":"netuoso","permlink":"state-of-the-witness-12-words-from-a-truly-humbled-witness","weight":2069}]],"extensions":[],"signatures":["1b4007c301a14b6c29a3b9f2d075b2d3cb1702034277390c47c279529ee3fe57536ca274c76d72a079812d4baefc284b48765c1bdb5669ccedb224b972b749c5c9"]},{"ref_block_num":24268,"ref_block_prefix":1043902677,"expiration":"2017-11-13T19:58:48","operations":[["vote",{"voter":"xee95","author":"sweetsssj","permlink":"miss-delicious-82-the-seven-hills-at-sultanahmet","weight":10000}]],"extensions":[],"signatures":["1f2d4e8dfbef49091758166f5d6bd9e87682b47df39e8cfc839c085377af53a7b26321e18d60772a352e8f78c73c84956c5ef3442c04a08e84a5ea9dccae2cd592"]},{"ref_block_num":24268,"ref_block_prefix":1043902677,"expiration":"2017-11-13T19:58:51","operations":[["comment",{"parent_author":"upgoat","parent_permlink":"comment-1510602451752","author":"jstajok","permlink":"re-upgoat-comment-1510602451752-20171113t194853275z","title":"","body":"Thank
+        you @upgoat.","json_metadata":"{\"tags\":[\"food\"],\"users\":[\"upgoat\"],\"app\":\"steemit/0.1\"}"}]],"extensions":[],"signatures":["1f055288d6645b9f7ad50fe9e5f0c302f3d821dd68fd99631163690ce0bbab8f092923d6bb41acce1bb863d6169bb08f2ecb5a98cb81ab16b2b56cbcbbe4bc98a9"]},{"ref_block_num":24268,"ref_block_prefix":1043902677,"expiration":"2017-11-13T19:58:48","operations":[["vote",{"voter":"kramarenko","author":"yellow8submarine","permlink":"colorchallenge-thursdaygreen-khotyn","weight":10000}]],"extensions":[],"signatures":["1f1ad5e5decc7406cddabc467b310333066b472c9fd8189a67e469b742039a4a8031a226cb0a25a060838c161ca1ceb66ca26d6403238494abcd081acc25e4cb5d"]},{"ref_block_num":24268,"ref_block_prefix":1043902677,"expiration":"2017-11-13T19:58:48","operations":[["custom_json",{"required_auths":[],"required_posting_auths":["egtech"],"id":"follow","json":"[\"follow\",{\"follower\":\"egtech\",\"following\":\"khaidi\",\"what\":[\"blog\"]}]"}]],"extensions":[],"signatures":["1f74acca1e4f67be30937af8ab819eaf9c6ab23901dbd5b4dbd5dd09cfd8d0e9e7012b4ffb637df8fd9e11b2e585c4a5459e1683a105935c908c2be79d763b196c"]},{"ref_block_num":24282,"ref_block_prefix":946836700,"expiration":"2017-11-13T19:49:45","operations":[["vote",{"voter":"mesbah","author":"mesbah","permlink":"klam-mwzwn-2017915t163321875z","weight":0}]],"extensions":[],"signatures":["206c1594f055697cc604a8af8bbee506ad9ed6661827f047bf69137ed53b343fe65333b6d67b8dfe20e874583b9dcd53f329a0eacca4b2e5d37392047f6eaf876b"]},{"ref_block_num":24268,"ref_block_prefix":1043902677,"expiration":"2017-11-13T19:58:51","operations":[["vote",{"voter":"seyico2011","author":"udibekwe","permlink":"can-you-enlighten-us-how-to-profit-from-icos-investments","weight":1234}]],"extensions":[],"signatures":["1b1df9a7b75e07887b8d6e155fc1170b779729e11c9d2b489f10edbc4db0a5f0724c580841c8ea7da2b1b7d2642e59dde83ba6850484ab0677781197653f2ebe6f"]},{"ref_block_num":24287,"ref_block_prefix":3749369906,"expiration":"2017-11-13T19:49:51","operations":[["vote",{"voter":"cheetah","author":"solarshutdown","permlink":"fxese325","weight":50}]],"extensions":[],"signatures":["2047013951865b55687d0743426fa885bcc21bb943e325217f7af49e4d60372d8153aa685a7948b2087b87f53361e6bf19df9fdd75cc9397f23e73b21672053b54"]},{"ref_block_num":24268,"ref_block_prefix":1043902677,"expiration":"2017-11-13T19:58:51","operations":[["vote",{"voter":"tommycordero","author":"lexiconical","permlink":"re-tommycordero-re-lexiconical-great-moments-in-sexism-and-gun-control-men-are-toxic-give-mom-your-guns-sonny-20171113t192725908z","weight":7100}]],"extensions":[],"signatures":["1f7f7ad5c0bf2d1e720f85bb33109b5b683d11b9236db53a3a4501516bd9f653546cb6deec708ab47021bee14fdb4f86e7d14d18ea87ce7e47c24db22e6edbbbf5"]},{"ref_block_num":24287,"ref_block_prefix":3749369906,"expiration":"2017-11-13T19:49:22","operations":[["vote",{"voter":"steemedia","author":"mariska.lubis","permlink":"indonesia-menulis-4-how-to-build-yourself-in-writing-ind-eng","weight":140}]],"extensions":[],"signatures":["207e0cbbb068a87a9e4cfc683809a1784d6fd5bbda6491ae38bbead7dbcd3ce1da5cb62eacb3c7b36a68d181b9be500205d7803ff8de755ab93f44b512eafa28a8"]},{"ref_block_num":24268,"ref_block_prefix":1043902677,"expiration":"2017-11-13T19:58:51","operations":[["vote",{"voter":"creationofcare","author":"bashadow","permlink":"caturday","weight":10000}]],"extensions":[],"signatures":["1f07514339ecc79d3423e1b46a564a05bbd4c705aac8b4d3bf7e17651b01ef8e3606eb79f84e860675f1b9afdc9a3e1667981312c2b2bfe572d3667a77a613f53d"]},{"ref_block_num":24268,"ref_block_prefix":1043902677,"expiration":"2017-11-13T19:58:51","operations":[["comment",{"parent_author":"abdilkara","parent_permlink":"re-bahadirk-re-abdilkara-re-bahadirk-bir-muehendislik-hikayesi-engineering-story-20171113t194702096z","author":"bahadirk","permlink":"re-abdilkara-re-bahadirk-re-abdilkara-re-bahadirk-bir-muehendislik-hikayesi-engineering-story-20171113t194851084z","title":"","body":"Bak
+        bu konuda cok haklisin.","json_metadata":"{\"tags\":[\"tr\"],\"app\":\"steemit/0.1\"}"}]],"extensions":[],"signatures":["1f4f4fd49c084a896d293a53bdd90bac1177a56a41e13e03414f767463daba250b232a98f6ad996b3f6f1007bcf3c8e24ee764eea4d35e06e0a2009ccdbf5ea471"]},{"ref_block_num":24268,"ref_block_prefix":1043902677,"expiration":"2017-11-13T19:58:51","operations":[["comment",{"parent_author":"","parent_permlink":"flowers","author":"hero-postal","permlink":"orchid-1-dendrobium","title":"Orchid
+        1: Dendrobium","body":"This species is also very popular. Perhaps the best
+        known is the \"Dendrobium Nobile\" that produces beautiful flowers of different
+        colors distributed along the stem.\n![](https://steemitimages.com/DQmRjyfVTKgrLhy2gwYQmUj6XiK6f2QG8hdMfnAbnhRZrji/image.png)\nThe
+        leaves are narrow and elongated, ending in a point and distributed along the
+        central stem.\n\n\nWe highlight 2 large groups. The first of them is characterized
+        by the flowers are distributed along the stem. The second produces in the
+        upper part of the stem a small floral rod from which several flowers are born.
+        The colors are varied with predominance of white, pink, violet and yellow.","json_metadata":"{\"tags\":[\"flowers\",\"nature\",\"photography\",\"life\",\"plants\"],\"image\":[\"https://steemitimages.com/DQmRjyfVTKgrLhy2gwYQmUj6XiK6f2QG8hdMfnAbnhRZrji/image.png\"],\"app\":\"steemit/0.1\",\"format\":\"markdown\"}"}]],"extensions":[],"signatures":["1f27cf36e6dc3116f0edb05434f005216855f2790727f343658ad7c3cee671a7cf7f3a097915ed3a142235901cab3c8d1c7473c0659a5420e9e38a510a565409e2"]}],"block_id":"01065ee07d5ebe3d42332fad0047ec9e1fae0396","signing_key":"STM5AVZZA9fJLvMA6de43z43643uXPtAU7gMSLrFJe7VTCi84UvdH","transaction_ids":["5d7c8d00d67b0a11f7dbb9594f86387ecb5a9f12","734a06886db34fdc9ac0567cf23d5a164a4ed34a","4ce1437ddcfc3c5d7a645ad3554f9aad4aea34f4","04d275585501612f4b4ac6a221ac7c6505c173b4","341897212e9143ac15d4865dd983b14e5f57ee5f","6984e7e6f2d6939be1b5771d7e12f2f72b6640fe","7e2bb3e10b366181d9a9c3ed57805a64b710f13b","919e9462f9a6797432ba5cd552a16b89bb9d214f","ac5c4e3ef910285b511421196d72eb6a5dcbf228","08ef6f9286e4c5b3085ccc06f259ada6af07d589","2fcc02066c42ff3d9f308360c62a34ce4b6089d2","e120fd9039b83abc522e202c332311fc1774c9d5","de61ce73374e8e4ce5d9cf8e863725303a0bc9ed","6fc19de7d51dafb1306c9b3031c93051bef81e01","07719f8d47dbdb32de02bb111168fe02d170998a","9a3b2ebe2b8340ca104862c9f6e45fdd2e5540bb","074412fa0d798778f555ced41a23b2ad4c5941ea","d500822f76fb30f73adf08c56ff52946f7a0e698"]}}'
+    http_version: 
+  recorded_at: Mon, 13 Nov 2017 19:49:40 GMT
+- request:
+    method: post
+    uri: https://steemd.steemit.com/
+    body:
+      encoding: UTF-8
+      string: '{"jsonrpc":"2.0","params":["network_broadcast_api","broadcast_transaction_synchronous",[{"expiration":"2017-11-13T19:59:39","ref_block_num":24287,"ref_block_prefix":3749369906,"operations":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":313}],["comment",{"parent_author":"author","parent_permlink":"permlink","author":"bittrex","permlink":"re-author-permlink-20171113t194939983z","title":"","body":"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\n","json_metadata":"{\"tags\":[\"parent_permlink\"],\"app\":\"drotto/0.0.3rc1\"}"}]],"extensions":[],"signatures":["1b768cd864eb924545d73b6ac2648f4833c03f79660b7ad33c307f368971d6a24a005cbe9b8cd721db9725b17006faf64919ee8517c297650e23675dba8b886e58"]}]],"id":1,"method":"call"}'
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - radiator/0.3.12
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 13 Nov 2017 19:49:41 GMT
+      Content-Length:
+      - '7738'
+      Connection:
+      - keep-alive
+      Server:
+      - nginx
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Headers:
+      - DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range
+      Strict-Transport-Security:
+      - max-age=31557600; includeSubDomains; preload
+    body:
+      encoding: UTF-8
+      string: '{"id":1,"error":{"code":1,"message":"10 assert_exception: Assert Exception\nis_canonical(
+        c ): signature is not canonical\n    {}\n    th_a  elliptic_secp256k1.cpp:162
+        public_key\n\n    {}\n    th_a  transaction.cpp:187 get_signature_keys\n\n    {\"*this\":{\"ref_block_num\":24287,\"ref_block_prefix\":3749369906,\"expiration\":\"2017-11-13T19:59:39\",\"operations\":[[\"vote\",{\"voter\":\"bittrex\",\"author\":\"author\",\"permlink\":\"permlink\",\"weight\":313}],[\"comment\",{\"parent_author\":\"author\",\"parent_permlink\":\"permlink\",\"author\":\"bittrex\",\"permlink\":\"re-author-permlink-20171113t194939983z\",\"title\":\"\",\"body\":\"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\\n\",\"json_metadata\":\"{\\\"tags\\\":[\\\"parent_permlink\\\"],\\\"app\\\":\\\"drotto/0.0.3rc1\\\"}\"}]],\"extensions\":[],\"signatures\":[\"1b768cd864eb924545d73b6ac2648f4833c03f79660b7ad33c307f368971d6a24a005cbe9b8cd721db9725b17006faf64919ee8517c297650e23675dba8b886e58\"]}}\n    th_a  transaction.cpp:285
+        verify_authority\n\n    {\"trx\":{\"ref_block_num\":24287,\"ref_block_prefix\":3749369906,\"expiration\":\"2017-11-13T19:59:39\",\"operations\":[[\"vote\",{\"voter\":\"bittrex\",\"author\":\"author\",\"permlink\":\"permlink\",\"weight\":313}],[\"comment\",{\"parent_author\":\"author\",\"parent_permlink\":\"permlink\",\"author\":\"bittrex\",\"permlink\":\"re-author-permlink-20171113t194939983z\",\"title\":\"\",\"body\":\"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\\n\",\"json_metadata\":\"{\\\"tags\\\":[\\\"parent_permlink\\\"],\\\"app\\\":\\\"drotto/0.0.3rc1\\\"}\"}]],\"extensions\":[],\"signatures\":[\"1b768cd864eb924545d73b6ac2648f4833c03f79660b7ad33c307f368971d6a24a005cbe9b8cd721db9725b17006faf64919ee8517c297650e23675dba8b886e58\"]}}\n    th_a  database.cpp:2896
+        _apply_transaction\n\n    {\"trx\":{\"ref_block_num\":24287,\"ref_block_prefix\":3749369906,\"expiration\":\"2017-11-13T19:59:39\",\"operations\":[[\"vote\",{\"voter\":\"bittrex\",\"author\":\"author\",\"permlink\":\"permlink\",\"weight\":313}],[\"comment\",{\"parent_author\":\"author\",\"parent_permlink\":\"permlink\",\"author\":\"bittrex\",\"permlink\":\"re-author-permlink-20171113t194939983z\",\"title\":\"\",\"body\":\"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\\n\",\"json_metadata\":\"{\\\"tags\\\":[\\\"parent_permlink\\\"],\\\"app\\\":\\\"drotto/0.0.3rc1\\\"}\"}]],\"extensions\":[],\"signatures\":[\"1b768cd864eb924545d73b6ac2648f4833c03f79660b7ad33c307f368971d6a24a005cbe9b8cd721db9725b17006faf64919ee8517c297650e23675dba8b886e58\"]}}\n    th_a  database.cpp:660
+        push_transaction\n\n    {\"call.method\":\"call\",\"call.params\":[\"network_broadcast_api\",\"broadcast_transaction_synchronous\",[{\"expiration\":\"2017-11-13T19:59:39\",\"ref_block_num\":24287,\"ref_block_prefix\":3749369906,\"operations\":[[\"vote\",{\"voter\":\"bittrex\",\"author\":\"author\",\"permlink\":\"permlink\",\"weight\":313}],[\"comment\",{\"parent_author\":\"author\",\"parent_permlink\":\"permlink\",\"author\":\"bittrex\",\"permlink\":\"re-author-permlink-20171113t194939983z\",\"title\":\"\",\"body\":\"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\\n\",\"json_metadata\":\"{\\\"tags\\\":[\\\"parent_permlink\\\"],\\\"app\\\":\\\"drotto/0.0.3rc1\\\"}\"}]],\"extensions\":[],\"signatures\":[\"1b768cd864eb924545d73b6ac2648f4833c03f79660b7ad33c307f368971d6a24a005cbe9b8cd721db9725b17006faf64919ee8517c297650e23675dba8b886e58\"]}]]}\n    th_a  websocket_api.cpp:124
+        on_message","data":{"code":10,"name":"assert_exception","message":"Assert
+        Exception","stack":[{"context":{"level":"error","file":"elliptic_secp256k1.cpp","line":162,"method":"public_key","hostname":"","thread_name":"th_a","timestamp":"2017-11-13T19:49:41"},"format":"is_canonical(
+        c ): signature is not canonical","data":{}},{"context":{"level":"warn","file":"transaction.cpp","line":187,"method":"get_signature_keys","hostname":"","thread_name":"th_a","timestamp":"2017-11-13T19:49:41"},"format":"","data":{}},{"context":{"level":"warn","file":"transaction.cpp","line":285,"method":"verify_authority","hostname":"","thread_name":"th_a","timestamp":"2017-11-13T19:49:41"},"format":"","data":{"*this":{"ref_block_num":24287,"ref_block_prefix":3749369906,"expiration":"2017-11-13T19:59:39","operations":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":313}],["comment",{"parent_author":"author","parent_permlink":"permlink","author":"bittrex","permlink":"re-author-permlink-20171113t194939983z","title":"","body":"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\n","json_metadata":"{\"tags\":[\"parent_permlink\"],\"app\":\"drotto/0.0.3rc1\"}"}]],"extensions":[],"signatures":["1b768cd864eb924545d73b6ac2648f4833c03f79660b7ad33c307f368971d6a24a005cbe9b8cd721db9725b17006faf64919ee8517c297650e23675dba8b886e58"]}}},{"context":{"level":"warn","file":"database.cpp","line":2896,"method":"_apply_transaction","hostname":"","thread_name":"th_a","timestamp":"2017-11-13T19:49:41"},"format":"","data":{"trx":{"ref_block_num":24287,"ref_block_prefix":3749369906,"expiration":"2017-11-13T19:59:39","operations":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":313}],["comment",{"parent_author":"author","parent_permlink":"permlink","author":"bittrex","permlink":"re-author-permlink-20171113t194939983z","title":"","body":"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\n","json_metadata":"{\"tags\":[\"parent_permlink\"],\"app\":\"drotto/0.0.3rc1\"}"}]],"extensions":[],"signatures":["1b768cd864eb924545d73b6ac2648f4833c03f79660b7ad33c307f368971d6a24a005cbe9b8cd721db9725b17006faf64919ee8517c297650e23675dba8b886e58"]}}},{"context":{"level":"warn","file":"database.cpp","line":660,"method":"push_transaction","hostname":"","thread_name":"th_a","timestamp":"2017-11-13T19:49:41"},"format":"","data":{"trx":{"ref_block_num":24287,"ref_block_prefix":3749369906,"expiration":"2017-11-13T19:59:39","operations":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":313}],["comment",{"parent_author":"author","parent_permlink":"permlink","author":"bittrex","permlink":"re-author-permlink-20171113t194939983z","title":"","body":"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\n","json_metadata":"{\"tags\":[\"parent_permlink\"],\"app\":\"drotto/0.0.3rc1\"}"}]],"extensions":[],"signatures":["1b768cd864eb924545d73b6ac2648f4833c03f79660b7ad33c307f368971d6a24a005cbe9b8cd721db9725b17006faf64919ee8517c297650e23675dba8b886e58"]}}},{"context":{"level":"warn","file":"websocket_api.cpp","line":124,"method":"on_message","hostname":"","thread_name":"th_a","timestamp":"2017-11-13T19:49:41"},"format":"","data":{"call.method":"call","call.params":["network_broadcast_api","broadcast_transaction_synchronous",[{"expiration":"2017-11-13T19:59:39","ref_block_num":24287,"ref_block_prefix":3749369906,"operations":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":313}],["comment",{"parent_author":"author","parent_permlink":"permlink","author":"bittrex","permlink":"re-author-permlink-20171113t194939983z","title":"","body":"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\n","json_metadata":"{\"tags\":[\"parent_permlink\"],\"app\":\"drotto/0.0.3rc1\"}"}]],"extensions":[],"signatures":["1b768cd864eb924545d73b6ac2648f4833c03f79660b7ad33c307f368971d6a24a005cbe9b8cd721db9725b17006faf64919ee8517c297650e23675dba8b886e58"]}]]}}]}}}'
+    http_version: 
+  recorded_at: Mon, 13 Nov 2017 19:49:41 GMT
+- request:
+    method: post
+    uri: https://steemd.steemit.com/
+    body:
+      encoding: UTF-8
+      string: '{"jsonrpc":"2.0","params":["network_broadcast_api","broadcast_transaction_synchronous",[{"expiration":"2017-11-13T19:59:39","ref_block_num":24287,"ref_block_prefix":3749369906,"operations":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":313}],["comment",{"parent_author":"author","parent_permlink":"permlink","author":"bittrex","permlink":"re-author-permlink-20171113t194939983z","title":"","body":"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\n","json_metadata":"{\"tags\":[\"parent_permlink\"],\"app\":\"drotto/0.0.3rc1\"}"}]],"extensions":[],"signatures":["1c257de13c9828b7395cd56b4480d8f617f7dadc14ece53f5156c8f7bff9ffc121001818e3c6be4cdcd9d0fdf63caf5a04ffb210f92b44cd1d4a57151f9481a3cb"]}]],"id":2,"method":"call"}'
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - radiator/0.3.12
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 13 Nov 2017 19:49:41 GMT
+      Content-Length:
+      - '7738'
+      Connection:
+      - keep-alive
+      Server:
+      - nginx
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Headers:
+      - DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range
+      Strict-Transport-Security:
+      - max-age=31557600; includeSubDomains; preload
+    body:
+      encoding: UTF-8
+      string: '{"id":2,"error":{"code":1,"message":"10 assert_exception: Assert Exception\nis_canonical(
+        c ): signature is not canonical\n    {}\n    th_a  elliptic_secp256k1.cpp:162
+        public_key\n\n    {}\n    th_a  transaction.cpp:187 get_signature_keys\n\n    {\"*this\":{\"ref_block_num\":24287,\"ref_block_prefix\":3749369906,\"expiration\":\"2017-11-13T19:59:39\",\"operations\":[[\"vote\",{\"voter\":\"bittrex\",\"author\":\"author\",\"permlink\":\"permlink\",\"weight\":313}],[\"comment\",{\"parent_author\":\"author\",\"parent_permlink\":\"permlink\",\"author\":\"bittrex\",\"permlink\":\"re-author-permlink-20171113t194939983z\",\"title\":\"\",\"body\":\"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\\n\",\"json_metadata\":\"{\\\"tags\\\":[\\\"parent_permlink\\\"],\\\"app\\\":\\\"drotto/0.0.3rc1\\\"}\"}]],\"extensions\":[],\"signatures\":[\"1c257de13c9828b7395cd56b4480d8f617f7dadc14ece53f5156c8f7bff9ffc121001818e3c6be4cdcd9d0fdf63caf5a04ffb210f92b44cd1d4a57151f9481a3cb\"]}}\n    th_a  transaction.cpp:285
+        verify_authority\n\n    {\"trx\":{\"ref_block_num\":24287,\"ref_block_prefix\":3749369906,\"expiration\":\"2017-11-13T19:59:39\",\"operations\":[[\"vote\",{\"voter\":\"bittrex\",\"author\":\"author\",\"permlink\":\"permlink\",\"weight\":313}],[\"comment\",{\"parent_author\":\"author\",\"parent_permlink\":\"permlink\",\"author\":\"bittrex\",\"permlink\":\"re-author-permlink-20171113t194939983z\",\"title\":\"\",\"body\":\"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\\n\",\"json_metadata\":\"{\\\"tags\\\":[\\\"parent_permlink\\\"],\\\"app\\\":\\\"drotto/0.0.3rc1\\\"}\"}]],\"extensions\":[],\"signatures\":[\"1c257de13c9828b7395cd56b4480d8f617f7dadc14ece53f5156c8f7bff9ffc121001818e3c6be4cdcd9d0fdf63caf5a04ffb210f92b44cd1d4a57151f9481a3cb\"]}}\n    th_a  database.cpp:2896
+        _apply_transaction\n\n    {\"trx\":{\"ref_block_num\":24287,\"ref_block_prefix\":3749369906,\"expiration\":\"2017-11-13T19:59:39\",\"operations\":[[\"vote\",{\"voter\":\"bittrex\",\"author\":\"author\",\"permlink\":\"permlink\",\"weight\":313}],[\"comment\",{\"parent_author\":\"author\",\"parent_permlink\":\"permlink\",\"author\":\"bittrex\",\"permlink\":\"re-author-permlink-20171113t194939983z\",\"title\":\"\",\"body\":\"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\\n\",\"json_metadata\":\"{\\\"tags\\\":[\\\"parent_permlink\\\"],\\\"app\\\":\\\"drotto/0.0.3rc1\\\"}\"}]],\"extensions\":[],\"signatures\":[\"1c257de13c9828b7395cd56b4480d8f617f7dadc14ece53f5156c8f7bff9ffc121001818e3c6be4cdcd9d0fdf63caf5a04ffb210f92b44cd1d4a57151f9481a3cb\"]}}\n    th_a  database.cpp:660
+        push_transaction\n\n    {\"call.method\":\"call\",\"call.params\":[\"network_broadcast_api\",\"broadcast_transaction_synchronous\",[{\"expiration\":\"2017-11-13T19:59:39\",\"ref_block_num\":24287,\"ref_block_prefix\":3749369906,\"operations\":[[\"vote\",{\"voter\":\"bittrex\",\"author\":\"author\",\"permlink\":\"permlink\",\"weight\":313}],[\"comment\",{\"parent_author\":\"author\",\"parent_permlink\":\"permlink\",\"author\":\"bittrex\",\"permlink\":\"re-author-permlink-20171113t194939983z\",\"title\":\"\",\"body\":\"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\\n\",\"json_metadata\":\"{\\\"tags\\\":[\\\"parent_permlink\\\"],\\\"app\\\":\\\"drotto/0.0.3rc1\\\"}\"}]],\"extensions\":[],\"signatures\":[\"1c257de13c9828b7395cd56b4480d8f617f7dadc14ece53f5156c8f7bff9ffc121001818e3c6be4cdcd9d0fdf63caf5a04ffb210f92b44cd1d4a57151f9481a3cb\"]}]]}\n    th_a  websocket_api.cpp:124
+        on_message","data":{"code":10,"name":"assert_exception","message":"Assert
+        Exception","stack":[{"context":{"level":"error","file":"elliptic_secp256k1.cpp","line":162,"method":"public_key","hostname":"","thread_name":"th_a","timestamp":"2017-11-13T19:49:41"},"format":"is_canonical(
+        c ): signature is not canonical","data":{}},{"context":{"level":"warn","file":"transaction.cpp","line":187,"method":"get_signature_keys","hostname":"","thread_name":"th_a","timestamp":"2017-11-13T19:49:41"},"format":"","data":{}},{"context":{"level":"warn","file":"transaction.cpp","line":285,"method":"verify_authority","hostname":"","thread_name":"th_a","timestamp":"2017-11-13T19:49:41"},"format":"","data":{"*this":{"ref_block_num":24287,"ref_block_prefix":3749369906,"expiration":"2017-11-13T19:59:39","operations":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":313}],["comment",{"parent_author":"author","parent_permlink":"permlink","author":"bittrex","permlink":"re-author-permlink-20171113t194939983z","title":"","body":"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\n","json_metadata":"{\"tags\":[\"parent_permlink\"],\"app\":\"drotto/0.0.3rc1\"}"}]],"extensions":[],"signatures":["1c257de13c9828b7395cd56b4480d8f617f7dadc14ece53f5156c8f7bff9ffc121001818e3c6be4cdcd9d0fdf63caf5a04ffb210f92b44cd1d4a57151f9481a3cb"]}}},{"context":{"level":"warn","file":"database.cpp","line":2896,"method":"_apply_transaction","hostname":"","thread_name":"th_a","timestamp":"2017-11-13T19:49:41"},"format":"","data":{"trx":{"ref_block_num":24287,"ref_block_prefix":3749369906,"expiration":"2017-11-13T19:59:39","operations":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":313}],["comment",{"parent_author":"author","parent_permlink":"permlink","author":"bittrex","permlink":"re-author-permlink-20171113t194939983z","title":"","body":"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\n","json_metadata":"{\"tags\":[\"parent_permlink\"],\"app\":\"drotto/0.0.3rc1\"}"}]],"extensions":[],"signatures":["1c257de13c9828b7395cd56b4480d8f617f7dadc14ece53f5156c8f7bff9ffc121001818e3c6be4cdcd9d0fdf63caf5a04ffb210f92b44cd1d4a57151f9481a3cb"]}}},{"context":{"level":"warn","file":"database.cpp","line":660,"method":"push_transaction","hostname":"","thread_name":"th_a","timestamp":"2017-11-13T19:49:41"},"format":"","data":{"trx":{"ref_block_num":24287,"ref_block_prefix":3749369906,"expiration":"2017-11-13T19:59:39","operations":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":313}],["comment",{"parent_author":"author","parent_permlink":"permlink","author":"bittrex","permlink":"re-author-permlink-20171113t194939983z","title":"","body":"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\n","json_metadata":"{\"tags\":[\"parent_permlink\"],\"app\":\"drotto/0.0.3rc1\"}"}]],"extensions":[],"signatures":["1c257de13c9828b7395cd56b4480d8f617f7dadc14ece53f5156c8f7bff9ffc121001818e3c6be4cdcd9d0fdf63caf5a04ffb210f92b44cd1d4a57151f9481a3cb"]}}},{"context":{"level":"warn","file":"websocket_api.cpp","line":124,"method":"on_message","hostname":"","thread_name":"th_a","timestamp":"2017-11-13T19:49:41"},"format":"","data":{"call.method":"call","call.params":["network_broadcast_api","broadcast_transaction_synchronous",[{"expiration":"2017-11-13T19:59:39","ref_block_num":24287,"ref_block_prefix":3749369906,"operations":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":313}],["comment",{"parent_author":"author","parent_permlink":"permlink","author":"bittrex","permlink":"re-author-permlink-20171113t194939983z","title":"","body":"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\n","json_metadata":"{\"tags\":[\"parent_permlink\"],\"app\":\"drotto/0.0.3rc1\"}"}]],"extensions":[],"signatures":["1c257de13c9828b7395cd56b4480d8f617f7dadc14ece53f5156c8f7bff9ffc121001818e3c6be4cdcd9d0fdf63caf5a04ffb210f92b44cd1d4a57151f9481a3cb"]}]]}}]}}}'
+    http_version: 
+  recorded_at: Mon, 13 Nov 2017 19:49:41 GMT
+- request:
+    method: post
+    uri: https://steemd.steemit.com/
+    body:
+      encoding: UTF-8
+      string: '{"jsonrpc":"2.0","params":["network_broadcast_api","broadcast_transaction_synchronous",[{"expiration":"2017-11-13T19:59:39","ref_block_num":24287,"ref_block_prefix":3749369906,"operations":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":313}],["comment",{"parent_author":"author","parent_permlink":"permlink","author":"bittrex","permlink":"re-author-permlink-20171113t194939983z","title":"","body":"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\n","json_metadata":"{\"tags\":[\"parent_permlink\"],\"app\":\"drotto/0.0.3rc1\"}"}]],"extensions":[],"signatures":["1c1526c5d918543c2ab4b2d06b22e63fa62a54c1c0118259721cffec7c549cef726612cd5a2a7e191c526c9baf5945e3374c6844b77e867815327181d24ac10feb"]}]],"id":3,"method":"call"}'
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - radiator/0.3.12
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 13 Nov 2017 19:49:41 GMT
+      Content-Length:
+      - '9625'
+      Connection:
+      - keep-alive
+      Server:
+      - nginx
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Headers:
+      - DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range
+      Strict-Transport-Security:
+      - max-age=31557600; includeSubDomains; preload
+    body:
+      encoding: UTF-8
+      string: '{"id":3,"error":{"code":1,"message":"3030000 tx_missing_posting_auth:
+        missing required posting authority\nMissing Posting Authority bittrex\n    {\"id\":\"bittrex\",\"posting\":{\"weight_threshold\":1,\"account_auths\":[],\"key_auths\":[[\"STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF\",1]]},\"active\":{\"weight_threshold\":1,\"account_auths\":[],\"key_auths\":[[\"STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF\",1]]},\"owner\":{\"weight_threshold\":1,\"account_auths\":[],\"key_auths\":[[\"STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF\",1]]}}\n    th_a  transaction.cpp:129
+        verify_authority\n\n    {\"ops\":[[\"vote\",{\"voter\":\"bittrex\",\"author\":\"author\",\"permlink\":\"permlink\",\"weight\":313}],[\"comment\",{\"parent_author\":\"author\",\"parent_permlink\":\"permlink\",\"author\":\"bittrex\",\"permlink\":\"re-author-permlink-20171113t194939983z\",\"title\":\"\",\"body\":\"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\\n\",\"json_metadata\":\"{\\\"tags\\\":[\\\"parent_permlink\\\"],\\\"app\\\":\\\"drotto/0.0.3rc1\\\"}\"}]],\"sigs\":[\"STM5ctejUsoZ9FwfCaVbNvWYYgNMBo9TVsHSE8wHrqAmNJi6sDctt\"]}\n    th_a  transaction.cpp:172
+        verify_authority\n\n    {\"*this\":{\"ref_block_num\":24287,\"ref_block_prefix\":3749369906,\"expiration\":\"2017-11-13T19:59:39\",\"operations\":[[\"vote\",{\"voter\":\"bittrex\",\"author\":\"author\",\"permlink\":\"permlink\",\"weight\":313}],[\"comment\",{\"parent_author\":\"author\",\"parent_permlink\":\"permlink\",\"author\":\"bittrex\",\"permlink\":\"re-author-permlink-20171113t194939983z\",\"title\":\"\",\"body\":\"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\\n\",\"json_metadata\":\"{\\\"tags\\\":[\\\"parent_permlink\\\"],\\\"app\\\":\\\"drotto/0.0.3rc1\\\"}\"}]],\"extensions\":[],\"signatures\":[\"1c1526c5d918543c2ab4b2d06b22e63fa62a54c1c0118259721cffec7c549cef726612cd5a2a7e191c526c9baf5945e3374c6844b77e867815327181d24ac10feb\"]}}\n    th_a  transaction.cpp:285
+        verify_authority\n\n    {\"trx\":{\"ref_block_num\":24287,\"ref_block_prefix\":3749369906,\"expiration\":\"2017-11-13T19:59:39\",\"operations\":[[\"vote\",{\"voter\":\"bittrex\",\"author\":\"author\",\"permlink\":\"permlink\",\"weight\":313}],[\"comment\",{\"parent_author\":\"author\",\"parent_permlink\":\"permlink\",\"author\":\"bittrex\",\"permlink\":\"re-author-permlink-20171113t194939983z\",\"title\":\"\",\"body\":\"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\\n\",\"json_metadata\":\"{\\\"tags\\\":[\\\"parent_permlink\\\"],\\\"app\\\":\\\"drotto/0.0.3rc1\\\"}\"}]],\"extensions\":[],\"signatures\":[\"1c1526c5d918543c2ab4b2d06b22e63fa62a54c1c0118259721cffec7c549cef726612cd5a2a7e191c526c9baf5945e3374c6844b77e867815327181d24ac10feb\"]}}\n    th_a  database.cpp:2896
+        _apply_transaction\n\n    {\"trx\":{\"ref_block_num\":24287,\"ref_block_prefix\":3749369906,\"expiration\":\"2017-11-13T19:59:39\",\"operations\":[[\"vote\",{\"voter\":\"bittrex\",\"author\":\"author\",\"permlink\":\"permlink\",\"weight\":313}],[\"comment\",{\"parent_author\":\"author\",\"parent_permlink\":\"permlink\",\"author\":\"bittrex\",\"permlink\":\"re-author-permlink-20171113t194939983z\",\"title\":\"\",\"body\":\"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\\n\",\"json_metadata\":\"{\\\"tags\\\":[\\\"parent_permlink\\\"],\\\"app\\\":\\\"drotto/0.0.3rc1\\\"}\"}]],\"extensions\":[],\"signatures\":[\"1c1526c5d918543c2ab4b2d06b22e63fa62a54c1c0118259721cffec7c549cef726612cd5a2a7e191c526c9baf5945e3374c6844b77e867815327181d24ac10feb\"]}}\n    th_a  database.cpp:660
+        push_transaction\n\n    {\"call.method\":\"call\",\"call.params\":[\"network_broadcast_api\",\"broadcast_transaction_synchronous\",[{\"expiration\":\"2017-11-13T19:59:39\",\"ref_block_num\":24287,\"ref_block_prefix\":3749369906,\"operations\":[[\"vote\",{\"voter\":\"bittrex\",\"author\":\"author\",\"permlink\":\"permlink\",\"weight\":313}],[\"comment\",{\"parent_author\":\"author\",\"parent_permlink\":\"permlink\",\"author\":\"bittrex\",\"permlink\":\"re-author-permlink-20171113t194939983z\",\"title\":\"\",\"body\":\"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\\n\",\"json_metadata\":\"{\\\"tags\\\":[\\\"parent_permlink\\\"],\\\"app\\\":\\\"drotto/0.0.3rc1\\\"}\"}]],\"extensions\":[],\"signatures\":[\"1c1526c5d918543c2ab4b2d06b22e63fa62a54c1c0118259721cffec7c549cef726612cd5a2a7e191c526c9baf5945e3374c6844b77e867815327181d24ac10feb\"]}]]}\n    th_a  websocket_api.cpp:124
+        on_message","data":{"code":3030000,"name":"tx_missing_posting_auth","message":"missing
+        required posting authority","stack":[{"context":{"level":"error","file":"transaction.cpp","line":129,"method":"verify_authority","hostname":"","thread_name":"th_a","timestamp":"2017-11-13T19:49:41"},"format":"Missing
+        Posting Authority ${id}","data":{"id":"bittrex","posting":{"weight_threshold":1,"account_auths":[],"key_auths":[["STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF",1]]},"active":{"weight_threshold":1,"account_auths":[],"key_auths":[["STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF",1]]},"owner":{"weight_threshold":1,"account_auths":[],"key_auths":[["STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF",1]]}}},{"context":{"level":"warn","file":"transaction.cpp","line":172,"method":"verify_authority","hostname":"","thread_name":"th_a","timestamp":"2017-11-13T19:49:41"},"format":"","data":{"ops":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":313}],["comment",{"parent_author":"author","parent_permlink":"permlink","author":"bittrex","permlink":"re-author-permlink-20171113t194939983z","title":"","body":"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\n","json_metadata":"{\"tags\":[\"parent_permlink\"],\"app\":\"drotto/0.0.3rc1\"}"}]],"sigs":["STM5ctejUsoZ9FwfCaVbNvWYYgNMBo9TVsHSE8wHrqAmNJi6sDctt"]}},{"context":{"level":"warn","file":"transaction.cpp","line":285,"method":"verify_authority","hostname":"","thread_name":"th_a","timestamp":"2017-11-13T19:49:41"},"format":"","data":{"*this":{"ref_block_num":24287,"ref_block_prefix":3749369906,"expiration":"2017-11-13T19:59:39","operations":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":313}],["comment",{"parent_author":"author","parent_permlink":"permlink","author":"bittrex","permlink":"re-author-permlink-20171113t194939983z","title":"","body":"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\n","json_metadata":"{\"tags\":[\"parent_permlink\"],\"app\":\"drotto/0.0.3rc1\"}"}]],"extensions":[],"signatures":["1c1526c5d918543c2ab4b2d06b22e63fa62a54c1c0118259721cffec7c549cef726612cd5a2a7e191c526c9baf5945e3374c6844b77e867815327181d24ac10feb"]}}},{"context":{"level":"warn","file":"database.cpp","line":2896,"method":"_apply_transaction","hostname":"","thread_name":"th_a","timestamp":"2017-11-13T19:49:41"},"format":"","data":{"trx":{"ref_block_num":24287,"ref_block_prefix":3749369906,"expiration":"2017-11-13T19:59:39","operations":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":313}],["comment",{"parent_author":"author","parent_permlink":"permlink","author":"bittrex","permlink":"re-author-permlink-20171113t194939983z","title":"","body":"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\n","json_metadata":"{\"tags\":[\"parent_permlink\"],\"app\":\"drotto/0.0.3rc1\"}"}]],"extensions":[],"signatures":["1c1526c5d918543c2ab4b2d06b22e63fa62a54c1c0118259721cffec7c549cef726612cd5a2a7e191c526c9baf5945e3374c6844b77e867815327181d24ac10feb"]}}},{"context":{"level":"warn","file":"database.cpp","line":660,"method":"push_transaction","hostname":"","thread_name":"th_a","timestamp":"2017-11-13T19:49:41"},"format":"","data":{"trx":{"ref_block_num":24287,"ref_block_prefix":3749369906,"expiration":"2017-11-13T19:59:39","operations":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":313}],["comment",{"parent_author":"author","parent_permlink":"permlink","author":"bittrex","permlink":"re-author-permlink-20171113t194939983z","title":"","body":"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\n","json_metadata":"{\"tags\":[\"parent_permlink\"],\"app\":\"drotto/0.0.3rc1\"}"}]],"extensions":[],"signatures":["1c1526c5d918543c2ab4b2d06b22e63fa62a54c1c0118259721cffec7c549cef726612cd5a2a7e191c526c9baf5945e3374c6844b77e867815327181d24ac10feb"]}}},{"context":{"level":"warn","file":"websocket_api.cpp","line":124,"method":"on_message","hostname":"","thread_name":"th_a","timestamp":"2017-11-13T19:49:41"},"format":"","data":{"call.method":"call","call.params":["network_broadcast_api","broadcast_transaction_synchronous",[{"expiration":"2017-11-13T19:59:39","ref_block_num":24287,"ref_block_prefix":3749369906,"operations":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":313}],["comment",{"parent_author":"author","parent_permlink":"permlink","author":"bittrex","permlink":"re-author-permlink-20171113t194939983z","title":"","body":"<p>This
+        comment has received a 3.13 % upvote from @bittrex thanks to: @from, @from,
+        @from.</p>\n","json_metadata":"{\"tags\":[\"parent_permlink\"],\"app\":\"drotto/0.0.3rc1\"}"}]],"extensions":[],"signatures":["1c1526c5d918543c2ab4b2d06b22e63fa62a54c1c0118259721cffec7c549cef726612cd5a2a7e191c526c9baf5945e3374c6844b77e867815327181d24ac10feb"]}]]}}]}}}'
+    http_version: 
+  recorded_at: Mon, 13 Nov 2017 19:49:41 GMT
+recorded_with: VCR 3.0.3

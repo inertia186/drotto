@@ -12,8 +12,20 @@ module DrOtto
       default_value(:drotto_account_name) || config[:drotto][:account_name]
     end
     
+    def voter_account_name
+      default_value(:drotto_voter_account_name) || config[:drotto][:voter_account_name] || account_name
+    end
+    
+    def voting_power_account_name
+      default_value(:drotto_voting_power_account_name) || config[:drotto][:voting_power_account_name] || voter_account_name
+    end
+    
     def posting_wif
       default_value(:drotto_posting_wif) || config[:drotto][:posting_wif]
+    end
+    
+    def voting_wif
+      default_value(:drotto_voting_wif) || config[:drotto][:voting_wif] || posting_wif
     end
     
     def active_wif

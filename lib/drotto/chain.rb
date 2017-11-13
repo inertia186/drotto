@@ -20,12 +20,9 @@ module DrOtto
     end
     
     def voting_in_progress?
-      response = nil
-      with_api do |api|
-        response = api.get_accounts([account_name])
+      account = api.get_accounts([voter_account_name]) do |accounts|
+        accounts.first
       end
-      
-      account = response.result.first
       
       last_vote_time = Time.parse(account.last_vote_time + 'Z')
       elapsed = Time.now.utc - last_vote_time
@@ -37,7 +34,7 @@ module DrOtto
       return false if comment.nil?
       voters = comment.active_votes
       
-      if voters.map(&:voter).include? account_name
+      if voters.map(&:voter).include? voter_account_name
         debug "Already voted for: #{comment.author}/#{comment.permlink} (id: #{comment.id})"
         true
       else
@@ -176,6 +173,8 @@ module DrOtto
         bids = [max_bid]
       end
       
+      reset_vote_schedule
+      
       # Final pass, actual voting.
       bids.each do |bid|
         amount = bid[:amount].map{ |a| a.split(' ').first.to_f }.reduce(0, :+)
@@ -191,6 +190,8 @@ module DrOtto
         # We are using asynchronous voting because sometimes the blockchain
         # rejects votes that happen too quickly.
         thread = Thread.new do
+          sleep vote_schedule
+          
           from = bid[:from]
           author = bid[:author]
           permlink = bid[:permlink]
@@ -232,14 +233,38 @@ module DrOtto
               parent_author: author
             }
             
+            voting_tx = nil
             tx = Radiator::Transaction.new(chain_options.merge(wif: posting_wif))
             tx.operations << vote
             tx.operations << comment unless (no_comment & from).any?
             
+            if account_name != voter_account_name
+              voting_tx = Radiator::Transaction.new(chain_options.merge(wif: voting_wif))
+              voting_tx.operations << {
+                type: :vote,
+                voter: voter_account_name,
+                author: author,
+                permlink: permlink,
+                weight: effective_weight
+              }
+            end
+            
             response = nil
             
+            if !!voting_tx
+              begin
+                semaphore.synchronize do
+                  response = voting_tx.process(true)
+                end
+              rescue => e
+                warning "Unable to vote: #{e}", e
+                break
+              end
+            end
+            
+            info response unless response.nil?
+            
             begin
-              sleep Random.rand(3..20) # stagger procssing
               semaphore.synchronize do
                 response = tx.process(true)
               end
@@ -287,6 +312,12 @@ module DrOtto
               elsif message.to_s =~ /now < trx.expiration/
                 warning "Retrying vote/comment: now < trx.expiration (?)"
                 redo
+              elsif message.to_s =~ /transaction expiration exception/
+                warning "Retrying vote/comment: transaction expiration exception"
+                redo
+              elsif message.to_s =~ /!check_max_block_age( _max_block_age ):/
+                warning "Retrying vote/comment: !check_max_block_age( _max_block_age ):"
+                redo
               elsif message.to_s =~ /signature is not canonical/
                 warning "Retrying vote/comment: signature was not canonical (bug in Radiator?)"
                 redo
@@ -294,15 +325,20 @@ module DrOtto
             end
 
             if response.nil? || !!response.error
-              warning "Problem while voting.  Retrying with just vote: #{response}"
-              tx.operations = [vote]
-              
-              begin
-                semaphore.synchronize do
-                  response = tx.process(true)
+              if !!response && !!response.result && !!response.result.trx_id
+                warning "Problem while voting, but the transaction was found."
+                response.delete(:error)
+              else
+                warning "Problem while voting.  Retrying with just vote: #{response}"
+                tx.operations = [vote]
+                
+                begin
+                  semaphore.synchronize do
+                    response = tx.process(true)
+                  end
+                rescue => e
+                  error "Unable to vote: #{e}", e
                 end
-              rescue => e
-                error "Unable to vote: #{e}", e
               end
             end
             
@@ -319,12 +355,10 @@ module DrOtto
     end
     
     def current_voting_power
-      response = nil
-      with_api do |api|
-        response = api.get_accounts([account_name])
+      account = api.get_accounts([voting_power_account_name]) do |accounts|
+        accounts.first
       end
       
-      account = response.result.first
       voting_power = account.voting_power / 100.0
       last_vote_time = Time.parse(account.last_vote_time + 'Z')
       voting_elapse = Time.now.utc - last_vote_time
@@ -344,6 +378,19 @@ module DrOtto
       end
       
       current_voting_power
+    end
+    
+    def reset_vote_schedule
+      @last_vote_schedule = nil
+      @current_vote_schedule = nil
+    end
+    
+    def vote_schedule
+      @last_vote_schedule ||= 0.0
+      @current_vote_schedule ||= 0.0
+      @current__vote_schedule = @last_vote_schedule + 0.1
+      @current_vote_schedule += 20.0
+      @current_vote_schedule
     end
   end
 end

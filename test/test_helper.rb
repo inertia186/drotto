@@ -1,14 +1,8 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 
-if ENV["HELL_ENABLED"] || ENV['CODECLIMATE_REPO_TOKEN']
+if ENV["HELL_ENABLED"]
   require 'simplecov'
-  if ENV['CODECLIMATE_REPO_TOKEN']
-    require "codeclimate-test-reporter"
-    SimpleCov.start CodeClimate::TestReporter.configuration.profile
-    CodeClimate::TestReporter.start
-  else
-    SimpleCov.start
-  end
+  SimpleCov.start
   SimpleCov.merge_timeout 3600
 end
 
@@ -16,19 +10,16 @@ require 'drotto'
 
 require 'minitest/autorun'
 
-# require 'webmock/minitest'
+require 'webmock/minitest'
 require 'vcr'
 require 'yaml'
 require 'pry'
-require 'typhoeus/adapters/faraday'
 require 'securerandom'
 require 'delorean'
 
-if !!ENV['VCR']
-  VCR.configure do |c|
-    c.cassette_library_dir = 'test/fixtures/vcr_cassettes'
-    c.hook_into :webmock
-  end
+VCR.configure do |c|
+  c.cassette_library_dir = 'test/fixtures/vcr_cassettes'
+  c.hook_into :webmock
 end
 
 if ENV["HELL_ENABLED"]
@@ -47,9 +38,6 @@ if defined? WebMock
 end
 
 class DrOtto::Test < MiniTest::Test
-  def save filename, result
-    f = File.open("#{File.dirname(__FILE__)}/support/#{filename}", 'w+')
-    f.write(result)
-    f.close
-  end
+  # Most likely modes: 'once' and 'new_episodes'
+  VCR_RECORD_MODE = (ENV['VCR_RECORD_MODE'] || 'once').to_sym
 end

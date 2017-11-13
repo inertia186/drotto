@@ -1,0 +1,53 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://steemd.steemit.com/
+    body:
+      encoding: UTF-8
+      string: '{"jsonrpc":"2.0","params":["database_api","get_dynamic_global_properties",[]],"id":10,"method":"call"}'
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - radiator/0.3.12
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - '30'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 13 Nov 2017 19:49:42 GMT
+      Content-Length:
+      - '1044'
+      Connection:
+      - keep-alive
+      Server:
+      - nginx
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Headers:
+      - DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range
+      Strict-Transport-Security:
+      - max-age=31557600; includeSubDomains; preload
+    body:
+      encoding: UTF-8
+      string: '{"id":10,"result":{"id":0,"head_block_number":17194736,"head_block_id":"01065ef01ac5acb1182c3ba2712d889d35993152","time":"2017-11-13T19:49:42","current_witness":"anyx","total_pow":514415,"num_pow_witnesses":172,"virtual_supply":"263287985.378
+        STEEM","current_supply":"259541379.129 STEEM","confidential_supply":"0.000
+        STEEM","current_sbd_supply":"3338226.168 SBD","confidential_sbd_supply":"0.000
+        SBD","total_vesting_fund_steem":"191499175.765 STEEM","total_vesting_shares":"393371521732.839214
+        VESTS","total_reward_fund_steem":"0.000 STEEM","total_reward_shares2":"0","pending_rewarded_vesting_shares":"383781956.429675
+        VESTS","pending_rewarded_vesting_steem":"186138.787 STEEM","sbd_interest_rate":1,"sbd_print_rate":10000,"maximum_block_size":65536,"current_aslot":17255794,"recent_slots_filled":"340282366920938463463374607431768211455","participation_count":128,"last_irreversible_block_num":17194721,"vote_power_reserve_rate":10,"current_reserve_ratio":200000000,"average_block_size":8806,"max_virtual_bandwidth":"264241152000000000000"}}'
+    http_version: 
+  recorded_at: Mon, 13 Nov 2017 19:49:42 GMT
+recorded_with: VCR 3.0.3

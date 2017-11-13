@@ -4,12 +4,24 @@
   # producers and is thus irreversible!
   :block_mode: irreversible
   
-  # Account name for voting.
+  # Main account name.
   :account_name: social
+  
+  # Account to use for voting.  Use this if delegation is not supported or
+  # desired.  You can leave this unset to default to account_name.
+  :voter_account_name: social
+  
+  # Account to use for voting power calculations.  Use this if you want to
+  # regulate voting from an account other than the voter_account_name.  You can
+  # leave this unset to default to voter_account_name.
+  :voting_power_account_name: social
   
   # Posting wif is used to vote reply with a confirm comment.  See
   # `support/confirm.md` to customize confir comment.
   :posting_wif: 5JrvPrQeBBvCRdjv29iDvkwn3EQYZ9jqfAHzrCyUvfbEbRkrYFC
+  
+  # Use this if voter_account_name is set.  Defaults to posting_wif if not set.
+  :voting_wif: 5JrvPrQeBBvCRdjv29iDvkwn3EQYZ9jqfAHzrCyUvfbEbRkrYFC
   
   # Active wif is only used in bounce mode to return funds.  Please transfer
   # funds out of your wallet before using bounce mode.

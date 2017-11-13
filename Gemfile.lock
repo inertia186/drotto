@@ -27,7 +27,7 @@ GEM
       public_suffix (>= 2.0.2, < 4.0)
     arel (8.0.0)
     awesome_print (1.8.0)
-    bitcoin-ruby (0.0.11)
+    bitcoin-ruby (0.0.12)
     chronic (0.10.2)
     coderay (1.1.2)
     concurrent-ruby (1.0.5)
@@ -44,7 +44,7 @@ GEM
     hashie (3.5.6)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
-    i18n (0.9.0)
+    i18n (0.9.1)
       concurrent-ruby (~> 1.0)
     json (2.1.0)
     krang (0.0.1rc11)
@@ -70,11 +70,11 @@ GEM
     netrc (0.11.0)
     nokogiri (1.8.1)
       mini_portile2 (~> 2.3.0)
-    pry (0.11.1)
+    pry (0.11.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
-    public_suffix (3.0.0)
-    radiator (0.3.3)
+    public_suffix (3.0.1)
+    radiator (0.3.12)
       awesome_print (~> 1.7, >= 1.7.0)
       bitcoin-ruby (~> 0.0, >= 0.0.11)
       ffi (~> 1.9, >= 1.9.18)
@@ -82,7 +82,7 @@ GEM
       json (~> 2.0, >= 2.0.2)
       logging (~> 2.2, >= 2.2.0)
       net-http-persistent (>= 2.5.2)
-    rake (12.1.0)
+    rake (12.2.1)
     rdiscount (2.2.0.1)
     rest-client (2.0.2)
       http-cookie (>= 1.0.2, < 2.0)
@@ -103,7 +103,7 @@ GEM
     thread_safe (0.3.6)
     tiny_tds (1.3.0)
       mini_portile2 (~> 2.0)
-    tzinfo (1.2.3)
+    tzinfo (1.2.4)
       thread_safe (~> 0.1)
     unf (0.1.4)
       unf_ext
@@ -125,7 +125,7 @@ DEPENDENCIES
   drotto!
   minitest (~> 5.9, >= 5.9.0)
   minitest-line (~> 0.6.3)
-  minitest-proveit
+  minitest-proveit (~> 1.0, >= 1.0.0)
   pry (~> 0.11.1)
   rake (~> 12.1, >= 12.1.0)
   simplecov (~> 0.15.1)
@@ -134,4 +134,4 @@ DEPENDENCIES
   yard (~> 0.9.9)
 
 BUNDLED WITH
-   1.16.0.pre.1
+   1.16.0.pre.3

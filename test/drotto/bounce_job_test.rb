@@ -3,40 +3,54 @@ require 'test_helper'
 module DrOtto
   class DrOttoTest < DrOtto::Test
     def test_report
-      job = BounceJob.new(200)
-      assert job.perform(pretend: true)
+      VCR.use_cassette('report', record: VCR_RECORD_MODE) do
+        job = BounceJob.new(200)
+        assert job.perform(pretend: true)
+      end
     end
     
     def test_report_today
-      job = BounceJob.new('today')
-      
-      assert job.perform(pretend: true)
+      VCR.use_cassette('bounce_invalid', record: VCR_RECORD_MODE) do
+        job = BounceJob.new('report_today')
+        assert job.perform(pretend: true)
+      end
     end
     
     def test_stream
       count = 10
-      job = BounceJob.new(200)
-      assert_equal count, job.stream(count)
+      
+      VCR.use_cassette('stream', record: VCR_RECORD_MODE) do
+        job = BounceJob.new(200)
+        assert_equal count, job.stream(count)
+      end
     end
     
     def test_bounce
-      job = BounceJob.new(200)
-      assert job.bounce('from', 'amount', 'id')
+      VCR.use_cassette('bounce', record: VCR_RECORD_MODE) do
+        job = BounceJob.new(200)
+        assert job.bounce('from', 'amount', 'id')
+      end
     end
     
     def test_bounced?
-      job = BounceJob.new(200)
-      refute job.bounced?('id')
+      VCR.use_cassette('bounced', record: VCR_RECORD_MODE) do
+        job = BounceJob.new(200)
+        refute job.bounced?('id')
+      end
     end
     
     def test_force_bounce
-      job = BounceJob.new(200)
-      assert job.force_bounce!('7e501f74e1bdd8dae9cdd2030b74ffbe5cc83615')
+      VCR.use_cassette('force_bounce', record: VCR_RECORD_MODE) do
+        job = BounceJob.new(200)
+        assert job.force_bounce!('7e501f74e1bdd8dae9cdd2030b74ffbe5cc83615')
+      end
     end
     
     def test_force_bounce_invalid
-      job = BounceJob.new(200)
-      assert job.force_bounce!('WRONG')
+      VCR.use_cassette('bounce_invalid', record: VCR_RECORD_MODE) do
+        job = BounceJob.new(200)
+        assert job.force_bounce!('WRONG')
+      end
     end
     
     def test_bid_stacking_no_bounce

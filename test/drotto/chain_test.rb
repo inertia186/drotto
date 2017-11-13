@@ -15,23 +15,31 @@ module DrOtto
     end
     
     def test_properties
-      assert DrOtto.properties
-    end
-    
-    def test_properties_timeout
-      assert DrOtto.properties
-      
-      Delorean.jump 31 do
+      VCR.use_cassette('properties', record: VCR_RECORD_MODE) do
         assert DrOtto.properties
       end
     end
     
+    def test_properties_timeout
+      VCR.use_cassette('properties_timeout', record: VCR_RECORD_MODE) do
+        assert DrOtto.properties
+        
+        Delorean.jump 31 do
+          assert DrOtto.properties
+        end
+      end
+    end
+    
     def test_comment
-      refute_nil DrOtto.find_comment('inertia', 'macintosh-napintosh')
+      VCR.use_cassette('comment', record: VCR_RECORD_MODE) do
+        refute_nil DrOtto.find_comment('inertia', 'macintosh-napintosh')
+      end
     end
     
     def test_comment_bogus
-      assert_nil DrOtto.find_comment('bogus', 'bogus')
+      VCR.use_cassette('comment_bogus', record: VCR_RECORD_MODE) do
+        assert_nil DrOtto.find_comment('bogus', 'bogus')
+      end
     end
     
     def test_vote
@@ -79,17 +87,19 @@ module DrOtto
         trx_id: 'id'
       }
       
-      result = DrOtto.vote([bid1, bid2, bid3])
-      bids = result.keys
-      result.values.map { |thread| thread.join(1000) }
-      assert_equal 1, bids.size
-      assert_equal expected_stacked_bid[:from], bids.first[:from]
-      assert_equal expected_stacked_bid[:author], bids.first[:author]
-      assert_equal expected_stacked_bid[:permlink], bids.first[:permlink]
-      assert_equal expected_stacked_bid[:parent_permlink], bids.first[:parent_permlink]
-      assert_equal expected_stacked_bid[:amount], bids.first[:amount]
-      assert_equal expected_stacked_bid[:timestamp], bids.first[:timestamp]
-      assert_equal expected_stacked_bid[:trx_id], bids.first[:trx_id]
+      VCR.use_cassette('vote', record: VCR_RECORD_MODE) do
+        result = DrOtto.vote([bid1, bid2, bid3])
+        bids = result.keys
+        result.values.map { |thread| thread.join(1000) }
+        assert_equal 1, bids.size
+        assert_equal expected_stacked_bid[:from], bids.first[:from]
+        assert_equal expected_stacked_bid[:author], bids.first[:author]
+        assert_equal expected_stacked_bid[:permlink], bids.first[:permlink]
+        assert_equal expected_stacked_bid[:parent_permlink], bids.first[:parent_permlink]
+        assert_equal expected_stacked_bid[:amount], bids.first[:amount]
+        assert_equal expected_stacked_bid[:timestamp], bids.first[:timestamp]
+        assert_equal expected_stacked_bid[:trx_id], bids.first[:trx_id]
+      end
     end
     
     def test_vote_invalid
@@ -121,29 +131,39 @@ module DrOtto
         trx_id: 'id'
       }
       
-      result = DrOtto.vote([bid])
-      bids = result.keys
-      result.values.map { |thread| thread.join(1000) }
-      assert_equal 1, bids.size
+      VCR.use_cassette('vote_for_anonymous_bid', record: VCR_RECORD_MODE) do
+        result = DrOtto.vote([bid])
+        bids = result.keys
+        result.values.map { |thread| thread.join(1000) }
+        assert_equal 1, bids.size
+      end
     end
     
     def test_voted?
-      comment = DrOtto.find_comment('inertia', 'macintosh-napintosh')
-      refute DrOtto.voted?(comment)
+      VCR.use_cassette('voted', record: VCR_RECORD_MODE) do
+        comment = DrOtto.find_comment('inertia', 'macintosh-napintosh')
+        refute DrOtto.voted?(comment)
+      end
     end
     
     def test_can_vote?
-      comment = DrOtto.find_comment('inertia', 'macintosh-napintosh')
-      assert DrOtto.can_vote?(comment)
+      VCR.use_cassette('can_vote', record: VCR_RECORD_MODE) do
+        comment = DrOtto.find_comment('inertia', 'macintosh-napintosh')
+        assert DrOtto.can_vote?(comment)
+      end
     end
     
     def test_too_old?
-      comment = DrOtto.find_comment('inertia', 'macintosh-napintosh')
-      assert DrOtto.too_old?(comment)
+      VCR.use_cassette('too_old', record: VCR_RECORD_MODE) do
+        comment = DrOtto.find_comment('inertia', 'macintosh-napintosh')
+        assert DrOtto.too_old?(comment)
+      end
     end
     
     def test_current_voting_power
-      assert DrOtto.current_voting_power
+      VCR.use_cassette('current_voting_power', record: VCR_RECORD_MODE) do
+        assert DrOtto.current_voting_power
+      end
     end
   end
 end

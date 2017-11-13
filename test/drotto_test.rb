@@ -33,8 +33,10 @@ module DrOtto
       assert DrOtto.backoff
     end
     
-    def test_backoff
-      assert DrOtto.find_bids(0)
+    def test_find_bids
+      VCR.use_cassette('find_bids', record: VCR_RECORD_MODE) do
+        assert DrOtto.find_bids(0)
+      end
     end
   end
 end
