@@ -47,6 +47,11 @@ module DrOtto
       loop do
         begin
           api.get_blocks(starting_block..block_num) do |block, number|
+            unless defined? block.transactions
+              error "Blockchain does not provide transaction ids in blocks, giving up."
+              return -1
+            end
+              
             starting_block = number
             timestamp = block.timestamp
             block.transactions.each_with_index do |tx, index|
