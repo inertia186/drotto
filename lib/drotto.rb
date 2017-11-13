@@ -47,7 +47,7 @@ module DrOtto
       loop do
         begin
           api.get_blocks(starting_block..block_num) do |block, number|
-            unless defined? block.transactions
+            unless defined? block.transaction_ids
               error "Blockchain does not provide transaction ids in blocks, giving up."
               return -1
             end
