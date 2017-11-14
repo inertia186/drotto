@@ -260,9 +260,52 @@ module DrOtto
                 warning "Unable to vote: #{e}", e
                 break
               end
-            end
             
-            info response unless response.nil?
+              if !!response && !!response.error
+                message = response.error.message
+                if message.to_s =~ /You have already voted in a similar way./
+                  error "Failed vote: duplicate vote."
+                  break
+                elsif message.to_s =~ /Can only vote once every 3 seconds./
+                  warning "Retrying vote: voting too quickly."
+                  sleep Random.rand(3..6) # stagger retry
+                  redo
+                elsif message.to_s =~ /Voting weight is too small, please accumulate more voting power or steem power./
+                  error "Failed vote: voting weight too small"
+                  break
+                elsif message.to_s =~ /Vote weight cannot be 0/
+                  error "Failed vote: vote weight cannot be zero."
+                  break
+                elsif message.to_s =~ /STEEMIT_UPVOTE_LOCKOUT_HF17/
+                  error "Failed vote: upvote lockout (last twelve hours before payout)"
+                  if auto_bounce_on_lockout && !(no_bounce.include?(from))
+                    BounceJob.new.force_bounce!(bid[:trx_id])
+                  end
+                  break
+                elsif message.to_s =~ /missing required posting authority/
+                  error "Failed vote: Check posting key."
+                  break
+                elsif message.to_s =~ /unknown key/
+                  error "Failed vote: unknown key (testing?)"
+                  break
+                elsif message.to_s =~ /tapos_block_summary/
+                  warning "Retrying vote/comment: tapos_block_summary (?)"
+                  redo
+                elsif message.to_s =~ /now < trx.expiration/
+                  warning "Retrying vote/comment: now < trx.expiration (?)"
+                  redo
+                elsif message.to_s =~ /transaction expiration exception/
+                  warning "Retrying vote/comment: transaction expiration exception"
+                  redo
+                elsif message.to_s =~ /!check_max_block_age( _max_block_age ):/
+                  warning "Retrying vote/comment: !check_max_block_age( _max_block_age ):"
+                  redo
+                elsif message.to_s =~ /signature is not canonical/
+                  warning "Retrying vote/comment: signature was not canonical (bug in Radiator?)"
+                  redo
+                end
+              end
+            end
             
             begin
               semaphore.synchronize do
