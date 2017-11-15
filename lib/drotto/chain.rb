@@ -433,7 +433,7 @@ module DrOtto
     def vote_schedule
       @last_vote_schedule ||= 0.0
       @current_vote_schedule ||= 0.0
-      @current_vote_schedule = @last_vote_schedule + 0.1
+      @current_vote_schedule = @last_vote_schedule + 3.1
       @current_vote_schedule += 20.0
       @current_vote_schedule
     end
