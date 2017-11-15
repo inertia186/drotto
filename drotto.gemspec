@@ -33,4 +33,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'krang', '0.0.1rc11'
   spec.add_dependency 'rdiscount', '~> 2.2', '>= 2.2.0.1'
   spec.add_dependency 'steem_api', '~> 1.1', '>= 1.1.0'
+  spec.add_dependency 'golos_cloud'
 end

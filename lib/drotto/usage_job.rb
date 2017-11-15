@@ -1,4 +1,5 @@
 require 'steem_api'
+require 'golos_cloud'
 
 module DrOtto
   class UsageJob
@@ -10,7 +11,7 @@ module DrOtto
     end
     
     def perform(options = {})
-      unless chain_options[:chain] == 'steem'
+      unless ['steem', 'golos'].include? chain_options[:chain]
         warning "Usage data not available for #{chain_options[:chain]}.  Showing STEEM usage instead."
       end
       
@@ -18,7 +19,7 @@ module DrOtto
       d = (options[:days] || '30').to_i
       publish = options[:publish] || false
       
-      transfers = SteemApi::Tx::Transfer.where(to: a)
+      transfers = all_transfers.where(to: a)
       transfers = transfers.where('timestamp > ?', d.days.ago)
       
       bids = transfers.where('memo LIKE ?', '%@%') # looking for valid memos
@@ -26,7 +27,7 @@ module DrOtto
       bid_sums = bids.sum(:amount)
       bid_counts = bids.count
       
-      refunds = SteemApi::Tx::Transfer.where(from: a).where('memo LIKE ?', '%ID:%')
+      refunds = all_transfers.where(from: a).where('memo LIKE ?', '%ID:%')
       refunds = refunds.where('timestamp > ?', d.days.ago)
       refunds = refunds.group(:to)
       refund_sums = refunds.sum(:amount)
@@ -127,6 +128,14 @@ module DrOtto
       end
       
       print "|\n"
+    end
+    
+    def all_transfers
+      if chain_options[:chain] == 'steem'
+        SteemApi::Tx::Transfer
+      elsif chain_options[:chain] == 'golos'
+        GolosCloud::Tx::Transfer
+      end
     end
   end
 end
