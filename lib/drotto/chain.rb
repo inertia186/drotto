@@ -260,7 +260,7 @@ module DrOtto
                 warning "Unable to vote: #{e}", e
                 break
               end
-            
+              
               if !!response && !!response.error
                 message = response.error.message
                 if message.to_s =~ /You have already voted in a similar way./
@@ -303,6 +303,8 @@ module DrOtto
                 elsif message.to_s =~ /signature is not canonical/
                   warning "Retrying vote/comment: signature was not canonical (bug in Radiator?)"
                   redo
+                else
+                  info response
                 end
               end
             end
