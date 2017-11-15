@@ -303,11 +303,11 @@ module DrOtto
                 elsif message.to_s =~ /signature is not canonical/
                   warning "Retrying vote/comment: signature was not canonical (bug in Radiator?)"
                   redo
-                else
-                  info response
                 end
               end
             end
+            
+            info response unless response.nil?
             
             begin
               semaphore.synchronize do
