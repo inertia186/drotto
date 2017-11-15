@@ -98,7 +98,7 @@ module DrOtto
       from = op.from
       to = op.to
       amount = op.amount
-      memo = op.memo
+      memo = op.memo.strip
       
       next unless to == account_name
       

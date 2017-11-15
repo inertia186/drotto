@@ -67,7 +67,7 @@ module DrOtto
         from = op.from
         to = op.to
         amount = op.amount
-        memo = op.memo
+        memo = op.memo.strip
         timestamp = op.timestamp
           
         next unless to == account_name
@@ -152,7 +152,7 @@ module DrOtto
               from = op.from
               to = op.to
               amount = op.amount
-              memo = op.memo
+              memo = op.memo.strip
               
               next unless to == account_name
               next if no_bounce.include? from
@@ -318,7 +318,7 @@ module DrOtto
         from = op.from
         to = op.to
         amount = op.amount
-        memo = op.memo
+        memo = op.memo.strip
         timestamp = op.timestamp
           
         next unless to == account_name
@@ -406,7 +406,7 @@ module DrOtto
         next if !!@starting_block && trx.block < @starting_block
         
         if trx.op[0] == 'transfer'
-          slug = trx.op[1].memo
+          slug = trx.op[1].memo.strip
           next if slug.nil?
           
           author, permlink = parse_slug(slug) rescue [nil, nil]

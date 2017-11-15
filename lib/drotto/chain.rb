@@ -265,7 +265,7 @@ module DrOtto
                 message = response.error.message
                 if message.to_s =~ /You have already voted in a similar way./
                   error "Failed vote: duplicate vote."
-                  break
+                  # break
                 elsif message.to_s =~ /Can only vote once every 3 seconds./
                   warning "Retrying vote: voting too quickly."
                   sleep Random.rand(3..6) # stagger retry
