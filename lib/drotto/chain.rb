@@ -449,7 +449,8 @@ module DrOtto
       return false if @last_broadcast_block.nil?
       
       next_broadcast_block = @last_broadcast_block + 7
-      next_broadcast_block < properties.head_block_number
+      reset_properties
+      next_broadcast_block > properties.head_block_number
     end
   end
 end
