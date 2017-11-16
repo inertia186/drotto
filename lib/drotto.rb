@@ -48,6 +48,7 @@ module DrOtto
         begin
           api.get_blocks(starting_block..block_num) do |block, number|
             unless defined? block.transaction_ids
+              # Happens on Golos, see: https://github.com/GolosChain/golos/issues/281
               error "Blockchain does not provide transaction ids in blocks, giving up."
               return -1
             end
@@ -104,6 +105,7 @@ module DrOtto
       
       author, permlink = parse_slug(memo) rescue [nil, nil]
       next if author.nil? || permlink.nil?
+      permlink = normalize_permlink permlink
       comment = find_comment(author, permlink)
       next if comment.nil?
       

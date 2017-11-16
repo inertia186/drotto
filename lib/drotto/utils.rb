@@ -7,6 +7,11 @@ module DrOtto
     include Krang::Utils
     include Config
     
+    def normalize_permlink(permlink)
+      permlink = permlink.sub(/\/$/, '')
+      permlink = permlink.sub(/#comments$/, '')
+    end
+    
     def merge(options = {})
       comment_md = 'support/confirm.md'
       comment_body = if File.exist?(comment_md)

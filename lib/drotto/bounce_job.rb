@@ -79,6 +79,7 @@ module DrOtto
         
         author, permlink = parse_slug(memo) rescue [nil, nil]
         next if author.nil? || permlink.nil?
+        permlink = normalize_permlink permlink
         comment = find_comment(author, permlink)
         next if comment.nil?
         
@@ -165,6 +166,7 @@ module DrOtto
                 needs_bounce = true
               end
               
+              permlink = normalize_permlink permlink
               comment = find_comment(author, permlink)
               
               if comment.nil?
@@ -329,6 +331,7 @@ module DrOtto
           warning "Could not find author or permlink with memo: #{memo}"
         end
         
+        permlink = normalize_permlink permlink
         comment = find_comment(author, permlink)
         
         if comment.nil?

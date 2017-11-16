@@ -192,6 +192,11 @@ module DrOtto
         thread = Thread.new do
           sleep vote_schedule
           
+          while vote_latch
+            puts "Sleeping ..."
+            sleep 3
+          end
+          
           from = bid[:from]
           author = bid[:author]
           permlink = bid[:permlink]
@@ -389,6 +394,8 @@ module DrOtto
             
             info response unless response.nil?
             
+            @last_broadcast_block = response.result.block_num
+            
             break
           end
         end
@@ -428,14 +435,21 @@ module DrOtto
     def reset_vote_schedule
       @last_vote_schedule = nil
       @current_vote_schedule = nil
+      @last_vote_schedule = nil
     end
     
     def vote_schedule
       @last_vote_schedule ||= 0.0
       @current_vote_schedule ||= 0.0
-      @current_vote_schedule = @last_vote_schedule + 3.1
       @current_vote_schedule += 20.0
       @current_vote_schedule
+    end
+    
+    def vote_latch
+      return false if @last_broadcast_block.nil?
+      
+      next_broadcast_block = @last_broadcast_block + 7
+      next_broadcast_block < properties.head_block_number
     end
   end
 end
