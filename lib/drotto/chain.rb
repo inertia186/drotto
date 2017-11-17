@@ -192,10 +192,10 @@ module DrOtto
         thread = Thread.new do
           sleep vote_schedule
           
-          while vote_latch
-            puts "Sleeping ..."
-            sleep 3
-          end
+          # while vote_latch
+          #   puts "Sleeping ..."
+          #   sleep 3
+          # end
           
           from = bid[:from]
           author = bid[:author]
@@ -394,7 +394,7 @@ module DrOtto
             
             info response unless response.nil?
             
-            @last_broadcast_block = response.result.block_num
+            @last_broadcast_block = [@last_broadcast_block, response.result.block_num].max
             
             break
           end
