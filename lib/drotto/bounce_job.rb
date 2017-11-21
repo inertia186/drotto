@@ -306,6 +306,8 @@ module DrOtto
 
       init_transactions
       
+      return false if bounced?(trx_id)
+
       totals = {}
       transaction = Radiator::Transaction.new(chain_options.merge(wif: active_wif))
       
