@@ -163,29 +163,29 @@ module DrOtto
                 if author.nil? || permlink.nil?
                   debug "Bad memo.  Original memo: #{memo}"
                   needs_bounce = true
+                else
+                  permlink = normalize_permlink permlink
+                  comment = find_comment(author, permlink)
                 end
-                
-                permlink = normalize_permlink permlink
-                comment = find_comment(author, permlink)
                 
                 if comment.nil?
                   debug "No such comment.  Original memo: #{memo}"
                   needs_bounce = true
-                end
-                
-                if too_old?(comment)
-                  debug "Cannot vote, too old.  Original memo: #{memo}"
-                  needs_bounce = true
-                end
-                
-                if !allow_comment_bids && comment.parent_author != ''
-                  debug "Cannot vote for comment (slug: @#{comment.author}/#{comment.permlink})"
-                  needs_bounce = true
-                end
+                else
+                  if too_old?(comment)
+                    debug "Cannot vote, too old.  Original memo: #{memo}"
+                    needs_bounce = true
+                  end
+                  
+                  if !allow_comment_bids && comment.parent_author != ''
+                    debug "Cannot vote for comment (slug: @#{comment.author}/#{comment.permlink})"
+                    needs_bounce = true
+                  end
 
-                if !!comment && comment.author != author
-                  debug "Sanity check failed.  Comment author not the author parsed.  Original memo: #{memo}"
-                  needs_bounce = true
+                  if !!comment && comment.author != author
+                    debug "Sanity check failed.  Comment author not the author parsed.  Original memo: #{memo}"
+                    needs_bounce = true
+                  end
                 end
                 
                 # Final check.  Don't bounce if already bounced.  This should only
@@ -331,10 +331,10 @@ module DrOtto
         
         if author.nil? || permlink.nil?
           warning "Could not find author or permlink with memo: #{memo}"
+        else  
+          permlink = normalize_permlink permlink
+          comment = find_comment(author, permlink)
         end
-        
-        permlink = normalize_permlink permlink
-        comment = find_comment(author, permlink)
         
         if comment.nil?
           warning "Could not find comment with author and permlink: #{author}/#{permlink}"
