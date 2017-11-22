@@ -138,88 +138,88 @@ module DrOtto
       
       loop do
         begin
-          stream.transactions do |tx, id|
-            if id.to_s.size == 0
-              warning "Found transaction with no id.", detail: tx
-              next
-            end
-            
-            tx.operations.each do |type, op|
-              count = count + 1
-              return count if max_ops > 0 && max_ops <= count
-              next unless type == 'transfer'
-              needs_bounce = false
-              
-              from = op.from
-              to = op.to
-              amount = op.amount
-              memo = op.memo.strip
-              
-              next unless to == account_name
-              next if no_bounce.include? from
-              next if ignored?(amount)
-              
-              author, permlink = parse_slug(memo) rescue [nil, nil]
-              
-              if author.nil? || permlink.nil?
-                debug "Bad memo.  Original memo: #{memo}"
-                needs_bounce = true
-              end
-              
-              permlink = normalize_permlink permlink
-              comment = find_comment(author, permlink)
-              
-              if comment.nil?
-                debug "No such comment.  Original memo: #{memo}"
-                needs_bounce = true
-              end
-              
-              if too_old?(comment)
-                debug "Cannot vote, too old.  Original memo: #{memo}"
-                needs_bounce = true
-              end
-              
-              if !allow_comment_bids && comment.parent_author != ''
-                debug "Cannot vote for comment (slug: @#{comment.author}/#{comment.permlink})"
-                needs_bounce = true
-              end
+          stream.blocks do |block, block_num|
+            api.get_ops_in_block(block_num, false) do |ops, error|
+              ops.each do |op_data|
+                id = op_data.trx_id
+                type, op = op_data.op
+                
+                count = count + 1
+                return count if max_ops > 0 && max_ops <= count
+                next unless type == 'transfer'
+                needs_bounce = false
+                
+                from = op.from
+                to = op.to
+                amount = op.amount
+                memo = op.memo.strip
+                
+                next unless to == account_name
+                next if no_bounce.include? from
+                next if ignored?(amount)
+                
+                author, permlink = parse_slug(memo) rescue [nil, nil]
+                
+                if author.nil? || permlink.nil?
+                  debug "Bad memo.  Original memo: #{memo}"
+                  needs_bounce = true
+                end
+                
+                permlink = normalize_permlink permlink
+                comment = find_comment(author, permlink)
+                
+                if comment.nil?
+                  debug "No such comment.  Original memo: #{memo}"
+                  needs_bounce = true
+                end
+                
+                if too_old?(comment)
+                  debug "Cannot vote, too old.  Original memo: #{memo}"
+                  needs_bounce = true
+                end
+                
+                if !allow_comment_bids && comment.parent_author != ''
+                  debug "Cannot vote for comment (slug: @#{comment.author}/#{comment.permlink})"
+                  needs_bounce = true
+                end
 
-              if !!comment && comment.author != author
-                debug "Sanity check failed.  Comment author not the author parsed.  Original memo: #{memo}"
-                needs_bounce = true
-              end
-              
-              # Final check.  Don't bounce if already bounced.  This should only
-              # happen under a race condition (rarely).  So we hold off dumping
-              # the transactions in memory until we actually need to know.
-              if needs_bounce
-                @transactions = nil # dump
-                
-                if bounced?(id)
-                  debug "Already bounced transaction: #{id}"
-                  needs_bounce = false
+                if !!comment && comment.author != author
+                  debug "Sanity check failed.  Comment author not the author parsed.  Original memo: #{memo}"
+                  needs_bounce = true
                 end
-              end
-              
-              if needs_bounce
-                transaction = Radiator::Transaction.new(chain_options.merge(wif: active_wif))
-                transaction.operations << bounce(from, amount, id)
-                response = transaction.process(true)
                 
-                if !!response && !!response.error
-                  message = response.error.message
+                # Final check.  Don't bounce if already bounced.  This should only
+                # happen under a race condition (rarely).  So we hold off dumping
+                # the transactions in memory until we actually need to know.
+                if needs_bounce
+                  @transactions = nil # dump
                   
-                  if message.to_s =~ /missing required active authority/
-                    error "Failed transfer: Check active key."
+                  if bounced?(id)
+                    debug "Already bounced transaction: #{id}"
+                    needs_bounce = false
                   end
-                else
-                  debug "Bounced", response
                 end
                 
-                next
+                if needs_bounce
+                  transaction = Radiator::Transaction.new(chain_options.merge(wif: active_wif))
+                  transaction.operations << bounce(from, amount, id)
+                  response = transaction.process(true)
+                  
+                  if !!response && !!response.error
+                    message = response.error.message
+                    
+                    if message.to_s =~ /missing required active authority/
+                      error "Failed transfer: Check active key."
+                    end
+                  else
+                    debug "Bounced", response
+                  end
+                  
+                  next
+                end
+                  
+                info "Allowing #{amount} (original memo: #{memo})"
               end
-                
-              info "Allowing #{amount} (original memo: #{memo})"
             end
           end
         rescue => e
