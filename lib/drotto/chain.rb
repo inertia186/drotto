@@ -19,7 +19,11 @@ module DrOtto
       end
     end
     
+    # This method assumes that voting is in progress if current voting power has
+    # reached 100 % or the latest vote cast is less than one minute ago.
     def voting_in_progress?
+      return true if current_voting_power(log: false) == 100.0
+        
       account = api.get_accounts([voter_account_name]) do |accounts|
         accounts.first
       end
@@ -27,7 +31,7 @@ module DrOtto
       last_vote_time = Time.parse(account.last_vote_time + 'Z')
       elapsed = Time.now.utc - last_vote_time
       
-      elapsed < 300
+      elapsed < 60
     end
     
     def voted?(comment)
@@ -115,10 +119,32 @@ module DrOtto
         stacked_bids[bid[:author] => bid[:permlink]] ||= {}
         stacked_bid = stacked_bids[bid[:author] => bid[:permlink]]
         
+        amount = if bid[:amount].split(' ').last == minimum_bid_asset
+          bid[:amount]
+        else
+          a, amount_asset = bid[:amount].split(' ')
+          a = a.to_f
+          ratio = base_to_debt_ratio
+          
+          market_amount = case amount_asset
+          when 'STEEM', 'GOLOS'
+            "%.3f #{minimum_bid_asset}" % (a * ratio)
+          when 'SBD', 'GBG'
+            "%.3f #{minimum_bid_asset}" % (a / ratio)
+          else
+            error 'Unsupported asset for bid.', bid
+            "0.000 #{minimum_bid_asset}"
+          end
+          
+          info "Evaluating bid at #{bid[:amount]} as #{market_amount} (ratio: #{ratio})"
+          
+          market_amount
+        end
+        
         if stacked_bid.empty?
           stacked_bid[:trx_id] = bid[:trx_id]
           stacked_bid[:from] = [bid[:from]]
-          stacked_bid[:amount] = [bid[:amount]]
+          stacked_bid[:amount] = [amount]
           stacked_bid[:author] = bid[:author]
           stacked_bid[:permlink] = bid[:permlink]
           stacked_bid[:parent_permlink] = bid[:parent_permlink]
@@ -127,7 +153,7 @@ module DrOtto
           stacked_bid[:timestamp] = bid[:timestamp]
         else
           stacked_bid[:from] << bid[:from]
-          stacked_bid[:amount] << bid[:amount]
+          stacked_bid[:amount] << amount
         end
       end
       
@@ -394,7 +420,10 @@ module DrOtto
             
             info response unless response.nil?
             
-            @last_broadcast_block = [@last_broadcast_block, response.result.block_num].max
+            block_nums = []
+            block_nums << @last_broadcast_block.to_i if !!last_broadcast_block
+            block_nums << response.result.block_num.to_i if !!response.result
+            @last_broadcast_block = block_nums.max
             
             break
           end
@@ -406,7 +435,7 @@ module DrOtto
       result
     end
     
-    def current_voting_power
+    def current_voting_power(options = {log: true})
       account = api.get_accounts([voting_power_account_name]) do |accounts|
         accounts.first
       end
@@ -419,17 +448,45 @@ module DrOtto
       diff = current_voting_power - voting_power
       recharge = ((100.0 - current_voting_power) / VOTE_RECHARGE_PER_SEC) / 60
       
-      info "Remaining voting power: #{('%.2f' % current_voting_power)} % (recharged #{('%.2f' % diff)} % since last vote)"
+      if !!options[:log]
+        info "Remaining voting power: #{('%.2f' % current_voting_power)} % (recharged #{('%.2f' % diff)} % since last vote)"
       
-      if voting_elapse > 0 && recharge > 0
-        info "Last vote: #{voting_elapse.to_i / 60} minutes ago; #{('%.1f' % recharge)} minutes remain until 100.00 %"
-      else
-        if voting_elapse > 0
-          info "Last vote: #{voting_elapse.to_i / 60} minutes ago; #{('%.1f' % recharge.abs)} minutes of recharge power unused in 100.00 %"
+        if voting_elapse > 0 && recharge > 0
+          info "Last vote: #{voting_elapse.to_i / 60} minutes ago; #{('%.1f' % recharge)} minutes remain until 100.00 %"
+        else
+          if voting_elapse > 0
+            info "Last vote: #{voting_elapse.to_i / 60} minutes ago; #{('%.1f' % recharge.abs)} minutes of recharge power unused in 100.00 %"
+          end
         end
       end
       
       current_voting_power
+    end
+    
+    def base_to_debt_ratio
+      @last_base_to_debt_ratio = market_history_api.get_ticker do |ticker|
+        latest = ticker.latest.to_f
+        bid = ticker.highest_bid.to_f
+        ask = ticker.lowest_ask.to_f
+        [latest, bid, ask].reduce(0, :+) / 3.0
+      end
+    rescue => e
+      warning "Unable to query market data.", e
+      reset_market_history_api
+    ensure
+      @last_base_to_debt_ratio || 1.0
+    end
+    
+    def reset_market_history_api
+      @market_history_api = nil
+    end
+    
+    def market_history_api
+      @market_history_api ||= Radiator::MarketHistoryApi.new(chain_options)
+    end
+    
+    def accepted_asset?(amount)
+      ([minimum_bid_asset] + alternative_assets).include? amount.split(' ').last
     end
     
     def reset_vote_schedule

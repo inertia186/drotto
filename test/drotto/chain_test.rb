@@ -2,6 +2,31 @@ require 'test_helper'
 
 module DrOtto
   class ChainTest < DrOtto::Test
+    def setup
+      DrOtto.override_config(
+        drotto: {
+          block_mode: 'irreversible',
+          account_name: 'bittrex',
+          posting_wif: '5JrvPrQeBBvCRdjv29iDvkwn3EQYZ9jqfAHzrCyUvfbEbRkrYFC',
+          active_wif: '5JrvPrQeBBvCRdjv29iDvkwn3EQYZ9jqfAHzrCyUvfbEbRkrYFC',
+          batch_vote_weight: '3.13 %',
+          reserve_vote_weight: '0.00 %',
+          minimum_bid: '2.000 SBD',
+          max_effective_weight: '90.00 %',
+          alternative_assets: 'STEEM',
+          blacklist: 'mikethemug',
+          no_bounce: 'bittrex poloniex openledger',
+          no_comment: 'bittrex poloniex openledger',
+          no_comment_fee: '0.00 %'
+        }, chain_options: {
+          chain: 'steem',
+          url: 'https://steemd.steemit.com'
+        }
+      )
+      DrOtto.app_key :drotto
+      DrOtto.agent_id AGENT_ID
+    end
+    
     def test_reset_api
       assert_nil DrOtto.reset_api
     end
@@ -115,7 +140,9 @@ module DrOtto
       }
       
       assert_raises FloatDomainError do
-        refute_nil DrOtto.vote([bid])
+        VCR.use_cassette('vote_invalid', record: VCR_RECORD_MODE) do
+          refute_nil DrOtto.vote([bid])
+        end
       end
     end
     
@@ -136,6 +163,27 @@ module DrOtto
         bids = result.keys
         result.values.map { |thread| thread.join(1000) }
         assert_equal 1, bids.size
+      end
+    end
+    
+    def test_vote_with_base_asset
+      bid = {
+        from: 'from',
+        author: 'author',
+        permlink: 'permlink',
+        parent_permlink: 'parent_permlink',
+        parent_author: 'parent_author',
+        amount: '2.000 STEEM',
+        timestamp: 'timestamp',
+        trx_id: 'id'
+      }
+      
+      VCR.use_cassette('vote_with_base_asset', record: VCR_RECORD_MODE) do
+        result = DrOtto.vote([bid])
+        bids = result.keys
+        result.values.map { |thread| thread.join(1000) }
+        assert_equal 1, bids.size, 'expect base asset bid to be accepted at market rate'
+        assert_equal 'SBD', bids.last[:amount].last.split(' ').last, 'expect base asset bid to evaluate as debt asset'
       end
     end
     

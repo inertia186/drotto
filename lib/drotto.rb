@@ -112,7 +112,7 @@ module DrOtto
       next unless can_vote?(comment)
       next if too_old?(comment)
       next if voted?(comment)
-      next unless amount =~ / #{minimum_bid_asset}$/
+      next unless accepted_asset?(amount)
       next if amount.split(' ').first.to_f < minimum_bid_amount
       next if job.bounced?(id)
       

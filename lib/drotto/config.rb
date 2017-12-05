@@ -64,6 +64,10 @@ module DrOtto
       minimum_bid.split(' ').last
     end
     
+    def alternative_assets
+      (default_value(:drotto_alternative_assets) || config[:drotto][:alternative_assets] || '').split(' ')
+    end
+    
     def allow_comment_bids
       (default_value(:allow_comment_bids) || config[:drotto][:allow_comment_bids]).to_s == 'true'
     end

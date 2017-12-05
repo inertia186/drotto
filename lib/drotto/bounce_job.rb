@@ -19,22 +19,48 @@ module DrOtto
       
       response = nil
       
-      if @limit.to_i > 0
-        api.get_account_history(account_name, -@limit.to_i, @limit.to_i) do |history|
-          @transactions = history
+      limit = if @limit.to_i > 0
+        @limit.to_i
+      else
+        max_limit
+      end
+      
+      @transactions = []
+      count = 0
+      
+      if limit <= max_limit
+        response = api.get_account_history(account_name, -1, limit - 1)
+        
+        if !!response.error
+          error response.error
+        else
+          @transactions += response.result
         end
       else
-        api.get_account_history(account_name, -max_limit, max_limit) do |history|
-          @transactions = history
+        warning "Requested limit is greater than api allows.  Paging in #{limit / max_limit} chunks, which might take a while."
+        
+        while (from = (limit - @transactions.size)) > 0
+          response = api.get_account_history(account_name, from, [max_limit, limit].min - 1)
+          
+          if !!response.error
+            error response.error
+            break
+          end
+            
+          @transactions += response.result
         end
+        
+        @transactions = @transactions.uniq.reverse
       end
+      
+      debug "Transactions found: #{@transactions.size}"
       
       @memos = nil
     end
     
     def perform(pretend = false)
       
-      if voting_in_progress?
+      if voting_in_progress? && !pretend
         debug "Voting in progress, bounce suspended ..."
         sleep 60
         return
@@ -73,7 +99,7 @@ module DrOtto
         next unless to == account_name
         
         if id.to_s.size == 0
-          warning "Empty id for transaction.", detail: tx
+          warning "Empty id for transaction.", tx
           next
         end
         
@@ -119,6 +145,8 @@ module DrOtto
           error "Failed transfer: Check active key."
           
           return false
+        else
+          error "Unable to bounce", response.error
         end
       end
       
@@ -188,6 +216,15 @@ module DrOtto
                   end
                 end
                 
+                # If bids are accepted while voting is in progress, it's very
+                # likely they will not stack if there is currently a bid in the
+                # window.  It's better to just bounce everything until voting is
+                # finished.
+                if voting_in_progress?
+                  debug "Cannot accept bid because voting is currently in progress.  Original memo: #{memo}"
+                  needs_bounce = true
+                end
+                
                 # Final check.  Don't bounce if already bounced.  This should only
                 # happen under a race condition (rarely).  So we hold off dumping
                 # the transactions in memory until we actually need to know.
@@ -195,7 +232,6 @@ module DrOtto
                   @transactions = nil # dump
                   
                   if bounced?(id)
-                    debug "Already bounced transaction: #{id}"
                     needs_bounce = false
                   end
                 end
@@ -210,9 +246,11 @@ module DrOtto
                     
                     if message.to_s =~ /missing required active authority/
                       error "Failed transfer: Check active key."
+                    else
+                      error "Unable to bounce", response.error
                     end
                   else
-                    debug "Bounced", response
+                    info "Bounced #{amount} (original memo: #{memo})", response
                   end
                   
                   next
@@ -424,7 +462,7 @@ module DrOtto
     
     def max_limit
       if chain_options[:chain] == 'golos'
-        1000
+        2000
       else
         10000
       end

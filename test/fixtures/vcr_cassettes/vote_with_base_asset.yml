@@ -1,0 +1,200 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://steemd.steemit.com/
+    body:
+      encoding: UTF-8
+      string: '{"jsonrpc":"2.0","params":["market_history_api","get_ticker",[]],"id":1,"method":"call"}'
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - radiator/0.3.15
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - '30'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 05 Dec 2017 21:19:16 GMT
+      Content-Length:
+      - '223'
+      Connection:
+      - keep-alive
+      Server:
+      - nginx
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Headers:
+      - DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range
+      Strict-Transport-Security:
+      - max-age=31557600; includeSubDomains; preload
+    body:
+      encoding: UTF-8
+      string: '{"id":1,"result":{"latest":"0.54832411324438657","lowest_ask":"0.54823999999999995","highest_bid":"0.54720060256088376","percent_change":"-10.09795013096176142","steem_volume":"15427.729
+        STEEM","sbd_volume":"8806.047 SBD"}}'
+    http_version: 
+  recorded_at: Tue, 05 Dec 2017 21:19:16 GMT
+- request:
+    method: post
+    uri: https://steemd.steemit.com/
+    body:
+      encoding: UTF-8
+      string: '{"jsonrpc":"2.0","params":["database_api","get_dynamic_global_properties",[]],"id":1,"method":"call"}'
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - radiator/0.3.15
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 05 Dec 2017 21:19:36 GMT
+      Content-Length:
+      - '1050'
+      Connection:
+      - keep-alive
+      Server:
+      - nginx
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Headers:
+      - DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range
+      Strict-Transport-Security:
+      - max-age=31557600; includeSubDomains; preload
+    body:
+      encoding: UTF-8
+      string: '{"id":1,"result":{"id":0,"head_block_number":17829870,"head_block_id":"01100fee88812d0f4eec3c56c22b77b6245354ab","time":"2017-12-05T21:19:36","current_witness":"blocktrades","total_pow":514415,"num_pow_witnesses":172,"virtual_supply":"263623406.152
+        STEEM","current_supply":"260807932.903 STEEM","confidential_supply":"0.000
+        STEEM","current_sbd_supply":"3527787.982 SBD","confidential_sbd_supply":"0.000
+        SBD","total_vesting_fund_steem":"192960523.806 STEEM","total_vesting_shares":"395927211481.774008
+        VESTS","total_reward_fund_steem":"0.000 STEEM","total_reward_shares2":"0","pending_rewarded_vesting_shares":"407361156.177316
+        VESTS","pending_rewarded_vesting_steem":"197686.854 STEEM","sbd_interest_rate":0,"sbd_print_rate":10000,"maximum_block_size":65536,"current_aslot":17891192,"recent_slots_filled":"340282366920938463463374607431768211455","participation_count":128,"last_irreversible_block_num":17829848,"vote_power_reserve_rate":10,"current_reserve_ratio":200000000,"average_block_size":8317,"max_virtual_bandwidth":"264241152000000000000"}}'
+    http_version: 
+  recorded_at: Tue, 05 Dec 2017 21:19:36 GMT
+- request:
+    method: post
+    uri: https://steemd.steemit.com/
+    body:
+      encoding: UTF-8
+      string: '{"jsonrpc":"2.0","params":["database_api","get_block",[17829848]],"id":2,"method":"call"}'
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - radiator/0.3.15
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 05 Dec 2017 21:19:36 GMT
+      Content-Length:
+      - '10379'
+      Connection:
+      - keep-alive
+      Server:
+      - nginx
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Headers:
+      - DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range
+      Strict-Transport-Security:
+      - max-age=31557600; includeSubDomains; preload
+    body:
+      encoding: UTF-8
+      string: '{"id":2,"result":{"previous":"01100fd7400cd3a400e41b575d1f375928fadb39","timestamp":"2017-12-05T21:18:30","witness":"pfunk","transaction_merkle_root":"652f7af6f9f7d48e45499094e6446725dc6d713f","extensions":[],"witness_signature":"20578a0aa6c1dbdeaed40a0b0a337f0832de62bda8d363c6b99c880adad00e74c65df778b8bfa001eef6ebc33b0d7acaa48788524995d5dc660a1f9958ea6b6486","transactions":[{"ref_block_num":4033,"ref_block_prefix":3633889225,"expiration":"2017-12-05T21:28:24","operations":[["vote",{"voter":"artizm","author":"gecko-design","permlink":"20171205t211712542z-post","weight":10000}]],"extensions":[],"signatures":["206777300608841d8dc9a1d9dcdfde0653c1d2c83af8ec4deca46cbca943de5c895bfb53b343d3a77bce3bbb8153d2fcab4df861386c71ecb20b7526e5c8886bbe"]},{"ref_block_num":4033,"ref_block_prefix":3633889225,"expiration":"2017-12-05T21:28:24","operations":[["vote",{"voter":"lays","author":"cervantes","permlink":"el-debate-cervantil","weight":10000}]],"extensions":[],"signatures":["206851eb7fd7ff22ae67f37ba215b38c6a6f9184ed31f205226b96a2559cff25f33572e4aeea2aaff5d0d5aef3424259e4de7f45fbbf368c062ba0ad9680ce8386"]},{"ref_block_num":4054,"ref_block_prefix":167372565,"expiration":"2017-12-05T21:19:07","operations":[["vote",{"voter":"raulp","author":"moisesmcardona","permlink":"aukey-car-qqc-3","weight":500}]],"extensions":[],"signatures":["1f171bfb39a7c751896fed3e57f884f0944640fdceedb293efd9e8b670627dae6060a43974d621ba9b915596a6b21601671b215a7468a27d86c5b11b4ae2b5120a"]},{"ref_block_num":4051,"ref_block_prefix":2236850346,"expiration":"2017-12-05T21:19:24","operations":[["vote",{"voter":"mbiketov","author":"kolushek","permlink":"decrescendo-camisole-pikeun-ngaleutikan-ka-chebotariu-ka-meredit","weight":10000}]],"extensions":[],"signatures":["1f02b2993af6aa3806719b581e0c6461e14f4197d015fe1e881271d019a7594de566d810edcb144790844af0564efd1d56bc7958fa42ed77afebed0f2504d8dc50"]},{"ref_block_num":4054,"ref_block_prefix":167372565,"expiration":"2017-12-05T21:18:54","operations":[["vote",{"voter":"thundersam","author":"steempickem","permlink":"3bhzpa-x-nfl-monday-night-football-contest-or-winner-announced-or-congratulations","weight":7500}]],"extensions":[],"signatures":["1f4d671c3ae597692aaf72aa676fcc40ec9db6a266a3b446e820a9b32bba356a9909503cc6d4d3e0069a79fd2d7f42a55780863e7d9f5a98e807063c341760b563"]},{"ref_block_num":4051,"ref_block_prefix":2236850346,"expiration":"2017-12-05T21:19:24","operations":[["vote",{"voter":"vladimirovn","author":"chernolaz","permlink":"khong-on-dinh-truyen-thong-soi-rocaille","weight":10000}]],"extensions":[],"signatures":["1f785340b58397b6ae7a2553d0ff5e28e739f6713356b86e494f564cbb5a57a8f362f6781785a29d822090f2c8babea14bdd6a06a5e4bf39decf29af3e88b37747"]},{"ref_block_num":4051,"ref_block_prefix":2236850346,"expiration":"2017-12-05T21:19:24","operations":[["vote",{"voter":"podgorka","author":"mchenko","permlink":"to-speak-pointing-the-intimidation-evade-har","weight":10000}]],"extensions":[],"signatures":["2079b02a43d06ee6e67ba0c74c7dd53a6af11e22f5a2dd6c79bec4a9b3f31d00442634cdb4ec2abc6a294710daccf304badc5288a7f3b90db5ebc4014a122799c8"]},{"ref_block_num":4033,"ref_block_prefix":3633889225,"expiration":"2017-12-05T21:28:27","operations":[["vote",{"voter":"transhuman","author":"hamzayousaf","permlink":"my-first-visit-to-naran-kaghan-siri-paye-and-lake-saif-ul-mulook","weight":6557}]],"extensions":[],"signatures":["1b14e413d04abf593426c928d08afca11ac3d51a12cffa7c41bdbe8956df166e576737836567c3a6238195de378e03ec817a432dec0d0bc9769c455f679a601517"]},{"ref_block_num":4033,"ref_block_prefix":3633889225,"expiration":"2017-12-05T21:28:24","operations":[["vote",{"voter":"indominon","author":"mariandavp","permlink":"desperation-degradation-office-art-by-mariandavo","weight":10000}]],"extensions":[],"signatures":["20590394eb9cc1178d6a56189d807db9c7e59c505d363258c8ef7af0601694545f455eaf87ad0e0120c3aaed9a94520491084d890914fa99d74f594a3e4c282ca1"]},{"ref_block_num":4033,"ref_block_prefix":3633889225,"expiration":"2017-12-05T21:28:27","operations":[["claim_reward_balance",{"account":"paulhallman","reward_steem":"0.000
+        STEEM","reward_sbd":"3.577 SBD","reward_vests":"7126.728646 VESTS"}]],"extensions":[],"signatures":["1f5da50d057cdc8150c22bee88a50b069707adf347e5df137404fe47cd0f0b241661d46916672413748f971fa496e339f94f47334c4514e0f29e0aecb00333958d"]},{"ref_block_num":4033,"ref_block_prefix":3633889225,"expiration":"2017-12-05T21:28:27","operations":[["comment",{"parent_author":"catfacts","parent_permlink":"re-rexlito-catfacts-re-rexlito-meme-20171205t211705810z","author":"rexlito","permlink":"re-catfacts-re-rexlito-catfacts-re-rexlito-meme-20171205t211826480z","title":"","body":"Wow!
+        Wow!","json_metadata":"{\"tags\":[\"dmania\"],\"app\":\"steemit/0.1\"}"}]],"extensions":[],"signatures":["1f1c8329b87015cb2af93e3c24ce24d535e1a489daabe8f8912ab5908b56523dcf395bf5013bb3fd0b6fe68f3575961aa559ce338f0ff2064d54b6a821341bf61e"]},{"ref_block_num":4033,"ref_block_prefix":3633889225,"expiration":"2017-12-05T21:28:27","operations":[["vote",{"voter":"moneyofthefuture","author":"bitcoinmining","permlink":"charlie-shrem-among-the-first-to-apologize-over-segwit2x-bitcoin-fork","weight":10000}]],"extensions":[],"signatures":["1f2de5ac50f58c5462a92b1f430a070a7dfb9f24b9af1939ab2f9b02e9d1dcb33e4207f1aa32140d09a2bff29d5bc5cad55c86ff72850ea50117489ff46e24dc29"]},{"ref_block_num":4052,"ref_block_prefix":694245722,"expiration":"2017-12-05T21:19:27","operations":[["vote",{"voter":"iltyush","author":"peletavskiy","permlink":"co-gia-tri-lima-de-man-plyugavenky-de-tranh-de-zabalzagaray-th","weight":10000}]],"extensions":[],"signatures":["2068e93c75fcde9f641c0cb0637a95e0d9c0747441130e4ddd42d2ca95b269f2bb26547137c4942b6131e89bbe380137b668a3fca53a256ba8dcb5eca9fadcc2cc"]},{"ref_block_num":4052,"ref_block_prefix":694245722,"expiration":"2017-12-05T21:19:27","operations":[["vote",{"voter":"askinayan","author":"glagolens","permlink":"ban-pulpaper-surcoat-de-pomenyat-phytin-rong-di-dan-duong-s","weight":10000}]],"extensions":[],"signatures":["1f36ae3040078581453df536cfb59e938c3d772532279589e5be7b67b326d8227f39d0bdb3219e5a53b8beddf5aeddf1593201656558e8be0b25d32f34c6336fc0"]},{"ref_block_num":4052,"ref_block_prefix":694245722,"expiration":"2017-12-05T21:19:27","operations":[["vote",{"voter":"gromo","author":"shustev","permlink":"antipanicescoe-con-gai-de-tuong-trung-cho-su-day-le-ky-niem-xau","weight":10000}]],"extensions":[],"signatures":["1f4165aafd7e9f53dfabfe4d1a292169e2680ee50f9769b95c0606f411a1d74cb04032132d0e9a3492765f4006eae9deaa997b1471d5fa0610e352fff997be651b"]},{"ref_block_num":4033,"ref_block_prefix":3633889225,"expiration":"2017-12-05T21:28:27","operations":[["vote",{"voter":"bitcoinportugal","author":"me-tarzan","permlink":"re-me-tarzan-4ehwc4-bitcoin-bid-to-buy-steem-numbers-in-a-sideways-pattern-need-to-break-above-98-20171205t200420169z","weight":10000}]],"extensions":[],"signatures":["2056417718af85312a82f37af200611ca75fbff50ba438777c49051c699d4bbf6b2a36fe6086e7f6c8dd35584568ed8036a0ce86dfbe0216f7c1eec73cd3fcd8ea"]},{"ref_block_num":4033,"ref_block_prefix":3633889225,"expiration":"2017-12-05T21:28:27","operations":[["vote",{"voter":"paulspujats","author":"dan","permlink":"inter-blockchain-communication-via-merkle-proofs-with-eos-io","weight":10000}]],"extensions":[],"signatures":["2064e9185b61c14d74236cbb699d8d6ee81609209d17d960e3dfe015575b4400b673e0fdaa93c40ece868cd4ec85d5250788cd29ef0b00a226f162b170b3b1e873"]},{"ref_block_num":4033,"ref_block_prefix":3633889225,"expiration":"2017-12-05T21:28:24","operations":[["comment",{"parent_author":"sanjeevm","parent_permlink":"international-sand-art-festival-chandrabhaga-beach-konark-odisha","author":"hungry-nomad","permlink":"re-sanjeevm-international-sand-art-festival-chandrabhaga-beach-konark-odisha-20171205t211825788z","title":"","body":"Loved
+        it. A newbie here from Bangalore. Please do follow. Thanks.","json_metadata":"{\"tags\":[\"blog\"],\"app\":\"steemit/0.1\"}"}]],"extensions":[],"signatures":["1f22183f62680aa2c28c85e6464de5734991d715b16f116187948b133771574fa622500b3396528e2419a0279dd0a3f224b2faee4a1237eab7217d286778dcef22"]},{"ref_block_num":4052,"ref_block_prefix":694245722,"expiration":"2017-12-05T21:19:27","operations":[["vote",{"voter":"litsinevs","author":"asenko","permlink":"ngu-trua-la-khong-the-de-thi-tham-chet-nhan-van-cung-giong-nhu","weight":10000}]],"extensions":[],"signatures":["1f2734bde4f13e18833d90745944772cf916c3fd7fbe5699b306156cd8cc1ed1ea71a97bd9ae46c3932b47dfafa3654294959ab728bc974a6da7d9523563d19f57"]},{"ref_block_num":4052,"ref_block_prefix":694245722,"expiration":"2017-12-05T21:19:27","operations":[["vote",{"voter":"culkovnich","author":"gebesht","permlink":"can-ve-vang-may-tinh-xach-tay-doi-dien-me-thay-cua-nen-staminode-steklosektor","weight":10000}]],"extensions":[],"signatures":["1f3470b94db6d5c19dbb3705fed7bfc771aca6c05224abe06154cf858db060b7fc6f7882c9cb1e6a6629f23f8e9f77d235d2bcdf2b162386b68782358b74d2be96"]},{"ref_block_num":4052,"ref_block_prefix":694245722,"expiration":"2017-12-05T21:19:27","operations":[["vote",{"voter":"romanpega","author":"gromos","permlink":"ararateul-poconos-oratorical-satiety-nginum-tempat-nyieun-atawa-ngale","weight":10000}]],"extensions":[],"signatures":["204ef15d376ad3617213a63d5bbd81cc4f5fbf104e65da1de5ab018f39e76d8d954d59e039a9133723873ebeb76b25b7d5563ed2d4c0835de6b2ba9f65600efa40"]}],"block_id":"01100fd87d884b8f31558d35e2d9d98e45a9faa7","signing_key":"STM6GcZkfF2rNWwNUmhDCmfLZTpdfMgQDAcAvvGL4MZ7iNVapAVkT","transaction_ids":["99e22fc0e37e91be7c92f98439770ef52d7710f4","bd5dfafc333b676325ea2b84e25034f83569a2f4","b11b35e022ce1eb4999fef5c69e7e84bc80b515a","d71f4d1f30cac7edbada8d27c650698f85d7d5d7","4ee005624ea4315e6fe5fc31f564523100a4975a","4c24dfbd0ed5f31052217a72c065cfda5f0b4ea5","9b964a735e91ebf72a836e52487a99dc2138515d","5643a320b3e5c563ec7f27b916d037d0b33b344c","f4bdc233cf63fdde97316c7476b019bd5d03b218","9d3a4b640f5bde32a85abc75b8446cb56604b986","f1891fb344216c38cd2373a6944106d03f0f2ee9","892160f29ca2e20eae7cc444b2e30691fbb5d877","5f26e6179416e3828ad6ff753b0797f548e04621","ce5e9f470d4a507025b77b4dd7113c334ffe4191","942927279451b15693888908d006a78d7ee6bc67","877842e43905d9b74984ba17732a02d5eaaac94f","f771f8585ac9894c59716abf4ab83445152fc880","bf566c4b5a979984a4da7d46ddd6bf9ced5dc440","3e570412046a047afbe805de71e9b456785f627f","a79c5d6120045006c546b4ee825373cceee25c3f","bb850507df46ffa4d68bd64224eb12519090be9e"]}}'
+    http_version: 
+  recorded_at: Tue, 05 Dec 2017 21:19:36 GMT
+- request:
+    method: post
+    uri: https://steemd.steemit.com/
+    body:
+      encoding: UTF-8
+      string: '{"jsonrpc":"2.0","params":["network_broadcast_api","broadcast_transaction_synchronous",[{"expiration":"2017-12-05T21:29:36","ref_block_num":4055,"ref_block_prefix":2765294656,"operations":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":171}],["comment",{"parent_author":"author","parent_permlink":"permlink","author":"bittrex","permlink":"re-author-permlink-20171205t211936101z","title":"","body":"<p>This
+        comment has received a 1.72 % upvote from @bittrex thanks to: @from.</p>\n","json_metadata":"{\"tags\":[\"parent_permlink\"],\"app\":\"drotto/0.0.3rc1\"}"}]],"extensions":[],"signatures":["1c485c51cd41a4d5305e657b683dde3d79bbd33aa308d0071c5d1f14d4e61e5a6640d6ce2d9f4cf5ce929d114b2fb13c53f3910bc9e028d1eab8b0bf86aeef25c9"]}]],"id":1,"method":"call"}'
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - radiator/0.3.15
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 05 Dec 2017 21:19:37 GMT
+      Content-Length:
+      - '9477'
+      Connection:
+      - keep-alive
+      Server:
+      - nginx
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Headers:
+      - DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range
+      Strict-Transport-Security:
+      - max-age=31557600; includeSubDomains; preload
+    body:
+      encoding: UTF-8
+      string: '{"id":1,"error":{"code":1,"message":"3030000 tx_missing_posting_auth:
+        missing required posting authority\nMissing Posting Authority bittrex\n    {\"id\":\"bittrex\",\"posting\":{\"weight_threshold\":1,\"account_auths\":[],\"key_auths\":[[\"STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF\",1]]},\"active\":{\"weight_threshold\":1,\"account_auths\":[],\"key_auths\":[[\"STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF\",1]]},\"owner\":{\"weight_threshold\":1,\"account_auths\":[],\"key_auths\":[[\"STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF\",1]]}}\n    th_a  transaction.cpp:129
+        verify_authority\n\n    {\"ops\":[[\"vote\",{\"voter\":\"bittrex\",\"author\":\"author\",\"permlink\":\"permlink\",\"weight\":171}],[\"comment\",{\"parent_author\":\"author\",\"parent_permlink\":\"permlink\",\"author\":\"bittrex\",\"permlink\":\"re-author-permlink-20171205t211936101z\",\"title\":\"\",\"body\":\"<p>This
+        comment has received a 1.72 % upvote from @bittrex thanks to: @from.</p>\\n\",\"json_metadata\":\"{\\\"tags\\\":[\\\"parent_permlink\\\"],\\\"app\\\":\\\"drotto/0.0.3rc1\\\"}\"}]],\"sigs\":[\"STM5ctejUsoZ9FwfCaVbNvWYYgNMBo9TVsHSE8wHrqAmNJi6sDctt\"]}\n    th_a  transaction.cpp:172
+        verify_authority\n\n    {\"*this\":{\"ref_block_num\":4055,\"ref_block_prefix\":2765294656,\"expiration\":\"2017-12-05T21:29:36\",\"operations\":[[\"vote\",{\"voter\":\"bittrex\",\"author\":\"author\",\"permlink\":\"permlink\",\"weight\":171}],[\"comment\",{\"parent_author\":\"author\",\"parent_permlink\":\"permlink\",\"author\":\"bittrex\",\"permlink\":\"re-author-permlink-20171205t211936101z\",\"title\":\"\",\"body\":\"<p>This
+        comment has received a 1.72 % upvote from @bittrex thanks to: @from.</p>\\n\",\"json_metadata\":\"{\\\"tags\\\":[\\\"parent_permlink\\\"],\\\"app\\\":\\\"drotto/0.0.3rc1\\\"}\"}]],\"extensions\":[],\"signatures\":[\"1c485c51cd41a4d5305e657b683dde3d79bbd33aa308d0071c5d1f14d4e61e5a6640d6ce2d9f4cf5ce929d114b2fb13c53f3910bc9e028d1eab8b0bf86aeef25c9\"]}}\n    th_a  transaction.cpp:285
+        verify_authority\n\n    {\"trx\":{\"ref_block_num\":4055,\"ref_block_prefix\":2765294656,\"expiration\":\"2017-12-05T21:29:36\",\"operations\":[[\"vote\",{\"voter\":\"bittrex\",\"author\":\"author\",\"permlink\":\"permlink\",\"weight\":171}],[\"comment\",{\"parent_author\":\"author\",\"parent_permlink\":\"permlink\",\"author\":\"bittrex\",\"permlink\":\"re-author-permlink-20171205t211936101z\",\"title\":\"\",\"body\":\"<p>This
+        comment has received a 1.72 % upvote from @bittrex thanks to: @from.</p>\\n\",\"json_metadata\":\"{\\\"tags\\\":[\\\"parent_permlink\\\"],\\\"app\\\":\\\"drotto/0.0.3rc1\\\"}\"}]],\"extensions\":[],\"signatures\":[\"1c485c51cd41a4d5305e657b683dde3d79bbd33aa308d0071c5d1f14d4e61e5a6640d6ce2d9f4cf5ce929d114b2fb13c53f3910bc9e028d1eab8b0bf86aeef25c9\"]}}\n    th_a  database.cpp:2896
+        _apply_transaction\n\n    {\"trx\":{\"ref_block_num\":4055,\"ref_block_prefix\":2765294656,\"expiration\":\"2017-12-05T21:29:36\",\"operations\":[[\"vote\",{\"voter\":\"bittrex\",\"author\":\"author\",\"permlink\":\"permlink\",\"weight\":171}],[\"comment\",{\"parent_author\":\"author\",\"parent_permlink\":\"permlink\",\"author\":\"bittrex\",\"permlink\":\"re-author-permlink-20171205t211936101z\",\"title\":\"\",\"body\":\"<p>This
+        comment has received a 1.72 % upvote from @bittrex thanks to: @from.</p>\\n\",\"json_metadata\":\"{\\\"tags\\\":[\\\"parent_permlink\\\"],\\\"app\\\":\\\"drotto/0.0.3rc1\\\"}\"}]],\"extensions\":[],\"signatures\":[\"1c485c51cd41a4d5305e657b683dde3d79bbd33aa308d0071c5d1f14d4e61e5a6640d6ce2d9f4cf5ce929d114b2fb13c53f3910bc9e028d1eab8b0bf86aeef25c9\"]}}\n    th_a  database.cpp:660
+        push_transaction\n\n    {\"call.method\":\"call\",\"call.params\":[\"network_broadcast_api\",\"broadcast_transaction_synchronous\",[{\"expiration\":\"2017-12-05T21:29:36\",\"ref_block_num\":4055,\"ref_block_prefix\":2765294656,\"operations\":[[\"vote\",{\"voter\":\"bittrex\",\"author\":\"author\",\"permlink\":\"permlink\",\"weight\":171}],[\"comment\",{\"parent_author\":\"author\",\"parent_permlink\":\"permlink\",\"author\":\"bittrex\",\"permlink\":\"re-author-permlink-20171205t211936101z\",\"title\":\"\",\"body\":\"<p>This
+        comment has received a 1.72 % upvote from @bittrex thanks to: @from.</p>\\n\",\"json_metadata\":\"{\\\"tags\\\":[\\\"parent_permlink\\\"],\\\"app\\\":\\\"drotto/0.0.3rc1\\\"}\"}]],\"extensions\":[],\"signatures\":[\"1c485c51cd41a4d5305e657b683dde3d79bbd33aa308d0071c5d1f14d4e61e5a6640d6ce2d9f4cf5ce929d114b2fb13c53f3910bc9e028d1eab8b0bf86aeef25c9\"]}]]}\n    th_a  websocket_api.cpp:124
+        on_message","data":{"code":3030000,"name":"tx_missing_posting_auth","message":"missing
+        required posting authority","stack":[{"context":{"level":"error","file":"transaction.cpp","line":129,"method":"verify_authority","hostname":"","thread_name":"th_a","timestamp":"2017-12-05T21:19:37"},"format":"Missing
+        Posting Authority ${id}","data":{"id":"bittrex","posting":{"weight_threshold":1,"account_auths":[],"key_auths":[["STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF",1]]},"active":{"weight_threshold":1,"account_auths":[],"key_auths":[["STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF",1]]},"owner":{"weight_threshold":1,"account_auths":[],"key_auths":[["STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF",1]]}}},{"context":{"level":"warn","file":"transaction.cpp","line":172,"method":"verify_authority","hostname":"","thread_name":"th_a","timestamp":"2017-12-05T21:19:37"},"format":"","data":{"ops":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":171}],["comment",{"parent_author":"author","parent_permlink":"permlink","author":"bittrex","permlink":"re-author-permlink-20171205t211936101z","title":"","body":"<p>This
+        comment has received a 1.72 % upvote from @bittrex thanks to: @from.</p>\n","json_metadata":"{\"tags\":[\"parent_permlink\"],\"app\":\"drotto/0.0.3rc1\"}"}]],"sigs":["STM5ctejUsoZ9FwfCaVbNvWYYgNMBo9TVsHSE8wHrqAmNJi6sDctt"]}},{"context":{"level":"warn","file":"transaction.cpp","line":285,"method":"verify_authority","hostname":"","thread_name":"th_a","timestamp":"2017-12-05T21:19:37"},"format":"","data":{"*this":{"ref_block_num":4055,"ref_block_prefix":2765294656,"expiration":"2017-12-05T21:29:36","operations":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":171}],["comment",{"parent_author":"author","parent_permlink":"permlink","author":"bittrex","permlink":"re-author-permlink-20171205t211936101z","title":"","body":"<p>This
+        comment has received a 1.72 % upvote from @bittrex thanks to: @from.</p>\n","json_metadata":"{\"tags\":[\"parent_permlink\"],\"app\":\"drotto/0.0.3rc1\"}"}]],"extensions":[],"signatures":["1c485c51cd41a4d5305e657b683dde3d79bbd33aa308d0071c5d1f14d4e61e5a6640d6ce2d9f4cf5ce929d114b2fb13c53f3910bc9e028d1eab8b0bf86aeef25c9"]}}},{"context":{"level":"warn","file":"database.cpp","line":2896,"method":"_apply_transaction","hostname":"","thread_name":"th_a","timestamp":"2017-12-05T21:19:37"},"format":"","data":{"trx":{"ref_block_num":4055,"ref_block_prefix":2765294656,"expiration":"2017-12-05T21:29:36","operations":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":171}],["comment",{"parent_author":"author","parent_permlink":"permlink","author":"bittrex","permlink":"re-author-permlink-20171205t211936101z","title":"","body":"<p>This
+        comment has received a 1.72 % upvote from @bittrex thanks to: @from.</p>\n","json_metadata":"{\"tags\":[\"parent_permlink\"],\"app\":\"drotto/0.0.3rc1\"}"}]],"extensions":[],"signatures":["1c485c51cd41a4d5305e657b683dde3d79bbd33aa308d0071c5d1f14d4e61e5a6640d6ce2d9f4cf5ce929d114b2fb13c53f3910bc9e028d1eab8b0bf86aeef25c9"]}}},{"context":{"level":"warn","file":"database.cpp","line":660,"method":"push_transaction","hostname":"","thread_name":"th_a","timestamp":"2017-12-05T21:19:37"},"format":"","data":{"trx":{"ref_block_num":4055,"ref_block_prefix":2765294656,"expiration":"2017-12-05T21:29:36","operations":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":171}],["comment",{"parent_author":"author","parent_permlink":"permlink","author":"bittrex","permlink":"re-author-permlink-20171205t211936101z","title":"","body":"<p>This
+        comment has received a 1.72 % upvote from @bittrex thanks to: @from.</p>\n","json_metadata":"{\"tags\":[\"parent_permlink\"],\"app\":\"drotto/0.0.3rc1\"}"}]],"extensions":[],"signatures":["1c485c51cd41a4d5305e657b683dde3d79bbd33aa308d0071c5d1f14d4e61e5a6640d6ce2d9f4cf5ce929d114b2fb13c53f3910bc9e028d1eab8b0bf86aeef25c9"]}}},{"context":{"level":"warn","file":"websocket_api.cpp","line":124,"method":"on_message","hostname":"","thread_name":"th_a","timestamp":"2017-12-05T21:19:37"},"format":"","data":{"call.method":"call","call.params":["network_broadcast_api","broadcast_transaction_synchronous",[{"expiration":"2017-12-05T21:29:36","ref_block_num":4055,"ref_block_prefix":2765294656,"operations":[["vote",{"voter":"bittrex","author":"author","permlink":"permlink","weight":171}],["comment",{"parent_author":"author","parent_permlink":"permlink","author":"bittrex","permlink":"re-author-permlink-20171205t211936101z","title":"","body":"<p>This
+        comment has received a 1.72 % upvote from @bittrex thanks to: @from.</p>\n","json_metadata":"{\"tags\":[\"parent_permlink\"],\"app\":\"drotto/0.0.3rc1\"}"}]],"extensions":[],"signatures":["1c485c51cd41a4d5305e657b683dde3d79bbd33aa308d0071c5d1f14d4e61e5a6640d6ce2d9f4cf5ce929d114b2fb13c53f3910bc9e028d1eab8b0bf86aeef25c9"]}]]}}]}}}'
+    http_version: 
+  recorded_at: Tue, 05 Dec 2017 21:19:37 GMT
+recorded_with: VCR 3.0.3

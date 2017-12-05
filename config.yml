@@ -17,7 +17,7 @@
   :voting_power_account_name: social
   
   # Posting wif is used to vote reply with a confirm comment.  See
-  # `support/confirm.md` to customize confir comment.
+  # `support/confirm.md` to customize the confirmation comment.
   :posting_wif: 5JrvPrQeBBvCRdjv29iDvkwn3EQYZ9jqfAHzrCyUvfbEbRkrYFC
   
   # Use this if voter_account_name is set.  Defaults to posting_wif if not set.
@@ -58,6 +58,10 @@
   
   # Minimum bid amount.
   :minimum_bid: 2.000 SBD
+  
+  # List of alternative assets to allow by using current market rate reported by
+  # the Market History API.
+  # :alternative_assets: STEEM
   
   # Set this true to allow bids for comments as well as root posts.
   :allow_comment_bids: false
