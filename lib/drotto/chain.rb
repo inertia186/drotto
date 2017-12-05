@@ -421,7 +421,7 @@ module DrOtto
             info response unless response.nil?
             
             block_nums = []
-            block_nums << @last_broadcast_block.to_i if !!last_broadcast_block
+            block_nums << @last_broadcast_block.to_i if !!@last_broadcast_block
             block_nums << response.result.block_num.to_i if !!response.result
             @last_broadcast_block = block_nums.max
             
