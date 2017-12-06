@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    drotto (0.0.3rc1)
+    drotto (0.0.3rc2)
       golos_cloud
       krang (= 0.0.1rc11)
       rdiscount (~> 2.2, >= 2.2.0.1)
