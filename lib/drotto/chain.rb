@@ -101,9 +101,6 @@ module DrOtto
     end
     
     def vote(bids)
-      # First, we need a total of all bids for this batch.  This will be used to
-      # figure out how much each bid is allocated.
-      total = bids.map { |bid| bid[:amount].split(' ').first.to_f }.reduce(0, :+)
       result = {}
       
       # Vote stacking is where multiple bids are created for the same post.  Any
@@ -162,6 +159,15 @@ module DrOtto
           a.split(' ').first.to_f
         end.reduce(0, :+)
       end.reverse
+      
+      # First, we need a total of all bids for this batch.  This will be used to
+      # figure out how much each bid is allocated.
+      total = bids.map do |bid|
+        bid[:amount].map do |a|
+          a.split(' ').first.to_f
+        end.reduce(0, :+)
+      end.reduce(0, :+)
+      puts "*** #{total}"
       
       start = Time.now.utc.to_i
       total_weight = reserve_vote_weight
