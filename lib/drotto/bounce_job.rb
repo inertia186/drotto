@@ -62,7 +62,7 @@ module DrOtto
       
       if voting_in_progress? && !pretend
         debug "Voting in progress, bounce suspended ..."
-        sleep 60
+        sleep 120
         return
       end
       
@@ -232,6 +232,16 @@ module DrOtto
                   @transactions = nil # dump
                   
                   if bounced?(id)
+                    needs_bounce = false
+                  end
+                  
+                  # This is tricky.  On the one hand, we don't want to bounce a
+                  # bid that just got a vote.  But on the other hand, we want
+                  # to bounce bids that were rebid by accident, even if# they
+                  # got votes.  That's why the stream default is to only
+                  # consider the last 200 operations.
+                  
+                  if already_voted?(author, permlink)
                     needs_bounce = false
                   end
                 end

@@ -31,7 +31,7 @@ module DrOtto
       last_vote_time = Time.parse(account.last_vote_time + 'Z')
       elapsed = Time.now.utc - last_vote_time
       
-      elapsed < 60
+      elapsed < 120
     end
     
     def voted?(comment)
@@ -233,6 +233,11 @@ module DrOtto
           info "Voting for #{author}/#{permlink} with a coefficnent of #{coeff}."
         
           loop do
+            if BounceJob.new.bounced?(bid[:trx_id])
+              warning "Bid was bounce just before voting: @#{author}/#{permlink}"
+              break
+            end
+            
             elapsed = Time.now.utc.to_i - start
             break if (base_block_span * 3) < elapsed
             
