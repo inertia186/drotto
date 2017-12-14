@@ -71,7 +71,7 @@ task :run_once do
   DrOtto.run_once
 end
 
-desc 'Returns the current state of the bot.'
+desc 'Returns the current state of the bot.  Can be used by external scripts to see if the bot has stopped voting.'
 task :state do
   DrOtto.state
 end

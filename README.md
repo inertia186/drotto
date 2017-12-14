@@ -166,6 +166,15 @@ Also accepts a limit argument.
 $ rake report[10000]
 ```
 
+##### State Check
+
+The `state` task will return an error code to the shell of `-1` if the current voting power of the bot has reached 100 %.  If voting power is less than 100 %, it returns `0` to the shell.  This can be used by external tools to detect configuration problems.
+
+```
+$ rake state
+$ echo $?
+```
+
 ---
 
 #### Upgrade

@@ -202,7 +202,17 @@ module DrOtto
   end
   
   def state
-    current_voting_power
+    error_state = 0
+    
+    begin
+      error_state = -1 if current_voting_power == 100.0
+    rescue => e
+      error "Unable to check current state: #{e}", backtrace: e.backtrace
+      
+      error_state = -2
+    ensure
+      exit(error_state)
+    end
   end
   
   def usage(options = {})
