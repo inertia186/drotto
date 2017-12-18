@@ -442,6 +442,11 @@ module DrOtto
       if !!options[:use_api]
         comment = find_comment(author, permlink)
         
+        if comment.nil?
+          warning "Couldn't find @#{author}/#{permlink} with api."
+          return true
+        end
+        
         !!comment.active_votes.find { |v| v.voter == voter_account_name }
       else
       @transactions.each do |index, trx|
