@@ -237,11 +237,11 @@ module DrOtto
                   
                   # This is tricky.  On the one hand, we don't want to bounce a
                   # bid that just got a vote.  But on the other hand, we want
-                  # to bounce bids that were rebid by accident, even if# they
+                  # to bounce bids that were rebid by accident, even if they
                   # got votes.  That's why the stream default is to only
                   # consider the last 200 operations.
                   
-                  if already_voted?(author, permlink)
+                  if already_voted?(author, permlink, use_api: true)
                     needs_bounce = false
                   end
                 end
@@ -438,12 +438,18 @@ module DrOtto
       response
     end
     
-    def already_voted?(author, permlink)
+    def already_voted?(author, permlink, options = {})
+      if !!options[:use_api]
+        comment = find_comment(author, permlink)
+        
+        !!comment.active_votes.find { |v| v.voter == voter_account_name }
+      else
       @transactions.each do |index, trx|
         return true if trx.op[0] == 'vote' && trx.op[1].author == author && trx.op[1].permlink == permlink
       end
       
       false
+    end
     end
     
     def transfer(trx_id)
