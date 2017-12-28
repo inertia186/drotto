@@ -167,7 +167,6 @@ module DrOtto
           a.split(' ').first.to_f
         end.reduce(0, :+)
       end.reduce(0, :+)
-      puts "*** #{total}"
       
       start = Time.now.utc.to_i
       total_weight = reserve_vote_weight

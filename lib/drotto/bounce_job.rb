@@ -243,6 +243,8 @@ module DrOtto
                   
                   if already_voted?(author, permlink, use_api: true)
                     needs_bounce = false
+                  elsif trx_ids_for_memo(author, permlink).size < 2
+                    needs_bounce = false
                   end
                 end
                 
@@ -375,6 +377,11 @@ module DrOtto
           
         next unless to == account_name
         
+        if no_bounce.include? from
+          warning "Won't bounce #{from} (in no_bounce list)."
+          next
+        end
+        
         author, permlink = parse_slug(memo) rescue [nil, nil]
         
         if author.nil? || permlink.nil?
@@ -455,6 +462,17 @@ module DrOtto
       
       false
     end
+    end
+    
+    def trx_ids_for_memo(author, permlink)
+      memo = "@#{author}/#{permlink}"
+      trx_ids = @transactions.map do |index, trx|
+        trx if trx.op[0] == 'transfer' && trx.op[1].memo.include?(memo)
+      end.compact
+      
+      debug "Transfers for memo #{memo}: #{trx_ids.size}"
+      
+      trx_ids
     end
     
     def transfer(trx_id)

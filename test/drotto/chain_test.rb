@@ -20,7 +20,8 @@ module DrOtto
           no_comment_fee: '0.00 %'
         }, chain_options: {
           chain: 'steem',
-          url: 'https://steemd.steemit.com'
+          url: 'https://api.steemit.com',
+          fallback_urls: ['https://api.steemit.com']
         }
       )
       DrOtto.app_key :drotto
