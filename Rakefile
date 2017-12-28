@@ -80,3 +80,8 @@ desc 'Check usage for the last 7 days.  Pass account name and number of days as 
 task :usage, :account_name, :days do |t, args|
   DrOtto.usage(args)
 end
+
+desc 'Audit bidder.'
+task :audit_bidder, :account_name, :bidder, :symbol, :days do |t, args|
+  DrOtto.audit_bidder(args)
+end

@@ -12,6 +12,7 @@ module DrOtto
   require 'drotto/chain'
   require 'drotto/bounce_job'
   require 'drotto/usage_job'
+  require 'drotto/audit_bidder_job'
   
   include Chain
   
@@ -217,5 +218,9 @@ module DrOtto
   
   def usage(options = {})
     UsageJob.new.perform(options)
+  end
+  
+  def audit_bidder(options = {})
+    AuditBidderJob.new.perform(options)
   end
 end
