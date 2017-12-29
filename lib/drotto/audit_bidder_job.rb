@@ -20,7 +20,7 @@ module DrOtto
       symbol = options[:symbol] || minimum_bid_asset
       days_ago = (options[:days] || '7').to_f.days.ago.utc
       
-      transfers = SteemApi::Tx::Transfer.where(amount_symbol: symbol).
+      transfers = all_transfers.where(amount_symbol: symbol).
         where('timestamp > ?', days_ago)
       bids = transfers.where(to: account_name).
         where('[TxTransfers].[from] LIKE ?', bidder)
@@ -41,6 +41,14 @@ module DrOtto
       elapsed = (Time.now.utc - days_ago).to_f / 60 / 60 / 24
       net_sum = bids_sum - bounces_sum
       puts "Net: #{net_sum} #{symbol} (#{'%.3f' % (net_sum / elapsed)} #{symbol} per day)"
+    end
+    
+    def all_transfers
+      if chain_options[:chain] == 'steem'
+        SteemApi::Tx::Transfer
+      elsif chain_options[:chain] == 'golos'
+        GolosCloud::Tx::Transfer
+      end
     end
   end
 end
