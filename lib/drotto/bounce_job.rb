@@ -221,8 +221,14 @@ module DrOtto
                 # window.  It's better to just bounce everything until voting is
                 # finished.
                 if voting_in_progress?
-                  debug "Cannot accept bid because voting is currently in progress.  Original memo: #{memo}"
+                  @transactions = nil # dump
+                  
+                  if trx_ids_for_memo(author, permlink).size < 2
+                    debug "Voting is currently in progress, delaying bid until next window.  Original memo: #{memo}"
+                  else
+                    debug "Cannot accept attempted stacked bid because voting is currently in progress.  Original memo: #{memo}"
                   needs_bounce = true
+                end
                 end
                 
                 # Final check.  Don't bounce if already bounced.  This should only
@@ -242,8 +248,6 @@ module DrOtto
                   # consider the last 200 operations.
                   
                   if already_voted?(author, permlink, use_api: true)
-                    needs_bounce = false
-                  elsif trx_ids_for_memo(author, permlink).size < 2
                     needs_bounce = false
                   end
                 end
@@ -464,7 +468,10 @@ module DrOtto
     end
     end
     
+    # This will help located pending stacked bids.
     def trx_ids_for_memo(author, permlink)
+      init_transactions if @transactions.nil?
+      
       memo = "@#{author}/#{permlink}"
       trx_ids = @transactions.map do |index, trx|
         trx if trx.op[0] == 'transfer' && trx.op[1].memo.include?(memo)
