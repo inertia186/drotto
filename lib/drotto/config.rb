@@ -48,6 +48,10 @@ module DrOtto
       (default_value(:drotto_batch_vote_weight) || (config[:drotto][:batch_vote_weight]).to_f * 100).to_i
     end
     
+    def flag_prefix
+      default_value(:flag_prefix) || config[:drotto][:flag_prefix]
+    end
+    
     def reserve_vote_weight
       ((default_value(:drotto_reserve_vote_weight) || config[:drotto][:reserve_vote_weight]).to_f * 100).to_i
     end

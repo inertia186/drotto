@@ -10,6 +10,7 @@ module DrOtto
           posting_wif: '5JrvPrQeBBvCRdjv29iDvkwn3EQYZ9jqfAHzrCyUvfbEbRkrYFC',
           active_wif: '5JrvPrQeBBvCRdjv29iDvkwn3EQYZ9jqfAHzrCyUvfbEbRkrYFC',
           batch_vote_weight: '3.13 %',
+          flag_prefix: '!!!',
           reserve_vote_weight: '0.00 %',
           minimum_bid: '2.000 SBD',
           max_effective_weight: '90.00 %',
@@ -185,6 +186,30 @@ module DrOtto
         result.values.map { |thread| thread.join(1000) }
         assert_equal 1, bids.size, 'expect base asset bid to be accepted at market rate'
         assert_equal 'SBD', bids.last[:amount].last.split(' ').last, 'expect base asset bid to evaluate as debt asset'
+      end
+    end
+    
+    
+    def test_flag_with_base_asset
+      bid = {
+        from: 'from',
+        author: 'author',
+        permlink: 'permlink',
+        parent_permlink: 'parent_permlink',
+        parent_author: 'parent_author',
+        amount: '2.000 STEEM',
+        timestamp: 'timestamp',
+        invert_vote_weight: true,
+        trx_id: 'id'
+      }
+      
+      VCR.use_cassette('flag_with_base_asset', record: VCR_RECORD_MODE) do
+        result = DrOtto.vote([bid])
+        bids = result.keys
+        result.values.map { |thread| thread.join(1000) }
+        assert_equal 1, bids.size, 'expect base asset bid to be accepted at market rate'
+        assert_equal 'SBD', bids.last[:amount].last.split(' ').last, 'expect base asset bid to evaluate as debt asset'
+        assert_equal true, bids.last[:invert_vote_weight].last, 'expect invert_vote_weight flag to be set'
       end
     end
     

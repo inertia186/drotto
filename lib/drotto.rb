@@ -127,6 +127,12 @@ module DrOtto
         info "Bid from #{from} for #{amount}."
       end
       
+      invert_vote_weight = if flag_prefix.nil?
+        false
+      else
+        memo =~ /^#{flag_prefix}.*/
+      end
+      
       bids << {
         from: from,
         author: author,
@@ -135,6 +141,7 @@ module DrOtto
         parent_author: comment.parent_author,
         amount: amount,
         timestamp: timestamp,
+        invert_vote_weight: invert_vote_weight,
         trx_id: id
       }
     end

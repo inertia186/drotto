@@ -142,6 +142,7 @@ module DrOtto
           stacked_bid[:trx_id] = bid[:trx_id]
           stacked_bid[:from] = [bid[:from]]
           stacked_bid[:amount] = [amount]
+          stacked_bid[:invert_vote_weight] = [bid[:invert_vote_weight]]
           stacked_bid[:author] = bid[:author]
           stacked_bid[:permlink] = bid[:permlink]
           stacked_bid[:parent_permlink] = bid[:parent_permlink]
@@ -151,6 +152,7 @@ module DrOtto
         else
           stacked_bid[:from] << bid[:from]
           stacked_bid[:amount] << amount
+          stacked_bid[:invert_vote_weight] << bid[:invert_vote_weight]
         end
       end
       
@@ -178,6 +180,12 @@ module DrOtto
         amount = bid[:amount].map{ |a| a.split(' ').first.to_f }.reduce(0, :+)
         coeff = (amount.to_f / total.to_f)
         effective_weight = (weight = batch_vote_weight * coeff).to_i.abs
+        
+        if bid[:invert_vote_weight].uniq.size > 1
+          info "Removing bid from #{bid[:from].join(', ')}, in-window-flag-war detected."
+          total -= amount.to_f
+          next
+        end
         
         if effective_weight < min_effective_weight
           # Bid didn't meet min_effective_weight, remove it from the total so it
@@ -209,8 +217,10 @@ module DrOtto
       # Final pass, actual voting.
       bids.each do |bid|
         amount = bid[:amount].map{ |a| a.split(' ').first.to_f }.reduce(0, :+)
+        invert_vote_weight = bid[:invert_vote_weight].uniq.last
         coeff = (amount.to_f / total.to_f)
         effective_weight = (weight = batch_vote_weight * coeff).to_i
+        weight = invert_vote_weight ? -weight : weight
         
         total_weight += effective_weight
         break if total_weight > batch_vote_weight.abs
@@ -235,7 +245,11 @@ module DrOtto
           parent_author = bid[:parent_author]
           timestamp = bid[:timestamp]
             
-          info "Voting for #{author}/#{permlink} with a coefficnent of #{coeff}."
+          if invert_vote_weight
+            info "Flagging #{author}/#{permlink} with a coefficnent of #{coeff}."
+          else
+            info "Voting for #{author}/#{permlink} with a coefficnent of #{coeff}."
+          end
         
           loop do
             if BounceJob.new.bounced?(bid[:trx_id])
@@ -251,7 +265,7 @@ module DrOtto
               voter: account_name,
               author: author,
               permlink: permlink,
-              weight: effective_weight
+              weight: invert_vote_weight ? -effective_weight : effective_weight
             }
             
             merge_options = {
@@ -286,7 +300,7 @@ module DrOtto
                 voter: voter_account_name,
                 author: author,
                 permlink: permlink,
-                weight: effective_weight
+                weight: invert_vote_weight ? -effective_weight : effective_weight
               }
             end
             
