@@ -40,7 +40,7 @@
   
   # If present at the beginning of the transfer memo, vote weight will be
   # inverted into a flag.
-  # :flag_prefix: !!!
+  # :flag_prefix: '!!!'
   
   # When calculating a window, a bid will be ignored if it doesn't reach this
   # minimum.  If 0.00 %, all bids are accepted no matter how little they impact
