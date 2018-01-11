@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    drotto (0.0.3rc4)
+    drotto (0.0.3)
       golos_cloud
       krang (= 0.0.1rc11)
       rdiscount (~> 2.2, >= 2.2.0.1)
@@ -71,7 +71,7 @@ GEM
       minitest (~> 5.0)
     minitest-proveit (1.0.0)
       minitest (> 5, < 7)
-    multi_json (1.12.2)
+    multi_json (1.13.1)
     net-http-persistent (3.0.0)
       connection_pool (~> 2.2)
     netrc (0.11.0)
@@ -116,7 +116,7 @@ GEM
       unf_ext
     unf_ext (0.0.7.4)
     vcr (3.0.3)
-    webmock (3.2.0)
+    webmock (3.2.1)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff

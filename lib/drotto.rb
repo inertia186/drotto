@@ -179,8 +179,8 @@ module DrOtto
     BounceJob.new.stream
   end
   
-  def manual_bounce(trx_id)
-    BounceJob.new.force_bounce!(trx_id)
+  def manual_bounce(trx_id, limit = nil, message = bounce_memo)
+    BounceJob.new(limit).force_bounce!(trx_id, message)
   end
   
   def run_once
@@ -193,9 +193,13 @@ module DrOtto
   
   def run
     loop do
-      if current_voting_power < 100.0
-        sleep 60
-        redo
+      if current_voting_power < 100.0 - max_vote_weight_bias
+        bias = rand((current_voting_power + max_vote_weight_bias)..100.0)
+        if !!bias && bias < 100.0
+          puts "Bias: #{bias}"
+          sleep 60
+          redo
+        end
       end
       
       offset = (base_block_span * 2.10).to_i

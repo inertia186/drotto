@@ -13,11 +13,27 @@ drotto
 
 ---
 
+#### Update Notes
+
+This is a rather big change, so it is recommended that you back up your current version or clone this version to a new location, rather than just `git pull` on top of your existing install.  Doing a `git pull` should work, but you'll have to merge your `config.yml` by hand.  If you're good at `git`, this should be no big deal.  If not, don't try to update on top of your existing bot.  Just do a fresh install.
+
 #### New Features
 
-This is mostly a performance update.  The main change is to use `get_account_history` for finding new bids (which is 10 times faster), then fall back on block-by-block evaluation if no bids are found in history.
+Dr. Otto can now accept bids from one account and vote from another.  This is handy if delegation is not available for your particular configuration (e.g. Golos).  Note, if you can use delegation, you should because voting/commenting is done in the same transaction, which is less prone to complications.
 
-Also added `rake usage` to get usage totals for one month.  Or, use `rake usage[bot_name,90]` to look at usage for three months back.
+There's now better support for urls in memos that end with things like `#comments` and/or `/`.  Some people paste urls without looking for extras or they get urls from other platforms running Apache, which automatically adds trailing slashes.
+
+You can now configure Dr. Otto to accept both core (STEEM) and debt (SBD) currencies.  They are not accepted 1:1.  Dr. Otto checks the internal market to find the correct ratio to process bids.
+
+The `rake state` task now returns a valid error code to the caller.  This allows you to do things like configure [`monit`](https://steemit.com/ruby/@inertia/using-monit-to-manage-bots) to notify you if Dr. Otto stops voting.
+
+Added `rake audit_bidder` task so you can investigate bid behavior.
+
+Added extra logic to deal with bluff bids, that is, bids intended to mislead other bidders into avoiding a window.
+
+Added support for flags.  This feature is not enabled by default.
+
+Various fixes and gem updates.
 
 ---
 
@@ -173,6 +189,22 @@ The `state` task will return an error code to the shell of `-1` if the current v
 ```
 $ rake state
 $ echo $?
+```
+
+##### Usage Report
+
+The `usage` task will generate a report for the last month.
+
+```
+$ rake usage
+```
+
+##### Audit Bidder
+
+The `audit_bidder` task will generate a report that segments between bids and refunds.
+
+```
+$ rake audit_bidder[account_name,bidder,symbol,days]
 ```
 
 ---

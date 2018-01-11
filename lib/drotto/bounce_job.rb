@@ -227,8 +227,8 @@ module DrOtto
                     debug "Voting is currently in progress, delaying bid until next window.  Original memo: #{memo}"
                   else
                     debug "Cannot accept attempted stacked bid because voting is currently in progress.  Original memo: #{memo}"
-                  needs_bounce = true
-                end
+                    needs_bounce = true
+                  end
                 end
                 
                 # Final check.  Don't bounce if already bounced.  This should only
@@ -284,7 +284,7 @@ module DrOtto
       end
     end
     
-    def bounce(from, amount, id)
+    def bounce(from, amount, id, message = bounce_memo)
       {
         type: :transfer,
         from: account_name,
@@ -352,7 +352,7 @@ module DrOtto
     end
     
     # This bypasses the usual validations and issues a bounce for a transaction.
-    def force_bounce!(trx_id)
+    def force_bounce!(trx_id, message = bounce_memo)
       if trx_id.to_s.size == 0
         warning "Empty transaction id."
         return
@@ -407,7 +407,7 @@ module DrOtto
         totals[amount.split(' ').last] += amount.split(' ').first.to_f
         warning "Need to bounce #{amount} (original memo: #{memo})"
         
-        transaction.operations << bounce(from, amount, id)
+        transaction.operations << bounce(from, amount, id, message)
       end
       
       totals.each do |k, v|
@@ -460,12 +460,12 @@ module DrOtto
         
         !!comment.active_votes.find { |v| v.voter == voter_account_name }
       else
-      @transactions.each do |index, trx|
-        return true if trx.op[0] == 'vote' && trx.op[1].author == author && trx.op[1].permlink == permlink
+        @transactions.each do |index, trx|
+          return true if trx.op[0] == 'vote' && trx.op[1].author == author && trx.op[1].permlink == permlink
+        end
+        
+        false
       end
-      
-      false
-    end
     end
     
     # This will help located pending stacked bids.

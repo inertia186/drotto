@@ -60,6 +60,12 @@
   # outside of Dr. Otto.
   :reserve_vote_weight: 0.00 %
   
+  # Setting this greater than zero will allow Dr. Otto to vote early using a
+  # random number between 0 and this value.  For example, setting it to 0.25 %
+  # will allow the voting account to recharge to 99.75 %, then randomly start
+  # the voting window without reaching 100 %.
+  :max_vote_weight_bias: 0.00 %
+  
   # Minimum bid amount.
   :minimum_bid: 2.000 SBD
   
