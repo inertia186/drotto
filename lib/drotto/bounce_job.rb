@@ -284,7 +284,7 @@ module DrOtto
       end
     end
     
-    def bounce(from, amount, id, message = bounce_memo)
+    def bounce(from, amount, id)
       {
         type: :transfer,
         from: account_name,
@@ -352,7 +352,7 @@ module DrOtto
     end
     
     # This bypasses the usual validations and issues a bounce for a transaction.
-    def force_bounce!(trx_id, message = bounce_memo)
+    def force_bounce!(trx_id)
       if trx_id.to_s.size == 0
         warning "Empty transaction id."
         return
@@ -407,7 +407,7 @@ module DrOtto
         totals[amount.split(' ').last] += amount.split(' ').first.to_f
         warning "Need to bounce #{amount} (original memo: #{memo})"
         
-        transaction.operations << bounce(from, amount, id, message)
+        transaction.operations << bounce(from, amount, id)
       end
       
       totals.each do |k, v|

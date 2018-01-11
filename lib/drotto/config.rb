@@ -56,10 +56,6 @@ module DrOtto
       ((default_value(:drotto_reserve_vote_weight) || config[:drotto][:reserve_vote_weight]).to_f * 100).to_i
     end
     
-    def max_vote_weight_bias
-      (default_value(:drotto_max_vote_weight_bias) || config[:drotto][:max_vote_weight_bias]).to_f
-    end
-    
     def minimum_bid
       default_value(:drotto_minimum_bid) || config[:drotto][:minimum_bid]
     end
