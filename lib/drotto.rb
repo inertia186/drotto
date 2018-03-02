@@ -215,7 +215,7 @@ module DrOtto
   end
   
   def state
-    error_state = ERROR_LEVEL_VOTING_POWER_OK
+    error_state = nil
     voting_power = current_voting_power
     
     begin
@@ -225,6 +225,8 @@ module DrOtto
         ERROR_LEVEL_VOTING_POWER_FAILED_SANITY_CHECK
       elsif voting_power == 100.0
         ERROR_LEVEL_VOTING_POWER_HUNG
+      else
+        error_state = ERROR_LEVEL_VOTING_POWER_OK
       end
     rescue => e
       error "Unable to check current state: #{e}", backtrace: e.backtrace
