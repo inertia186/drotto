@@ -23,6 +23,11 @@ module DrOtto
   
   BLOCK_OVERLAP = 45 # for overlap between votes
   
+  ERROR_LEVEL_VOTING_POWER_FAILED_SANITY_CHECK = 1
+  ERROR_LEVEL_VOTING_POWER_OK = 0
+  ERROR_LEVEL_VOTING_POWER_HUNG = -1
+  ERROR_LEVEL_VOTING_POWER_FATAL = -2
+  
   def block_span(offset = BLOCK_OVERLAP)
     base_block_span + offset
   end
@@ -210,14 +215,21 @@ module DrOtto
   end
   
   def state
-    error_state = 0
+    error_state = ERROR_LEVEL_VOTING_POWER_OK
+    voting_power = current_voting_power
     
     begin
-      error_state = -1 if current_voting_power == 100.0
+      error_state = if voting_power < 90.0
+        error 'Current voting power has failed sanity check.'
+        
+        ERROR_LEVEL_VOTING_POWER_FAILED_SANITY_CHECK
+      elsif voting_power == 100.0
+        ERROR_LEVEL_VOTING_POWER_HUNG
+      end
     rescue => e
       error "Unable to check current state: #{e}", backtrace: e.backtrace
       
-      error_state = -2
+      error_state = ERROR_LEVEL_VOTING_POWER_FATAL
     ensure
       exit(error_state)
     end
