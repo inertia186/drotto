@@ -2,10 +2,10 @@
 http_interactions:
 - request:
     method: post
-    uri: https://steemd.steemit.com/
+    uri: https://api.steemit.com/
     body:
       encoding: UTF-8
-      string: '{"jsonrpc":"2.0","params":["database_api","get_accounts",[["bittrex"]]],"id":7,"method":"call"}'
+      string: '{"jsonrpc":"2.0","params":["database_api","get_accounts",[["bittrex"]]],"id":1,"method":"call"}'
     headers:
       Content-Type:
       - application/json
@@ -25,13 +25,19 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Tue, 05 Dec 2017 21:20:00 GMT
-      Content-Length:
-      - '2489'
+      - Fri, 02 Mar 2018 07:06:10 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
       Connection:
       - keep-alive
       Server:
       - nginx
+      X-Jussi-Request-Id:
+      - '000563146854080034'
+      X-Amzn-Trace-Id:
+      - Root=1-5a98f7e2-7ba5b00b7bcf5c5c394abf25
       Access-Control-Allow-Origin:
       - "*"
       Access-Control-Allow-Methods:
@@ -40,16 +46,18 @@ http_interactions:
       - DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range
       Strict-Transport-Security:
       - max-age=31557600; includeSubDomains; preload
+      Content-Security-Policy:
+      - upgrade-insecure-requests
     body:
-      encoding: UTF-8
-      string: '{"id":7,"result":[{"id":1520,"name":"bittrex","owner":{"weight_threshold":1,"account_auths":[],"key_auths":[["STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF",1]]},"active":{"weight_threshold":1,"account_auths":[],"key_auths":[["STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF",1]]},"posting":{"weight_threshold":1,"account_auths":[],"key_auths":[["STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF",1]]},"memo_key":"STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF","json_metadata":"","proxy":"","last_owner_update":"2017-01-15T21:26:30","last_account_update":"2017-01-15T21:26:30","created":"2016-04-08T22:58:57","mined":false,"owner_challenged":false,"active_challenged":false,"last_owner_proved":"1970-01-01T00:00:00","last_active_proved":"1970-01-01T00:00:00","recovery_account":"steem","last_account_recovery":"1970-01-01T00:00:00","reset_account":"null","comment_count":0,"lifetime_vote_count":0,"post_count":0,"can_vote":true,"voting_power":10000,"last_vote_time":"2016-04-08T22:58:57","balance":"21128954.142
-        STEEM","savings_balance":"15.732 STEEM","sbd_balance":"1885236.690 SBD","sbd_seconds":"1268434860579552","sbd_seconds_last_update":"2017-12-05T21:19:24","sbd_last_interest_payment":"2017-11-27T06:08:24","savings_sbd_balance":"0.000
+      encoding: ASCII-8BIT
+      string: '{"id":1,"result":[{"id":1520,"name":"bittrex","owner":{"weight_threshold":1,"account_auths":[],"key_auths":[["STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF",1]]},"active":{"weight_threshold":1,"account_auths":[],"key_auths":[["STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF",1]]},"posting":{"weight_threshold":1,"account_auths":[],"key_auths":[["STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF",1]]},"memo_key":"STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF","json_metadata":"","proxy":"","last_owner_update":"2017-01-15T21:26:30","last_account_update":"2017-01-15T21:26:30","created":"2016-04-08T22:58:57","mined":false,"owner_challenged":false,"active_challenged":false,"last_owner_proved":"1970-01-01T00:00:00","last_active_proved":"1970-01-01T00:00:00","recovery_account":"steem","last_account_recovery":"1970-01-01T00:00:00","reset_account":"null","comment_count":0,"lifetime_vote_count":0,"post_count":0,"can_vote":true,"voting_power":10000,"last_vote_time":"2016-04-08T22:58:57","balance":"27667876.024
+        STEEM","savings_balance":"15.732 STEEM","sbd_balance":"7021012.168 SBD","sbd_seconds":"3015823622265417","sbd_seconds_last_update":"2018-03-02T07:02:15","sbd_last_interest_payment":"2018-02-25T06:18:33","savings_sbd_balance":"0.000
         SBD","savings_sbd_seconds":"0","savings_sbd_seconds_last_update":"2017-07-16T20:06:00","savings_sbd_last_interest_payment":"2017-07-16T20:06:00","savings_withdraw_requests":0,"reward_sbd_balance":"0.000
         SBD","reward_steem_balance":"0.000 STEEM","reward_vesting_balance":"0.000000
         VESTS","reward_vesting_steem":"0.000 STEEM","vesting_shares":"8538578.636896
         VESTS","delegated_vesting_shares":"0.000000 VESTS","received_vesting_shares":"0.000000
-        VESTS","vesting_withdraw_rate":"0.000001 VESTS","next_vesting_withdrawal":"1969-12-31T23:59:59","withdrawn":0,"to_withdraw":0,"withdraw_routes":0,"curation_rewards":0,"posting_rewards":0,"proxied_vsf_votes":[0,0,0,0],"witnesses_voted_for":0,"average_bandwidth":"161303271521","lifetime_bandwidth":"7915199000000","last_bandwidth_update":"2017-12-05T21:14:06","average_market_bandwidth":"1613032720970","lifetime_market_bandwidth":"79137230000000","last_market_bandwidth_update":"2017-12-05T21:14:06","last_post":"1970-01-01T00:00:00","last_root_post":"1970-01-01T00:00:00","vesting_balance":"0.000
+        VESTS","vesting_withdraw_rate":"0.000001 VESTS","next_vesting_withdrawal":"1969-12-31T23:59:59","withdrawn":0,"to_withdraw":0,"withdraw_routes":0,"curation_rewards":0,"posting_rewards":0,"proxied_vsf_votes":[0,0,0,0],"witnesses_voted_for":0,"average_bandwidth":"299590123291","lifetime_bandwidth":"12172193000000","last_bandwidth_update":"2018-03-02T07:06:00","average_market_bandwidth":"2995901243309","lifetime_market_bandwidth":"121707170000000","last_market_bandwidth_update":"2018-03-02T07:06:00","last_post":"1970-01-01T00:00:00","last_root_post":"1970-01-01T00:00:00","vesting_balance":"0.000
         STEEM","reputation":0,"transfer_history":[],"market_history":[],"post_history":[],"vote_history":[],"other_history":[],"witness_votes":[],"tags_usage":[],"guest_bloggers":[]}]}'
     http_version: 
-  recorded_at: Tue, 05 Dec 2017 21:20:00 GMT
+  recorded_at: Fri, 02 Mar 2018 07:06:11 GMT
 recorded_with: VCR 3.0.3

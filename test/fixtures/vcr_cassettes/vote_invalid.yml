@@ -2,10 +2,10 @@
 http_interactions:
 - request:
     method: post
-    uri: https://steemd.steemit.com/
+    uri: https://api.steemit.com/
     body:
       encoding: UTF-8
-      string: '{"jsonrpc":"2.0","params":["market_history_api","get_ticker",[]],"id":2,"method":"call"}'
+      string: '{"jsonrpc":"2.0","params":["market_history_api","get_ticker",[]],"id":3,"method":"call"}'
     headers:
       Content-Type:
       - application/json
@@ -25,13 +25,21 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Tue, 05 Dec 2017 21:20:00 GMT
+      - Fri, 02 Mar 2018 07:06:11 GMT
+      Content-Type:
+      - application/json
       Content-Length:
-      - '223'
+      - '236'
       Connection:
       - keep-alive
       Server:
       - nginx
+      X-Jussi-Cache-Hit:
+      - steemd.market_history_api.get_ticker.params=[]
+      X-Jussi-Request-Id:
+      - '000291864583735637'
+      X-Amzn-Trace-Id:
+      - Root=1-5a98f7e3-069c2b4305e1a34d728ebd3c
       Access-Control-Allow-Origin:
       - "*"
       Access-Control-Allow-Methods:
@@ -40,10 +48,12 @@ http_interactions:
       - DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range
       Strict-Transport-Security:
       - max-age=31557600; includeSubDomains; preload
+      Content-Security-Policy:
+      - upgrade-insecure-requests
     body:
       encoding: UTF-8
-      string: '{"id":2,"result":{"latest":"0.54809405058781613","lowest_ask":"0.54877857568440525","highest_bid":"0.54824487546499712","percent_change":"-10.13567071250179019","steem_volume":"15433.343
-        STEEM","sbd_volume":"8809.124 SBD"}}'
+      string: '{"id":3,"jsonrpc":"2.0","result":{"latest":"1.00000000000000000","lowest_ask":"0.93294112019897635","highest_bid":"0.92638036809815949","percent_change":"7.77202072538859667","steem_volume":"4946.722
+        STEEM","sbd_volume":"4609.194 SBD"}}'
     http_version: 
-  recorded_at: Tue, 05 Dec 2017 21:20:00 GMT
+  recorded_at: Fri, 02 Mar 2018 07:06:11 GMT
 recorded_with: VCR 3.0.3
