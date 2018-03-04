@@ -5,7 +5,7 @@ http_interactions:
     uri: https://api.steemit.com/
     body:
       encoding: UTF-8
-      string: '{"jsonrpc":"2.0","params":["database_api","get_content",["bogus","bogus"]],"id":6,"method":"call"}'
+      string: '{"jsonrpc":"2.0","params":["database_api","get_content",["bogus","bogus"]],"id":2,"method":"call"}'
     headers:
       Content-Type:
       - application/json
@@ -25,7 +25,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Fri, 02 Mar 2018 07:05:16 GMT
+      - Sun, 04 Mar 2018 04:27:10 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -35,9 +35,9 @@ http_interactions:
       Server:
       - nginx
       X-Jussi-Request-Id:
-      - '000531209465914590'
+      - '000488110679400870'
       X-Amzn-Trace-Id:
-      - Root=1-5a98f7ac-1c36ce46394d4b6349c7bdd4
+      - Root=1-5a9b759e-2e3410853df883d8760b7176
       Access-Control-Allow-Origin:
       - "*"
       Access-Control-Allow-Methods:
@@ -50,11 +50,11 @@ http_interactions:
       - upgrade-insecure-requests
     body:
       encoding: UTF-8
-      string: '{"id":6,"result":{"id":0,"author":"","permlink":"","category":"","parent_author":"","parent_permlink":"","title":"","body":"","json_metadata":"","last_update":"1970-01-01T00:00:00","created":"1970-01-01T00:00:00","active":"1970-01-01T00:00:00","last_payout":"1970-01-01T00:00:00","depth":0,"children":0,"net_rshares":0,"abs_rshares":0,"vote_rshares":0,"children_abs_rshares":0,"cashout_time":"1970-01-01T00:00:00","max_cashout_time":"1970-01-01T00:00:00","total_vote_weight":0,"reward_weight":0,"total_payout_value":"0.000
+      string: '{"id":2,"result":{"id":0,"author":"","permlink":"","category":"","parent_author":"","parent_permlink":"","title":"","body":"","json_metadata":"","last_update":"1970-01-01T00:00:00","created":"1970-01-01T00:00:00","active":"1970-01-01T00:00:00","last_payout":"1970-01-01T00:00:00","depth":0,"children":0,"net_rshares":0,"abs_rshares":0,"vote_rshares":0,"children_abs_rshares":0,"cashout_time":"1970-01-01T00:00:00","max_cashout_time":"1970-01-01T00:00:00","total_vote_weight":0,"reward_weight":0,"total_payout_value":"0.000
         STEEM","curator_payout_value":"0.000 STEEM","author_rewards":0,"net_votes":0,"root_comment":0,"max_accepted_payout":"0.000
         STEEM","percent_steem_dollars":0,"allow_replies":false,"allow_votes":false,"allow_curation_rewards":false,"beneficiaries":[],"url":"","root_title":"","pending_payout_value":"0.000
         STEEM","total_pending_payout_value":"0.000 STEEM","active_votes":[],"replies":[],"author_reputation":0,"promoted":"0.000
         SBD","body_length":0,"reblogged_by":[]}}'
     http_version: 
-  recorded_at: Fri, 02 Mar 2018 07:05:16 GMT
+  recorded_at: Sun, 04 Mar 2018 04:27:10 GMT
 recorded_with: VCR 3.0.3

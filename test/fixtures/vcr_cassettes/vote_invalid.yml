@@ -25,11 +25,11 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Fri, 02 Mar 2018 07:06:11 GMT
+      - Sun, 04 Mar 2018 04:29:08 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '236'
+      - '237'
       Connection:
       - keep-alive
       Server:
@@ -37,9 +37,9 @@ http_interactions:
       X-Jussi-Cache-Hit:
       - steemd.market_history_api.get_ticker.params=[]
       X-Jussi-Request-Id:
-      - '000291864583735637'
+      - '001106417784116385'
       X-Amzn-Trace-Id:
-      - Root=1-5a98f7e3-069c2b4305e1a34d728ebd3c
+      - Root=1-5a9b7614-1e8287df0e5a97580428f2af
       Access-Control-Allow-Origin:
       - "*"
       Access-Control-Allow-Methods:
@@ -52,8 +52,8 @@ http_interactions:
       - upgrade-insecure-requests
     body:
       encoding: UTF-8
-      string: '{"id":3,"jsonrpc":"2.0","result":{"latest":"1.00000000000000000","lowest_ask":"0.93294112019897635","highest_bid":"0.92638036809815949","percent_change":"7.77202072538859667","steem_volume":"4946.722
-        STEEM","sbd_volume":"4609.194 SBD"}}'
+      string: '{"id":3,"jsonrpc":"2.0","result":{"latest":"0.98550724637681153","lowest_ask":"0.97847234836919339","highest_bid":"0.97845443337703764","percent_change":"-0.46346004865651735","steem_volume":"3742.085
+        STEEM","sbd_volume":"3712.253 SBD"}}'
     http_version: 
-  recorded_at: Fri, 02 Mar 2018 07:06:11 GMT
+  recorded_at: Sun, 04 Mar 2018 04:29:09 GMT
 recorded_with: VCR 3.0.3
