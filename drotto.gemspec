@@ -34,4 +34,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'rdiscount', '~> 2.2', '>= 2.2.0.1'
   spec.add_dependency 'steem_api', '~> 1.1', '>= 1.1.1'
   spec.add_dependency 'golos_cloud', '~> 1.1', '>= 1.1.1'
+  spec.add_dependency 'lru_redux', '~> 1.1', '>= 1.1.0'
 end

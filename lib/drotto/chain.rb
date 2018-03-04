@@ -6,6 +6,10 @@ module DrOtto
   VOTE_RECHARGE_PER_MINUTE = VOTE_RECHARGE_PER_HOUR / 60
   VOTE_RECHARGE_PER_SEC = VOTE_RECHARGE_PER_MINUTE / 60
   
+  COMMENT_TOO_OLD_CACHE = LruRedux::ThreadSafeCache.new(10000)
+  VOTE_CACHE = LruRedux::ThreadSafeCache.new(10000)
+  BOUNCE_CACHE = LruRedux::ThreadSafeCache.new(10000)
+  
   module Chain
     include Krang::Chain
     include Config
@@ -34,13 +38,44 @@ module DrOtto
       elapsed < 120
     end
     
+    def comment_too_old_cache_hit?(author, permlink)
+      cache_key = "@#{author}/#{permlink}"
+      if COMMENT_TOO_OLD_CACHE[cache_key]
+        debug "Too Old Cache hit: #{cache_key}"
+        return true
+      end
+      
+      false
+    end
+    
+    def vote_cache_hit?(author, permlink)
+      cache_key = "@#{author}/#{permlink}"
+      if VOTE_CACHE[cache_key]
+        debug "Vote Cache hit: #{cache_key}"
+        return true
+      end
+      
+      false
+    end
+    
+    def bounce_cache_hit?(trx_id)
+      if BOUNCE_CACHE[trx_id]
+        debug "Bounce Cache hit: #{trx_id}"
+        return true
+      end
+      
+      false
+    end
+    
     def voted?(comment)
+      return true if vote_cache_hit?(comment.author, comment.permlink)
+      
       return false if comment.nil?
       voters = comment.active_votes
       
       if voters.map(&:voter).include? voter_account_name
         debug "Already voted for: #{comment.author}/#{comment.permlink} (id: #{comment.id})"
-        true
+        VOTE_CACHE["@#{comment.author}/#{comment.permlink}"] = true
       else
         # debug "No vote found for: #{comment.author}/#{comment.permlink} (id: #{comment.id})"
         false
@@ -74,8 +109,11 @@ module DrOtto
     end
     
     def too_old?(comment, options = {use_cashout_time: false})
+      return true if comment_too_old_cache_hit?(comment.author, comment.permlink)
+      
       return false if comment.nil?
       
+      cache_key = "@#{comment.author}/#{comment.permlink}"
       use_cashout_time = options[:use_cashout_time] || false
       cashout_time = Time.parse(comment.cashout_time + 'Z')
       
@@ -84,6 +122,7 @@ module DrOtto
        
         debug "Cashout Time Passed: #{too_old} (slug: @#{comment.author}/#{comment.permlink})"
         
+        COMMENT_TOO_OLD_CACHE[cache_key] = too_old if too_old
         too_old
       else
         created = Time.parse(comment.created + 'Z')
@@ -96,6 +135,7 @@ module DrOtto
           debug "Too old: #{too_old} (slug: @#{comment.author}/#{comment.permlink}); hours remaining: #{('%.1f' % cashout_hours_from_now)}"
         end
         
+        COMMENT_TOO_OLD_CACHE[cache_key] = too_old if too_old
         too_old
       end
     end

@@ -106,6 +106,8 @@ module DrOtto
         author, permlink = parse_slug(memo) rescue [nil, nil]
         next if author.nil? || permlink.nil?
         permlink = normalize_permlink permlink
+        next if vote_cache_hit?(author, permlink)
+        next if bounce_cache_hit?(id)
         comment = find_comment(author, permlink)
         next if comment.nil?
         
@@ -299,6 +301,8 @@ module DrOtto
     end
     
     def bounced?(id_to_check)
+      return true if bounce_cache_hit?(id_to_check)
+      
       init_transactions
       
       @memos ||= @transactions.map do |index, tx|
@@ -319,7 +323,7 @@ module DrOtto
       @memos.each do |memo|
         if memo =~ /.*\(ID:#{id_to_check}\)$/
           debug "Already bounced: #{id_to_check}"
-          return true
+          return BOUNCE_CACHE[id_to_check] = true
         end
       end
       
@@ -332,6 +336,9 @@ module DrOtto
       return false if no_bounce.include? tx['op'].last['from']
       
       id_to_bounce = tx.trx_id
+      
+      return false if bounce_cache_hit?(id_to_bounce)
+      
       memo = tx['op'].last['memo']
       timestamp = Time.parse(tx.timestamp + 'Z')
       @newest_timestamp ||= @transactions.map do |tx|
@@ -450,6 +457,10 @@ module DrOtto
     end
     
     def already_voted?(author, permlink, options = {})
+      return true if vote_cache_hit?(author, permlink)
+      
+      cache_key = "@#{author}/#{permlink}"
+      
       if !!options[:use_api]
         comment = find_comment(author, permlink)
         
@@ -458,10 +469,14 @@ module DrOtto
           return true
         end
         
-        !!comment.active_votes.find { |v| v.voter == voter_account_name }
+        voted = !!comment.active_votes.find { |v| v.voter == voter_account_name }
+        VOTE_CACHE[cache_key] = voted if voted
+        voted
       else
         @transactions.each do |index, trx|
-          return true if trx.op[0] == 'vote' && trx.op[1].author == author && trx.op[1].permlink == permlink
+          if trx.op[0] == 'vote' && trx.op[1].author == author && trx.op[1].permlink == permlink
+            return VOTE_CACHE[cache_key] = true
+          end
         end
         
         false

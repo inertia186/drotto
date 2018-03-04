@@ -1,6 +1,7 @@
 require 'krang'
 require 'awesome_print'
 require 'yaml'
+require 'lru_redux'
 # require 'pry'
 
 Bundler.require
@@ -112,6 +113,8 @@ module DrOtto
       author, permlink = parse_slug(memo) rescue [nil, nil]
       next if author.nil? || permlink.nil?
       permlink = normalize_permlink permlink
+      next if vote_cache_hit?(author, permlink)
+      next if bounce_cache_hit?(id)
       comment = find_comment(author, permlink)
       next if comment.nil?
       
