@@ -32,18 +32,18 @@ module DrOtto
         response = api.get_account_history(account_name, -1, limit - 1)
         
         if !!response.error
-          error response.error
+          krang_error response.error
         else
           @transactions += response.result
         end
       else
-        warning "Requested limit is greater than api allows.  Paging in #{limit / max_limit} chunks, which might take a while."
+        krang_warning "Requested limit is greater than api allows.  Paging in #{limit / max_limit} chunks, which might take a while."
         
         while (from = (limit - @transactions.size)) > 0
           response = api.get_account_history(account_name, from, [max_limit, limit].min - 1)
           
           if !!response.error
-            error response.error
+            krang_error response.error
             break
           end
             
@@ -53,7 +53,7 @@ module DrOtto
         @transactions = @transactions.uniq.reverse
       end
       
-      debug "Transactions found: #{@transactions.size}"
+      krang_debug "Transactions found: #{@transactions.size}"
       
       @memos = nil
     end
@@ -61,7 +61,7 @@ module DrOtto
     def perform(pretend = false)
       
       if voting_in_progress? && !pretend
-        debug "Voting in progress, bounce suspended ..."
+        krang_debug "Voting in progress, bounce suspended ..."
         sleep 120
         return
       end
@@ -72,7 +72,7 @@ module DrOtto
       transaction = Radiator::Transaction.new(chain_options.merge(wif: active_wif))
       
       if @transactions.nil?
-        warning "Unable to read transactions for limit: #{@limit.inspect}"
+        krang_warning "Unable to read transactions for limit: #{@limit.inspect}"
         return
       end
       
@@ -99,7 +99,7 @@ module DrOtto
         next unless to == account_name
         
         if id.to_s.size == 0
-          warning "Empty id for transaction.", tx
+          krang_warning "Empty id for transaction.", tx
           next
         end
         
@@ -119,19 +119,19 @@ module DrOtto
         next if bounced?(id)
         
         if ignored?(amount)
-          debug "Ignoring #{amount} (original memo: #{memo})"
+          krang_debug "Ignoring #{amount} (original memo: #{memo})"
           next
         end
 
         totals[amount.split(' ').last] ||= 0
         totals[amount.split(' ').last] += amount.split(' ').first.to_f
-        warning "Need to bounce #{amount} (original memo: #{memo})"
+        krang_warning "Need to bounce #{amount} (original memo: #{memo})"
         
         transaction.operations << bounce(from, amount, id)
       end
       
       totals.each do |k, v|
-        info "Need to bounce total: #{v} #{k}"
+        krang_info "Need to bounce total: #{v} #{k}"
       end
       
       return true if transaction.operations.size == 0
@@ -144,11 +144,11 @@ module DrOtto
         message = response.error.message
         
         if message.to_s =~ /missing required active authority/
-          error "Failed transfer: Check active key."
+          krang_error "Failed transfer: Check active key."
           
           return false
         else
-          error "Unable to bounce", response.error
+          krang_error "Unable to bounce", response.error
         end
       end
       
@@ -164,7 +164,7 @@ module DrOtto
       stream = Radiator::Stream.new(chain_options)
       count = 0
       
-      info "Streaming bids to #{account_name}; starting at block #{head_block}; current time: #{block_time} ..."
+      krang_info "Streaming bids to #{account_name}; starting at block #{head_block}; current time: #{block_time} ..."
       
       loop do
         begin
@@ -191,7 +191,7 @@ module DrOtto
                 author, permlink = parse_slug(memo) rescue [nil, nil]
                 
                 if author.nil? || permlink.nil?
-                  debug "Bad memo.  Original memo: #{memo}"
+                  krang_debug "Bad memo.  Original memo: #{memo}"
                   needs_bounce = true
                 else
                   permlink = normalize_permlink permlink
@@ -199,21 +199,21 @@ module DrOtto
                 end
                 
                 if comment.nil?
-                  debug "No such comment.  Original memo: #{memo}"
+                  krang_debug "No such comment.  Original memo: #{memo}"
                   needs_bounce = true
                 else
                   if too_old?(comment)
-                    debug "Cannot vote, too old.  Original memo: #{memo}"
+                    krang_debug "Cannot vote, too old.  Original memo: #{memo}"
                     needs_bounce = true
                   end
                   
                   if !allow_comment_bids && comment.parent_author != ''
-                    debug "Cannot vote for comment (slug: @#{comment.author}/#{comment.permlink})"
+                    krang_debug "Cannot vote for comment (slug: @#{comment.author}/#{comment.permlink})"
                     needs_bounce = true
                   end
 
                   if !!comment && comment.author != author
-                    debug "Sanity check failed.  Comment author not the author parsed.  Original memo: #{memo}"
+                    krang_debug "Sanity check failed.  Comment author not the author parsed.  Original memo: #{memo}"
                     needs_bounce = true
                   end
                 end
@@ -226,9 +226,9 @@ module DrOtto
                   @transactions = nil # dump
                   
                   if trx_ids_for_memo(author, permlink).size < 2
-                    debug "Voting is currently in progress, delaying bid until next window.  Original memo: #{memo}"
+                    krang_debug "Voting is currently in progress, delaying bid until next window.  Original memo: #{memo}"
                   else
-                    debug "Cannot accept attempted stacked bid because voting is currently in progress.  Original memo: #{memo}"
+                    krang_debug "Cannot accept attempted stacked bid because voting is currently in progress.  Original memo: #{memo}"
                     needs_bounce = true
                   end
                 end
@@ -263,23 +263,23 @@ module DrOtto
                     message = response.error.message
                     
                     if message.to_s =~ /missing required active authority/
-                      error "Failed transfer: Check active key."
+                      krang_error "Failed transfer: Check active key."
                     else
-                      error "Unable to bounce", response.error
+                      krang_error "Unable to bounce", response.error
                     end
                   else
-                    info "Bounced #{amount} (original memo: #{memo})", response
+                    krang_info "Bounced #{amount} (original memo: #{memo})", response
                   end
                   
                   next
                 end
                   
-                info "Allowing #{amount} (original memo: #{memo})"
+                krang_info "Allowing #{amount} (original memo: #{memo})"
               end
             end
           end
         rescue => e
-          warning e.inspect, e
+          krang_warning e.inspect, e
           reset_api
           sleep backoff
         end
@@ -322,7 +322,7 @@ module DrOtto
       
       @memos.each do |memo|
         if memo =~ /.*\(ID:#{id_to_check}\)$/
-          debug "Already bounced: #{id_to_check}"
+          krang_debug "Already bounced: #{id_to_check}"
           return BOUNCE_CACHE[id_to_check] = true
         end
       end
@@ -349,11 +349,11 @@ module DrOtto
       end.min
       
       if (timestamp - @oldest_timestamp) < 1000
-        debug "Too old to bounce."
+        krang_debug "Too old to bounce."
         return false
       end
       
-      debug "Checking if #{id_to_bounce} is in memo history."
+      krang_debug "Checking if #{id_to_bounce} is in memo history."
       
       !bounced?(id_to_bounce)
     end
@@ -361,7 +361,7 @@ module DrOtto
     # This bypasses the usual validations and issues a bounce for a transaction.
     def force_bounce!(trx_id)
       if trx_id.to_s.size == 0
-        warning "Empty transaction id."
+        krang_warning "Empty transaction id."
         return
       end
 
@@ -389,36 +389,36 @@ module DrOtto
         next unless to == account_name
         
         if no_bounce.include? from
-          warning "Won't bounce #{from} (in no_bounce list)."
+          krang_warning "Won't bounce #{from} (in no_bounce list)."
           next
         end
         
         author, permlink = parse_slug(memo) rescue [nil, nil]
         
         if author.nil? || permlink.nil?
-          warning "Could not find author or permlink with memo: #{memo}"
+          krang_warning "Could not find author or permlink with memo: #{memo}"
         else  
           permlink = normalize_permlink permlink
           comment = find_comment(author, permlink)
         end
         
         if comment.nil?
-          warning "Could not find comment with author and permlink: #{author}/#{permlink}"
+          krang_warning "Could not find comment with author and permlink: #{author}/#{permlink}"
         end
         
         unless comment.author == author
-          warning "Comment author and memo author do not match: #{comment.author} != #{author}"
+          krang_warning "Comment author and memo author do not match: #{comment.author} != #{author}"
         end
         
         totals[amount.split(' ').last] ||= 0
         totals[amount.split(' ').last] += amount.split(' ').first.to_f
-        warning "Need to bounce #{amount} (original memo: #{memo})"
+        krang_warning "Need to bounce #{amount} (original memo: #{memo})"
         
         transaction.operations << bounce(from, amount, id)
       end
       
       totals.each do |k, v|
-        info "Need to bounce total: #{v} #{k}"
+        krang_info "Need to bounce total: #{v} #{k}"
       end
       
       return true if transaction.operations.size == 0
@@ -429,29 +429,29 @@ module DrOtto
         message = response.error.message
         
         if message.to_s =~ /missing required active authority/
-          error "Failed transfer: Check active key."
+          krang_error "Failed transfer: Check active key."
           
           return false
         elsif message.to_s =~ /unknown key/
-          error "Failed vote: unknown key (testing?)"
+          krang_error "Failed vote: unknown key (testing?)"
           
           return false
         elsif message.to_s =~ /tapos_block_summary/
-          warning "Retrying vote/comment: tapos_block_summary (?)"
+          krang_warning "Retrying vote/comment: tapos_block_summary (?)"
           
           return false
         elsif message.to_s =~ /now < trx.expiration/
-          warning "Retrying vote/comment: now < trx.expiration (?)"
+          krang_warning "Retrying vote/comment: now < trx.expiration (?)"
           
           return false
         elsif message.to_s =~ /signature is not canonical/
-          warning "Retrying vote/comment: signature was not canonical (bug in Radiator?)"
+          krang_warning "Retrying vote/comment: signature was not canonical (bug in Radiator?)"
           
           return false
         end
       end
       
-      info response unless response.nil?
+      krang_info response unless response.nil?
 
       response
     end
@@ -465,7 +465,7 @@ module DrOtto
         comment = find_comment(author, permlink)
         
         if comment.nil?
-          warning "Couldn't find @#{author}/#{permlink} with api."
+          krang_warning "Couldn't find @#{author}/#{permlink} with api."
           return true
         end
         
@@ -492,7 +492,7 @@ module DrOtto
         trx if trx.op[0] == 'transfer' && trx.op[1].memo.include?(memo)
       end.compact
       
-      debug "Transfers for memo #{memo}: #{trx_ids.size}"
+      krang_debug "Transfers for memo #{memo}: #{trx_ids.size}"
       
       trx_ids
     end

@@ -12,7 +12,7 @@ module DrOtto
     
     def perform(options = {})
       unless ['steem', 'golos'].include? chain_options[:chain]
-        warning "Audit data not available for #{chain_options[:chain]}.  Showing STEEM usage instead."
+        krang_warning "Audit data not available for #{chain_options[:chain]}.  Showing STEEM usage instead."
       end
       
       account_name = options[:account_name] || account_name

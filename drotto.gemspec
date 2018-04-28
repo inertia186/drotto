@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'bundler', '~> 1.15', '>= 1.15.4'
   spec.add_development_dependency 'rake', '~> 12.1', '>= 12.1.0'
-  spec.add_development_dependency 'minitest', '~> 5.9', '>= 5.9.0'
+  spec.add_development_dependency 'minitest', '~> 5.10', '>= 5.10.2'
   spec.add_development_dependency 'minitest-line', '~> 0.6.3'
   spec.add_development_dependency 'minitest-proveit', '~> 1.0', '>= 1.0.0'
   spec.add_development_dependency 'webmock', '~> 3.1', '>= 3.1.0'
@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'awesome_print', '~> 1.7', '>= 1.7.0'
   spec.add_development_dependency 'delorean', '~> 2.1', '>= 2.1.0'
 
-  spec.add_dependency 'krang', '0.0.1rc11'
+  spec.add_dependency 'krang', '0.0.1rc12'
   spec.add_dependency 'rdiscount', '~> 2.2', '>= 2.2.0.1'
   spec.add_dependency 'steem_api', '~> 1.1', '>= 1.1.1'
   spec.add_dependency 'golos_cloud', '~> 1.1', '>= 1.1.1'

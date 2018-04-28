@@ -12,7 +12,7 @@ module DrOtto
     
     def perform(options = {})
       unless ['steem', 'golos'].include? chain_options[:chain]
-        warning "Usage data not available for #{chain_options[:chain]}.  Showing STEEM usage instead."
+        krang_warning "Usage data not available for #{chain_options[:chain]}.  Showing STEEM usage instead."
       end
       
       a = options[:account_name] || account_name
