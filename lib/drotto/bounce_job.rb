@@ -77,6 +77,11 @@ module DrOtto
       end
       
       @transactions.each do |index, tx|
+        if transaction.operations.size >= 100
+          krang_warning "Soft transfer limit reached in this pass."
+          break
+        end
+        
         case @limit
         when 'today'
           timestamp = Time.parse(tx.timestamp + 'Z')
