@@ -1,10 +1,8 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 
-if ENV["HELL_ENABLED"]
-  require 'simplecov'
-  SimpleCov.start
-  SimpleCov.merge_timeout 3600
-end
+require 'simplecov'
+SimpleCov.start
+SimpleCov.merge_timeout 3600
 
 require 'drotto'
 
@@ -40,4 +38,13 @@ end
 class DrOtto::Test < MiniTest::Test
   # Most likely modes: 'once' and 'new_episodes'
   VCR_RECORD_MODE = (ENV['VCR_RECORD_MODE'] || 'once').to_sym
+  
+  def vcr_cassette(name, options = {}, &block)
+    options[:record] ||= VCR_RECORD_MODE
+    options[:match_requests_on] ||= [:method, :uri, :body]
+    
+    VCR.use_cassette(name, options) do
+      yield
+    end
+  end
 end

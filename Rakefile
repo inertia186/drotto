@@ -23,9 +23,11 @@ end
 
 task default: :test
 
-desc 'Deletes test/fixtures/vcr_cassettes/*.yml so they can be rebuilt fresh.'
-task :dump_vcr do |t|
-  exec 'rm -v test/fixtures/vcr_cassettes/*.yml'
+namespace :clean do
+  desc 'Deletes test/fixtures/vcr_cassettes/*.yml so they can be rebuilt fresh.'
+  task :vcr do |t|
+    exec 'rm -v test/fixtures/vcr_cassettes/*.yml'
+  end
 end
 
 desc 'Ruby console with drotto already required.'

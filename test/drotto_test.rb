@@ -48,7 +48,7 @@ module DrOtto
     end
     
     def test_find_bids
-      VCR.use_cassette('find_bids', record: VCR_RECORD_MODE) do
+      vcr_cassette('find_bids') do
         assert DrOtto.find_bids(0)
       end
     end

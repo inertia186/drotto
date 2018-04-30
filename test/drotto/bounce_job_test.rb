@@ -3,14 +3,14 @@ require 'test_helper'
 module DrOtto
   class DrOttoTest < DrOtto::Test
     def test_report
-      VCR.use_cassette('report', record: VCR_RECORD_MODE) do
+      vcr_cassette('report') do
         job = BounceJob.new(200)
         assert job.perform(pretend: true)
       end
     end
     
     def test_report_today
-      VCR.use_cassette('bounce_invalid', record: VCR_RECORD_MODE) do
+      vcr_cassette('report_today') do
         job = BounceJob.new('report_today')
         assert job.perform(pretend: true)
       end
@@ -19,35 +19,35 @@ module DrOtto
     def test_stream
       count = 10
       
-      VCR.use_cassette('stream', record: VCR_RECORD_MODE) do
+      vcr_cassette('stream') do
         job = BounceJob.new(200)
         assert_equal count, job.stream(count)
       end
     end
     
     def test_bounce
-      VCR.use_cassette('bounce', record: VCR_RECORD_MODE) do
+      vcr_cassette('bounce') do
         job = BounceJob.new(200)
         assert job.bounce('from', 'amount', 'id')
       end
     end
     
     def test_bounced?
-      VCR.use_cassette('bounced', record: VCR_RECORD_MODE) do
+      vcr_cassette('bounced') do
         job = BounceJob.new(200)
         refute job.bounced?('id')
       end
     end
     
     def test_force_bounce
-      VCR.use_cassette('force_bounce', record: VCR_RECORD_MODE) do
+      vcr_cassette('force_bounce') do
         job = BounceJob.new(200)
         assert job.force_bounce!('7e501f74e1bdd8dae9cdd2030b74ffbe5cc83615')
       end
     end
     
     def test_force_bounce_invalid
-      VCR.use_cassette('bounce_invalid', record: VCR_RECORD_MODE) do
+      vcr_cassette('bounce_invalid') do
         job = BounceJob.new(200)
         assert job.force_bounce!('WRONG')
       end

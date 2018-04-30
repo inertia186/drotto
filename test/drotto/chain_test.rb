@@ -42,13 +42,13 @@ module DrOtto
     end
     
     def test_properties
-      VCR.use_cassette('properties', record: VCR_RECORD_MODE) do
+      vcr_cassette('properties', match_requests_on: [:method, :uri]) do
         assert DrOtto.properties
       end
     end
     
     def test_properties_timeout
-      VCR.use_cassette('properties_timeout', record: VCR_RECORD_MODE) do
+      vcr_cassette('properties_timeout', match_requests_on: [:method, :uri]) do
         assert DrOtto.properties
         
         Delorean.jump 31 do
@@ -58,13 +58,13 @@ module DrOtto
     end
     
     def test_comment
-      VCR.use_cassette('comment', record: VCR_RECORD_MODE) do
+      vcr_cassette('comment', match_requests_on: [:method, :uri]) do
         refute_nil DrOtto.find_comment('inertia', 'macintosh-napintosh')
       end
     end
     
     def test_comment_bogus
-      VCR.use_cassette('comment_bogus', record: VCR_RECORD_MODE) do
+      vcr_cassette('comment_bogus', match_requests_on: [:method, :uri]) do
         assert_nil DrOtto.find_comment('bogus', 'bogus')
       end
     end
@@ -114,7 +114,7 @@ module DrOtto
         trx_id: 'id'
       }
       
-      VCR.use_cassette('vote', record: VCR_RECORD_MODE) do
+      vcr_cassette('vote', match_requests_on: [:method, :uri]) do
         result = DrOtto.vote([bid1, bid2, bid3])
         bids = result.keys
         result.values.map { |thread| thread.join(1000) }
@@ -142,7 +142,7 @@ module DrOtto
       }
       
       assert_raises FloatDomainError do
-        VCR.use_cassette('vote_invalid', record: VCR_RECORD_MODE) do
+        vcr_cassette('vote_invalid', match_requests_on: [:method, :uri]) do
           refute_nil DrOtto.vote([bid])
         end
       end
@@ -160,7 +160,7 @@ module DrOtto
         trx_id: 'id'
       }
       
-      VCR.use_cassette('vote_for_anonymous_bid', record: VCR_RECORD_MODE) do
+      vcr_cassette('vote_for_anonymous_bid', match_requests_on: [:method, :uri]) do
         result = DrOtto.vote([bid])
         bids = result.keys
         result.values.map { |thread| thread.join(1000) }
@@ -180,7 +180,7 @@ module DrOtto
         trx_id: 'id'
       }
       
-      VCR.use_cassette('vote_with_base_asset', record: VCR_RECORD_MODE) do
+      vcr_cassette('vote_with_base_asset', match_requests_on: [:method, :uri]) do
         result = DrOtto.vote([bid])
         bids = result.keys
         result.values.map { |thread| thread.join(1000) }
@@ -203,7 +203,7 @@ module DrOtto
         trx_id: 'id'
       }
       
-      VCR.use_cassette('flag_with_base_asset', record: VCR_RECORD_MODE) do
+      vcr_cassette('flag_with_base_asset', match_requests_on: [:method, :uri]) do
         result = DrOtto.vote([bid])
         bids = result.keys
         result.values.map { |thread| thread.join(1000) }
@@ -214,28 +214,28 @@ module DrOtto
     end
     
     def test_voted?
-      VCR.use_cassette('voted', record: VCR_RECORD_MODE) do
+      vcr_cassette('voted', match_requests_on: [:method, :uri]) do
         comment = DrOtto.find_comment('inertia', 'macintosh-napintosh')
         refute DrOtto.voted?(comment)
       end
     end
     
     def test_can_vote?
-      VCR.use_cassette('can_vote', record: VCR_RECORD_MODE) do
+      vcr_cassette('can_vote', match_requests_on: [:method, :uri]) do
         comment = DrOtto.find_comment('inertia', 'macintosh-napintosh')
         assert DrOtto.can_vote?(comment)
       end
     end
     
     def test_too_old?
-      VCR.use_cassette('too_old', record: VCR_RECORD_MODE) do
+      vcr_cassette('too_old', match_requests_on: [:method, :uri]) do
         comment = DrOtto.find_comment('inertia', 'macintosh-napintosh')
         assert DrOtto.too_old?(comment)
       end
     end
     
     def test_current_voting_power
-      VCR.use_cassette('current_voting_power', record: VCR_RECORD_MODE) do
+      vcr_cassette('current_voting_power', match_requests_on: [:method, :uri]) do
         assert DrOtto.current_voting_power
       end
     end
