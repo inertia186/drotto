@@ -7,8 +7,11 @@ module DrOtto
   VOTE_RECHARGE_PER_SEC = VOTE_RECHARGE_PER_MINUTE / 60
   
   COMMENT_TOO_OLD_CACHE = LruRedux::ThreadSafeCache.new(10000)
+  COMMENT_TOO_OLD_CACHE_FILE = 'comment-too-old-cache.txt'
   VOTE_CACHE = LruRedux::ThreadSafeCache.new(10000)
+  VOTE_CACHE_FILE = 'vote-cache.txt'
   BOUNCE_CACHE = LruRedux::ThreadSafeCache.new(10000)
+  BOUNCE_CACHE_FILE = 'bounce-cache.txt'
   
   module Chain
     include Krang::Chain
@@ -39,32 +42,158 @@ module DrOtto
     end
     
     def comment_too_old_cache_hit?(author, permlink)
-      cache_key = "@#{author}/#{permlink}"
+      cache_key = "#{author}/#{permlink}"
       if COMMENT_TOO_OLD_CACHE[cache_key]
-        krang_debug "Too Old Cache hit: #{cache_key}"
+        krang_debug "In-memory too old cache hit: #{cache_key}"
         return true
       end
       
+      if comment_too_old_cache_file_hit?(cache_key)
+        krang_debug "In-file comment too old cache hit: #{cache_key}"
+        return true
+      end
+
       false
     end
     
+    def comment_too_old_cache_file_hit?(cache_key)
+      return false unless comment_too_old_cache_file_exists?
+      
+      h = comment_too_old_cache_file_reader
+      
+      h.each_line do |line|
+        if cache_key == line.strip
+          h.close
+          return true 
+        end
+      end
+      
+      h.close
+      false
+    end
+    
+    def comment_too_old_cache_file_exists?
+      File.exists?(COMMENT_TOO_OLD_CACHE_FILE)
+    end
+    
+    def comment_too_old_cache_file_reader
+      File.open(COMMENT_TOO_OLD_CACHE_FILE, 'r')
+    end
+    
+    def comment_too_old_cache_file_appender
+      File.open(COMMENT_TOO_OLD_CACHE_FILE, 'a+')
+    end
+    
+    def comment_too_old_cache_file_append_cache_key cache_key
+      COMMENT_TOO_OLD_CACHE[cache_key] = true
+      return if comment_too_old_cache_file_hit?(cache_key)
+      
+      h = comment_too_old_cache_file_appender
+      h.puts cache_key.strip
+      h.close
+    end
+    
     def vote_cache_hit?(author, permlink)
-      cache_key = "@#{author}/#{permlink}"
+      cache_key = "#{author}/#{permlink}"
       if VOTE_CACHE[cache_key]
-        krang_debug "Vote Cache hit: #{cache_key}"
+        krang_debug "In-memory vote cache hit: #{cache_key}"
         return true
       end
       
+      if vote_cache_file_hit?(cache_key)
+        krang_debug "In-file vote cache hit: #{cache_key}"
+        return true
+      end
+
       false
+    end
+    
+    def vote_cache_file_hit?(cache_key)
+      return false unless vote_cache_file_exists?
+      
+      h = vote_cache_file_reader
+      
+      h.each_line do |line|
+        if cache_key == line.strip
+          h.close
+          return true 
+        end
+      end
+      
+      h.close
+      false
+    end
+    
+    def vote_cache_file_exists?
+      File.exists?(VOTE_CACHE_FILE)
+    end
+    
+    def vote_cache_file_reader
+      File.open(VOTE_CACHE_FILE, 'r')
+    end
+    
+    def vote_cache_file_appender
+      File.open(VOTE_CACHE_FILE, 'a+')
+    end
+    
+    def vote_cache_file_append_cache_key cache_key
+      VOTE_CACHE[cache_key] = true
+      return if vote_cache_file_hit?(cache_key)
+      
+      h = vote_cache_file_appender
+      h.puts cache_key.strip
+      h.close
     end
     
     def bounce_cache_hit?(trx_id)
       if BOUNCE_CACHE[trx_id]
-        krang_debug "Bounce Cache hit: #{trx_id}"
+        krang_debug "In-memory bounce cache hit: #{trx_id}"
+        return true
+      end
+      
+      if bounce_cache_file_hit?(trx_id)
+        krang_debug "In-file bounce cache hit: #{trx_id}"
         return true
       end
       
       false
+    end
+    
+    def bounce_cache_file_hit?(cache_key)
+      return false unless bounce_cache_file_exists?
+      
+      h = bounce_cache_file_reader
+      
+      h.each_line do |line|
+        if cache_key.strip == line.strip
+          h.close
+          return true 
+        end
+      end
+      
+      h.close
+      false
+    end
+    
+    def bounce_cache_file_exists?
+      File.exists?(BOUNCE_CACHE_FILE)
+    end
+    
+    def bounce_cache_file_reader
+      File.open(BOUNCE_CACHE_FILE, 'r')
+    end
+    
+    def bounce_cache_file_appender
+      File.open(BOUNCE_CACHE_FILE, 'a+')
+    end
+    
+    def bounce_cache_file_append_cache_key cache_key
+      BOUNCE_CACHE[cache_key] = true
+      return if bounce_cache_file_hit?(cache_key)
+      
+      h = bounce_cache_file_appender
+      h.puts cache_key.strip
+      h.close
     end
     
     def voted?(comment)
@@ -75,7 +204,8 @@ module DrOtto
       
       if voters.map(&:voter).include? voter_account_name
         krang_debug "Already voted for: #{comment.author}/#{comment.permlink} (id: #{comment.id})"
-        VOTE_CACHE["@#{comment.author}/#{comment.permlink}"] = true
+        vote_cache_file_append_cache_key "#{comment.author}/#{comment.permlink}"
+        true
       else
         # krang_debug "No vote found for: #{comment.author}/#{comment.permlink} (id: #{comment.id})"
         false
@@ -113,7 +243,7 @@ module DrOtto
       
       return false if comment.nil?
       
-      cache_key = "@#{comment.author}/#{comment.permlink}"
+      cache_key = "#{comment.author}/#{comment.permlink}"
       use_cashout_time = options[:use_cashout_time] || false
       cashout_time = Time.parse(comment.cashout_time + 'Z')
       
@@ -122,7 +252,10 @@ module DrOtto
        
         krang_debug "Cashout Time Passed: #{too_old} (slug: @#{comment.author}/#{comment.permlink})"
         
-        COMMENT_TOO_OLD_CACHE[cache_key] = too_old if too_old
+        if too_old
+          comment_too_old_cache_file_append_cache_key cache_key
+        end
+        
         too_old
       else
         created = Time.parse(comment.created + 'Z')
@@ -135,7 +268,10 @@ module DrOtto
           krang_debug "Too old: #{too_old} (slug: @#{comment.author}/#{comment.permlink}); hours remaining: #{('%.1f' % cashout_hours_from_now)}"
         end
         
-        COMMENT_TOO_OLD_CACHE[cache_key] = too_old if too_old
+        if too_old
+          comment_too_old_cache_file_append_cache_key cache_key
+        end
+        
         too_old
       end
     end
@@ -546,7 +682,9 @@ module DrOtto
     end
     
     def market_history_api
-      @market_history_api ||= Radiator::MarketHistoryApi.new(chain_options)
+      # When AppBase is ready ...
+      # @market_history_api ||= Radiator::MarketHistoryApi.new(chain_options)
+      @market_history_api ||= Radiator::Api.new(chain_options)
     end
     
     def accepted_asset?(amount)

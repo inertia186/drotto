@@ -63,6 +63,9 @@
   # Minimum bid amount.
   :minimum_bid: 2.000 SBD
   
+  # Should Dr. Otto refund people who send bids below the minimum?
+  :bounce_below_minimum_bid: true
+  
   # List of alternative assets to allow by using current market rate reported by
   # the Market History API.
   # :alternative_assets: STEEM

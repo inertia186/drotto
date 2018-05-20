@@ -59,6 +59,7 @@ module DrOtto
     end
     
     def perform(pretend = false)
+      @memos_in_transaction = []
       
       if voting_in_progress? && !pretend
         krang_debug "Voting in progress, bounce suspended ..."
@@ -122,7 +123,8 @@ module DrOtto
         next if voted?(comment)
         next unless shall_bounce?(tx)
         next if bounced?(id)
-        
+        next if !bounce_below_minimum_bid? && below_minimum_bid?(amount)
+      
         if ignored?(amount)
           krang_debug "Ignoring #{amount} (original memo: #{memo})"
           next
@@ -131,6 +133,7 @@ module DrOtto
         totals[amount.split(' ').last] ||= 0
         totals[amount.split(' ').last] += amount.split(' ').first.to_f
         krang_warning "Need to bounce #{amount} (original memo: #{memo})"
+        @memos_in_transaction << memo
         
         transaction.operations << bounce(from, amount, id)
       end
@@ -154,6 +157,10 @@ module DrOtto
           return false
         else
           krang_error "Unable to bounce", response.error
+        end
+      else
+        @memos_in_transaction.each do |memo|
+          bounce_cache_file_append_cache_key memo
         end
       end
       
@@ -192,6 +199,7 @@ module DrOtto
                 next unless to == account_name
                 next if no_bounce.include? from
                 next if ignored?(amount)
+                next if !bounce_below_minimum_bid? && below_minimum_bid?(amount)
                 
                 author, permlink = parse_slug(memo) rescue [nil, nil]
                 
@@ -273,6 +281,7 @@ module DrOtto
                       krang_error "Unable to bounce", response.error
                     end
                   else
+                    bounce_cache_file_append_cache_key memo
                     krang_info "Bounced #{amount} (original memo: #{memo})", response
                   end
                   
@@ -305,6 +314,28 @@ module DrOtto
       ignore_asset == amount.split(' ').last
     end
     
+    def below_minimum_bid?(amount)
+      amount, asset = amount.split(' ')
+      amount = amount.to_f
+      minimum_amount, minimum_asset = minimum_bid.split(' ')
+      minimum_amount = minimum_amount.to_f
+      
+      if asset == minimum_asset
+        amount < minimum_amount
+      else
+        ratio = base_to_debt_ratio
+        market_amount = case asset
+        when 'STEEM', 'GOLOS' then amount * ratio
+        when 'SBD', 'GBG' then amount / ratio
+        else
+          krang_error 'Unsupported asset for bid.', bid
+          0.000
+        end
+        
+        market_amount < minimum_amount
+      end
+    end
+    
     def bounced?(id_to_check)
       return true if bounce_cache_hit?(id_to_check)
       
@@ -328,7 +359,8 @@ module DrOtto
       @memos.each do |memo|
         if memo =~ /.*\(ID:#{id_to_check}\)$/
           krang_debug "Already bounced: #{id_to_check}"
-          return BOUNCE_CACHE[id_to_check] = true
+          bounce_cache_file_append_cache_key id_to_check
+          return true
         end
       end
       
@@ -418,6 +450,7 @@ module DrOtto
         totals[amount.split(' ').last] ||= 0
         totals[amount.split(' ').last] += amount.split(' ').first.to_f
         krang_warning "Need to bounce #{amount} (original memo: #{memo})"
+        bounce_cache_file_append_cache_key memo
         
         transaction.operations << bounce(from, amount, id)
       end
@@ -464,7 +497,7 @@ module DrOtto
     def already_voted?(author, permlink, options = {})
       return true if vote_cache_hit?(author, permlink)
       
-      cache_key = "@#{author}/#{permlink}"
+      cache_key = "#{author}/#{permlink}"
       
       if !!options[:use_api]
         comment = find_comment(author, permlink)
@@ -475,12 +508,15 @@ module DrOtto
         end
         
         voted = !!comment.active_votes.find { |v| v.voter == voter_account_name }
-        VOTE_CACHE[cache_key] = voted if voted
+        
+        vote_cache_file_append_cache_key cache_key if voted
+        
         voted
       else
         @transactions.each do |index, trx|
           if trx.op[0] == 'vote' && trx.op[1].author == author && trx.op[1].permlink == permlink
-            return VOTE_CACHE[cache_key] = true
+            vote_cache_file_append_cache_key cache_key
+            return true
           end
         end
         

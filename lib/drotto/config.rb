@@ -68,6 +68,10 @@ module DrOtto
       minimum_bid.split(' ').last
     end
     
+    def bounce_below_minimum_bid?
+      (default_value(:drotto_bounce_below_minimum_bid) || config[:drotto][:bounce_below_minimum_bid]).to_s == 'true'
+    end
+    
     def alternative_assets
       (default_value(:drotto_alternative_assets) || config[:drotto][:alternative_assets] || '').split(' ')
     end

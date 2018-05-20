@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'awesome_print', '~> 1.7', '>= 1.7.0'
   spec.add_development_dependency 'delorean', '~> 2.1', '>= 2.1.0'
 
-  spec.add_dependency 'krang', '0.0.1rc12'
+  spec.add_dependency 'krang', '0.0.1rc13'
   spec.add_dependency 'rdiscount', '~> 2.2', '>= 2.2.0.1'
   spec.add_dependency 'steem_api', '~> 1.1', '>= 1.1.1'
   spec.add_dependency 'golos_cloud', '~> 1.1', '>= 1.1.1'

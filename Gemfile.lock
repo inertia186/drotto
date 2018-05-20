@@ -1,9 +1,9 @@
 PATH
   remote: .
   specs:
-    drotto (0.0.5pre1)
+    drotto (0.0.5pre2)
       golos_cloud (~> 1.1, >= 1.1.1)
-      krang (= 0.0.1rc12)
+      krang (= 0.0.1rc13)
       lru_redux (~> 1.1, >= 1.1.0)
       rdiscount (~> 2.2, >= 2.2.0.1)
       steem_api (~> 1.1, >= 1.1.1)
@@ -55,9 +55,9 @@ GEM
     i18n (1.0.1)
       concurrent-ruby (~> 1.0)
     json (2.1.0)
-    krang (0.0.1rc12)
+    krang (0.0.1rc13)
       awesome_print (~> 1.8, >= 1.8.0)
-      radiator (= 0.4.0pre4)
+      radiator (= 0.4.2pre1)
     little-plugger (1.1.4)
     logging (2.2.2)
       little-plugger (~> 1.1)
@@ -83,7 +83,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
     public_suffix (3.0.2)
-    radiator (0.4.0pre4)
+    radiator (0.4.2pre1)
       awesome_print (~> 1.7, >= 1.7.0)
       bitcoin-ruby (~> 0.0, >= 0.0.11)
       ffi (~> 1.9, >= 1.9.18)
@@ -119,7 +119,7 @@ GEM
       unf_ext
     unf_ext (0.0.7.5)
     vcr (3.0.3)
-    webmock (3.3.0)
+    webmock (3.4.1)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
