@@ -5,12 +5,12 @@ http_interactions:
     uri: https://api.steemit.com/
     body:
       encoding: UTF-8
-      string: '{"jsonrpc":"2.0","method":"market_history_api.get_ticker","params":{},"id":1}'
+      string: '{"jsonrpc":"2.0","method":"condenser_api.get_ticker","params":[],"id":1}'
     headers:
       Content-Type:
       - application/json
       User-Agent:
-      - radiator/0.4.0pre4
+      - radiator/0.4.2pre1
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
       Accept:
@@ -25,19 +25,19 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Mon, 30 Apr 2018 01:48:48 GMT
+      - Sun, 20 May 2018 01:25:16 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '260'
+      - '235'
       Connection:
       - keep-alive
       Server:
       - nginx
       X-Jussi-Request-Id:
-      - '000483598738973985'
+      - '001041157547208261'
       X-Amzn-Trace-Id:
-      - Root=1-5ae67600-a867499c35c09a1d926da0a5
+      - Root=1-5b00ce7c-3af31ac0263fe84c03f37fdc
       Access-Control-Allow-Origin:
       - "*"
       Access-Control-Allow-Methods:
@@ -50,7 +50,8 @@ http_interactions:
       - upgrade-insecure-requests
     body:
       encoding: UTF-8
-      string: '{"jsonrpc":"2.0","result":{"latest":"1.19245212166729253","lowest_ask":"1.21289897992760776","highest_bid":"1.21095334685598388","percent_change":"0.00000000000000000","steem_volume":["2813631",3,"@@000000021"],"sbd_volume":["3399721",3,"@@000000013"]},"id":1}'
+      string: '{"jsonrpc":"2.0","result":{"latest":"1.50000000000000000","lowest_ask":"1.38937361414359395","highest_bid":"1.38937130948245913","percent_change":"7.13665315576143300","steem_volume":"851.226
+        STEEM","sbd_volume":"1188.705 SBD"},"id":1}'
     http_version: 
-  recorded_at: Mon, 30 Apr 2018 01:48:48 GMT
+  recorded_at: Sun, 20 May 2018 01:25:16 GMT
 recorded_with: VCR 3.0.3
