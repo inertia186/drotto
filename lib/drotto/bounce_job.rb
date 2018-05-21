@@ -59,7 +59,7 @@ module DrOtto
     end
     
     def perform(pretend = false)
-      @memos_in_transaction = []
+      @bounced_trx_ids = []
       
       if voting_in_progress? && !pretend
         krang_debug "Voting in progress, bounce suspended ..."
@@ -133,7 +133,7 @@ module DrOtto
         totals[amount.split(' ').last] ||= 0
         totals[amount.split(' ').last] += amount.split(' ').first.to_f
         krang_warning "Need to bounce #{amount} (original memo: #{memo})"
-        @memos_in_transaction << memo
+        @bounced_trx_ids << id
         
         transaction.operations << bounce(from, amount, id)
       end
@@ -147,6 +147,9 @@ module DrOtto
       response = transaction.process(!pretend)
       
       return true if pretend
+      @bounced_trx_ids.each do |id|
+        bounce_cache_file_append_cache_key id
+      end
       
       if !!response && !!response.error
         message = response.error.message
@@ -159,8 +162,8 @@ module DrOtto
           krang_error "Unable to bounce", response.error
         end
       else
-        @memos_in_transaction.each do |memo|
-          bounce_cache_file_append_cache_key memo
+        @bounced_trx_ids.each do |id|
+          bounce_cache_file_append_cache_key id
         end
       end
       
@@ -281,7 +284,7 @@ module DrOtto
                       krang_error "Unable to bounce", response.error
                     end
                   else
-                    bounce_cache_file_append_cache_key memo
+                    bounce_cache_file_append_cache_key id
                     krang_info "Bounced #{amount} (original memo: #{memo})", response
                   end
                   
@@ -450,7 +453,7 @@ module DrOtto
         totals[amount.split(' ').last] ||= 0
         totals[amount.split(' ').last] += amount.split(' ').first.to_f
         krang_warning "Need to bounce #{amount} (original memo: #{memo})"
-        bounce_cache_file_append_cache_key memo
+        bounce_cache_file_append_cache_key id
         
         transaction.operations << bounce(from, amount, id)
       end

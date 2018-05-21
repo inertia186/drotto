@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    drotto (0.0.5pre2)
+    drotto (0.0.5pre3)
       golos_cloud (~> 1.1, >= 1.1.1)
       krang (= 0.0.1rc13)
       lru_redux (~> 1.1, >= 1.1.0)
