@@ -2,28 +2,28 @@ require 'test_helper'
 
 module DrOtto
   class UtilsTest < DrOtto::Test
-    def test_krang_trace
-      assert_nil DrOtto.krang_trace "trace"
+    def test_drotto_trace
+      assert_nil DrOtto.drotto_trace "trace"
     end
     
-    def test_krang_debug
-      assert_nil DrOtto.krang_debug "debug"
+    def test_drotto_debug
+      assert_nil DrOtto.drotto_debug "debug"
     end
     
-    def test_krang_info
-      assert_nil DrOtto.krang_info "info"
+    def test_drotto_info
+      assert_nil DrOtto.drotto_info "info"
     end
     
-    def test_krang_info_detail
-      assert_nil DrOtto.krang_info("info", Exception.new)
+    def test_drotto_info_detail
+      assert_nil DrOtto.drotto_info("info", Exception.new)
     end
     
-    def test_krang_warning
-      assert_nil DrOtto.krang_warning "warning"
+    def test_drotto_warning
+      assert_nil DrOtto.drotto_warning "warning"
     end
     
-    def test_krang_error
-      assert_nil DrOtto.krang_error "error"
+    def test_drotto_error
+      assert_nil DrOtto.drotto_error "error"
     end
     
     def test_unknown_type

@@ -10,7 +10,7 @@ http_interactions:
       Content-Type:
       - application/json
       User-Agent:
-      - radiator/0.4.2pre1
+      - radiator/0.4.4
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
       Accept:
@@ -25,7 +25,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Sun, 20 May 2018 01:25:16 GMT
+      - Thu, 21 Feb 2019 04:33:38 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -35,9 +35,9 @@ http_interactions:
       Server:
       - nginx
       X-Jussi-Request-Id:
-      - '000530564693733465'
+      - '000446274643277818'
       X-Amzn-Trace-Id:
-      - Root=1-5b00ce7c-af8915b60cad6ba62509be48
+      - Root=1-5c6e2a22-2665d183f02a707e97715212
       Access-Control-Allow-Origin:
       - "*"
       Access-Control-Allow-Methods:
@@ -54,168 +54,7 @@ http_interactions:
         STEEM","curator_payout_value":"0.000 STEEM","author_rewards":0,"net_votes":0,"root_author":"","root_permlink":"","max_accepted_payout":"0.000
         STEEM","percent_steem_dollars":0,"allow_replies":false,"allow_votes":false,"allow_curation_rewards":false,"beneficiaries":[],"url":"","root_title":"","pending_payout_value":"0.000
         STEEM","total_pending_payout_value":"0.000 STEEM","active_votes":[],"replies":[],"author_reputation":0,"promoted":"0.000
-        SBD","body_length":0,"reblogged_by":[]},"id":3}'
+        STEEM","body_length":0,"reblogged_by":[]},"id":3}'
     http_version: 
-  recorded_at: Sun, 20 May 2018 01:25:16 GMT
-- request:
-    method: post
-    uri: https://api.steemitstage.com/
-    body:
-      encoding: UTF-8
-      string: '{"jsonrpc":"2.0","method":"condenser_api.get_content","params":["bogus","bogus"],"id":5}'
-    headers:
-      Content-Type:
-      - application/json
-      User-Agent:
-      - radiator/0.4.2pre1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-      Connection:
-      - keep-alive
-      Keep-Alive:
-      - '30'
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Date:
-      - Sun, 20 May 2018 01:30:29 GMT
-      Content-Type:
-      - application/json
-      Transfer-Encoding:
-      - chunked
-      Connection:
-      - keep-alive
-      Server:
-      - nginx
-      X-Jussi-Request-Id:
-      - '000519769711382642'
-      X-Amzn-Trace-Id:
-      - Root=1-5b00cfb5-9a0e17a033f8f3e0e4013550
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Allow-Methods:
-      - GET, POST, OPTIONS
-      Access-Control-Allow-Headers:
-      - DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range
-      Strict-Transport-Security:
-      - max-age=31557600; includeSubDomains; preload
-      Content-Security-Policy:
-      - upgrade-insecure-requests
-    body:
-      encoding: ASCII-8BIT
-      string: '{"jsonrpc":"2.0","result":{"id":0,"author":"","permlink":"","category":"","parent_author":"","parent_permlink":"","title":"","body":"","json_metadata":"","last_update":"1970-01-01T00:00:00","created":"1970-01-01T00:00:00","active":"1970-01-01T00:00:00","last_payout":"1970-01-01T00:00:00","depth":0,"children":0,"net_rshares":0,"abs_rshares":0,"vote_rshares":0,"children_abs_rshares":0,"cashout_time":"1970-01-01T00:00:00","max_cashout_time":"1970-01-01T00:00:00","total_vote_weight":0,"reward_weight":0,"total_payout_value":"0.000
-        STEEM","curator_payout_value":"0.000 STEEM","author_rewards":0,"net_votes":0,"root_author":"","root_permlink":"","max_accepted_payout":"0.000
-        STEEM","percent_steem_dollars":0,"allow_replies":false,"allow_votes":false,"allow_curation_rewards":false,"beneficiaries":[],"url":"","root_title":"","pending_payout_value":"0.000
-        STEEM","total_pending_payout_value":"0.000 STEEM","active_votes":[],"replies":[],"author_reputation":0,"promoted":"0.000
-        SBD","body_length":0,"reblogged_by":[]},"id":5}'
-    http_version: 
-  recorded_at: Sun, 20 May 2018 01:30:29 GMT
-- request:
-    method: get
-    uri: https://api.steemit.com/health
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Date:
-      - Sun, 20 May 2018 01:42:39 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '157'
-      Connection:
-      - keep-alive
-      Server:
-      - nginx
-      X-Jussi-Request-Id:
-      - '000676293493342774'
-      X-Amzn-Trace-Id:
-      - Root=1-5b00d28f-9a694c91ed6236a536f726e8
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Allow-Methods:
-      - GET, POST, OPTIONS
-      Access-Control-Allow-Headers:
-      - DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range
-      Strict-Transport-Security:
-      - max-age=31557600; includeSubDomains; preload
-      Content-Security-Policy:
-      - upgrade-insecure-requests
-    body:
-      encoding: UTF-8
-      string: '{"status":"OK","datetime":"2018-05-20T01:42:39.914937","source_commit":"6c5b42ba4d08bbaab3ba2578b5b03c92e8f9a1d9","docker_tag":"latest","jussi_num":22582716}'
-    http_version: 
-  recorded_at: Sun, 20 May 2018 01:42:39 GMT
-- request:
-    method: post
-    uri: https://api.steemit.com/
-    body:
-      encoding: UTF-8
-      string: '{"jsonrpc":"2.0","method":"condenser_api.get_content","params":["bogus","bogus"],"id":1}'
-    headers:
-      Content-Type:
-      - application/json
-      User-Agent:
-      - radiator/0.4.2pre1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-      Connection:
-      - keep-alive
-      Keep-Alive:
-      - '30'
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Date:
-      - Sun, 20 May 2018 01:42:40 GMT
-      Content-Type:
-      - application/json
-      Transfer-Encoding:
-      - chunked
-      Connection:
-      - keep-alive
-      Server:
-      - nginx
-      X-Jussi-Request-Id:
-      - '000872730541403179'
-      X-Amzn-Trace-Id:
-      - Root=1-5b00d290-07a79926a2562c7732160c9a
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Allow-Methods:
-      - GET, POST, OPTIONS
-      Access-Control-Allow-Headers:
-      - DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range
-      Strict-Transport-Security:
-      - max-age=31557600; includeSubDomains; preload
-      Content-Security-Policy:
-      - upgrade-insecure-requests
-    body:
-      encoding: ASCII-8BIT
-      string: '{"jsonrpc":"2.0","result":{"id":0,"author":"","permlink":"","category":"","parent_author":"","parent_permlink":"","title":"","body":"","json_metadata":"","last_update":"1970-01-01T00:00:00","created":"1970-01-01T00:00:00","active":"1970-01-01T00:00:00","last_payout":"1970-01-01T00:00:00","depth":0,"children":0,"net_rshares":0,"abs_rshares":0,"vote_rshares":0,"children_abs_rshares":0,"cashout_time":"1970-01-01T00:00:00","max_cashout_time":"1970-01-01T00:00:00","total_vote_weight":0,"reward_weight":0,"total_payout_value":"0.000
-        STEEM","curator_payout_value":"0.000 STEEM","author_rewards":0,"net_votes":0,"root_author":"","root_permlink":"","max_accepted_payout":"0.000
-        STEEM","percent_steem_dollars":0,"allow_replies":false,"allow_votes":false,"allow_curation_rewards":false,"beneficiaries":[],"url":"","root_title":"","pending_payout_value":"0.000
-        STEEM","total_pending_payout_value":"0.000 STEEM","active_votes":[],"replies":[],"author_reputation":0,"promoted":"0.000
-        SBD","body_length":0,"reblogged_by":[]},"id":1}'
-    http_version: 
-  recorded_at: Sun, 20 May 2018 01:42:40 GMT
-recorded_with: VCR 3.0.3
+  recorded_at: Thu, 21 Feb 2019 04:33:38 GMT
+recorded_with: VCR 4.0.0

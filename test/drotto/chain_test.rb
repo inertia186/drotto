@@ -17,16 +17,16 @@ module DrOtto
           alternative_assets: 'STEEM',
           blacklist: 'mikethemug',
           no_bounce: 'bittrex poloniex openledger',
-          no_comment: 'bittrex poloniex openledger',
-          no_comment_fee: '0.00 %'
+          enable_vote_comment: true,
+          no_vote_comment: 'bittrex poloniex openledger',
+          no_vote_comment_fee: '0.00 %',
+          enable_vote_memo: false
         }, chain_options: {
           chain: 'steem',
           url: 'https://api.steemit.com',
           fallback_urls: ['https://api.steemit.com']
         }
       )
-      DrOtto.app_key :drotto
-      DrOtto.agent_id AGENT_ID
     end
     
     def test_reset_api

@@ -1,4 +1,4 @@
 module DrOtto
-  VERSION = '0.0.5pre3'
+  VERSION = '0.0.5pre4'
   AGENT_ID = "drotto/#{VERSION}"
 end

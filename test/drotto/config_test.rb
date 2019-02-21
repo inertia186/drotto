@@ -4,12 +4,12 @@ module DrOtto
   class ConfigTest < DrOtto::Test
     def test_reserve_vote_weight
       DrOtto.semaphore do
-        original_config = DrOtto.override_config
+        original_config = DrOtto.config.dup
         DrOtto.override_config(drotto: { reserve_vote_weight: '0.01 %' })
         
         assert_equal 1, DrOtto.reserve_vote_weight
         
-        DrOtto.override_config = original_config
+        DrOtto.override_config(original_config)
       end
     end
     
@@ -25,14 +25,31 @@ module DrOtto
       assert DrOtto.no_bounce
     end
     
-    def test_no_comment_fee
+    def test_no_vote_comment
+      from = ['bittrex']
+      
       DrOtto.semaphore do
-        original_config = DrOtto.override_config
-        DrOtto.override_config.merge(drotto: { no_comment_fee: '1.00 %' })
+        original_config = DrOtto.config.dup
+        DrOtto.override_config(drotto: { enable_vote_comment: true, no_vote_comment: 'bittrex' })
         
-        assert_equal 100, DrOtto.no_comment_fee
+        assert DrOtto.enable_vote_comment? && (DrOtto.no_vote_comment & from).none?
         
-        DrOtto.override_config = original_config
+        DrOtto.override_config(drotto: { enable_vote_comment: false, no_vote_comment: 'bittrex' })
+        
+        assert DrOtto.enable_vote_comment? && (DrOtto.no_vote_comment & from).none?
+        
+        DrOtto.override_config(original_config)
+      end
+    end
+    
+    def test_no_vote_comment_fee
+      DrOtto.semaphore do
+        original_config = DrOtto.config.dup
+        DrOtto.override_config(drotto: { no_vote_comment_fee: '1.00 %' })
+        
+        assert_equal 100, DrOtto.no_vote_comment_fee
+        
+        DrOtto.override_config(original_config)
       end
     end
   end
