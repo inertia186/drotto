@@ -36,6 +36,7 @@ module DrOtto
     starting_block = block_num - block_span(offset)
     bids = []
     job = BounceJob.new('today', starting_block)
+    result = nil
     
     if job.transfer_ids.any?
       drotto_info "Looking for new bids to #{account_name}; using account history; current time: #{time} ..."
@@ -82,6 +83,8 @@ module DrOtto
       result = vote(bids)
       @threads = result.values
     end
+    
+    send_vote_memos(result) if !!result && enable_vote_memo?
     
     elapsed = (Time.now.utc - time).to_i
     drotto_info "Bidding closed for current timeframe at block #{block_num}, took #{elapsed} seconds to run."
@@ -149,6 +152,31 @@ module DrOtto
         invert_vote_weight: invert_vote_weight,
         trx_id: id
       }
+    end
+  end
+  
+  # Only sends transfers after voting is done and only for successful bids.
+  def send_vote_memos(vote_result)
+    Thread.new do
+      @threads.each(&:join) if !!@threads
+      
+      if !!vote_result[:memo_ops] && vote_result[:memo_ops].any?
+        begin
+          # Due to steemd implementation, we must use a separate transaction
+          # for transfer ops.
+          #
+          # See: https://github.com/steemit/steem/blob/a6c807f02e37a2efdf6620616c35b184c36d8d4d/libraries/protocol/include/steem/protocol/transaction_util.hpp#L32-L35
+          memo_tx = Radiator::Transaction.new(chain_options.merge(wif: active_wif))
+          memo_tx.operations = vote_result[:memo_ops]
+          
+          semaphore.synchronize do
+            response = memo_tx.process(true)
+            drotto_info response unless response.nil?
+          end
+        rescue => e
+          drotto_warning "Unable to send transfer memos: #{e}", e
+        end
+      end
     end
   end
   
