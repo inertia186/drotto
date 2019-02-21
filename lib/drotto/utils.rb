@@ -104,6 +104,7 @@ module DrOtto
       end
 
       case options[:markup]
+      when :none then merged.strip
       when :html then RDiscount.new(merged).to_html
       when :markdown then merged
       end

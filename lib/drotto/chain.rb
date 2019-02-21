@@ -516,6 +516,7 @@ module DrOtto
               vote_type: weight > 0 ? 'upvote' : 'downvote',
               account_name: account_name,
               from: from,
+              from_first: [from].flatten.first,
               vote_permlink: permlink,
               vote_trx_id: [bid[:trx_id]].flatten.join(', ')
             }
@@ -536,11 +537,12 @@ module DrOtto
               from: account_name,
               to: author,
               amount: '0.001 STEEM',
-              memo: merge(merge_options)
+              memo: merge(merge_options.merge(markup: :none))
             }
             
             voting_tx = nil
-            tx = Radiator::Transaction.new(chain_options.merge(wif: posting_wif))
+            wif = enable_vote_memo? ? active_wif : posting_wif
+            tx = Radiator::Transaction.new(chain_options.merge(wif: wif))
             tx.operations << vote
             tx.operations << comment if vote_comment_enabled
             tx.operations << memo if enable_vote_memo?
