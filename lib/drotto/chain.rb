@@ -720,6 +720,7 @@ module DrOtto
         begin
           semaphore.synchronize do
             response = memo_tx.process(true)
+            drotto_info response unless response.nil?
           end
         rescue => e
           drotto_warning "Unable to send transfer memos: #{e}", e
