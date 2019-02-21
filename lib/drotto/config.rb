@@ -139,12 +139,20 @@ module DrOtto
       (default_value(:drotto_no_bounce) || config[:drotto][:no_bounce]).to_s.downcase.split(' ')
     end
     
-    def no_comment
-      (default_value(:drotto_no_comment) || config[:drotto][:no_comment]).to_s.downcase.split(' ')
+    def enable_vote_comment?
+      (default_value(:drotto_enable_vote_comment) || config[:drotto][:enable_vote_comment]).to_s == 'true'
     end
     
-    def no_comment_fee
-      ((default_value(:drotto_no_comment_fee) || config[:drotto][:no_comment_fee]).to_f * 100).to_i
+    def no_vote_comment
+      (default_value(:drotto_no_vote_comment) || config[:drotto][:no_vote_comment]).to_s.downcase.split(' ')
+    end
+    
+    def no_vote_comment_fee
+      ((default_value(:drotto_no_vote_comment_fee) || config[:drotto][:no_vote_comment_fee]).to_f * 100).to_i
+    end
+    
+    def enable_vote_memo?
+      (default_value(:drotto_enable_vote_memo) || config[:drotto][:enable_vote_memo]).to_s == 'true'
     end
     
     def auto_bounce_on_lockout

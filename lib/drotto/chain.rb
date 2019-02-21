@@ -484,7 +484,8 @@ module DrOtto
           parent_permlink = bid[:parent_permlink]
           parent_author = bid[:parent_author]
           timestamp = bid[:timestamp]
-            
+          vote_comment_enabled = enable_vote_comment? && (no_vote_comment & from).none?
+
           if invert_vote_weight
             drotto_info "Flagging #{author}/#{permlink} with a coefficnent of #{coeff}."
           else
@@ -514,7 +515,9 @@ module DrOtto
               vote_weight_percent: ("%.2f" % (weight / 100)),
               vote_type: weight > 0 ? 'upvote' : 'downvote',
               account_name: account_name,
-              from: from
+              from: from,
+              vote_permlink: permlink,
+              vote_trx_id: [bid[:trx_id]].flatten.join(', ')
             }
             
             comment = {
@@ -528,10 +531,19 @@ module DrOtto
               parent_author: author
             }
             
+            memo = {
+              type: :transfer,
+              from: account_name,
+              to: author,
+              amount: '0.001 STEEM',
+              memo: merge(merge_options)
+            }
+            
             voting_tx = nil
             tx = Radiator::Transaction.new(chain_options.merge(wif: posting_wif))
             tx.operations << vote
-            tx.operations << comment unless (no_comment & from).any?
+            tx.operations << comment if vote_comment_enabled
+            tx.operations << memo if enable_vote_memo?
             
             if account_name != voter_account_name
               voting_tx = Radiator::Transaction.new(chain_options.merge(wif: voting_wif))

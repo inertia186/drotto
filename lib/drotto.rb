@@ -122,10 +122,10 @@ module DrOtto
       next if amount.split(' ').first.to_f < minimum_bid_amount
       next if job.bounced?(id)
       
-      if no_comment_fee > 0 && no_comment.include?(from)
+      if no_vote_comment_fee > 0 && no_vote_comment.include?(from)
         a, asset = amount.split(' ')
         a = a.to_f
-        fee = a * (no_comment_fee / 10000.0)
+        fee = a * (no_vote_comment_fee / 10000.0)
         amount = "#{('%.3f' % (a - fee))} #{asset}"
         drotto_info "Bid from #{from} for #{amount} (fee: #{fee} #{asset})."
       else

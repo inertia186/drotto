@@ -118,8 +118,10 @@ Edit the `config.yml` file.
   :minimum_bid: 2.000 SBD
   :blacklist: mikethemug
   :no_bounce: bittrex poloniex openledger
-  :no_comment: bittrex poloniex openledger
-  :no_comment_fee: 0.00 %
+  :enable_vote_comment: true
+  :no_vote_comment: bittrex poloniex openledger
+  :no_vote_comment_fee: 0.00 %
+  :enable_vote_memo: false
   :auto_bounce_on_lockout: false
 :chain_options:
   :chain: steem

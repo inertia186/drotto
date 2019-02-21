@@ -83,11 +83,21 @@
   # List of accounts that shall not get bounced, separated by spaces.
   :no_bounce: bittrex poloniex openledger
   
+  # Globally enable or disable vote comments.  These are the comments added to
+  # a post that wins a bid.  If enabled, you can still allow certain accounts to
+  # disable them (below).
+  :enable_vote_comment: true
+  
   # List of accounts that shall not get comments, separated by spaces.
-  :no_comment: bittrex poloniex openledger
+  :no_vote_comment: bittrex poloniex openledger
   
   # How much to charge a bid for not commenting.
-  :no_comment_fee: 0.00 %
+  :no_vote_comment_fee: 0.00 %
+  
+  # If enabled, a 0.001 STEEM transfer is sent to the bidder to confirm the
+  # vote.  Typically, this is only enabled if enable_vote_comment is false.  But
+  # you can do both if you're that kind of person.
+  :enable_vote_memo: false
   
   # Automatically bounce bids for posts that are locked out since they are
   # 12-hours until cashout and cannot be upvoted.  By default, the `max_age`
