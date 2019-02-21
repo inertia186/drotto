@@ -17,22 +17,23 @@ Gem::Specification.new do |spec|
   spec.files = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test)/}) }
   spec.require_paths = ['lib']
 
-  spec.add_development_dependency 'bundler', '~> 1.15', '>= 1.15.4'
-  spec.add_development_dependency 'rake', '~> 12.1', '>= 12.1.0'
+  spec.add_development_dependency 'bundler', '~> 2.0', '>= 2.0.1'
+  spec.add_development_dependency 'rake', '~> 12.3', '>= 12.3.2'
   spec.add_development_dependency 'minitest', '~> 5.10', '>= 5.10.2'
   spec.add_development_dependency 'minitest-line', '~> 0.6.3'
   spec.add_development_dependency 'minitest-proveit', '~> 1.0', '>= 1.0.0'
-  spec.add_development_dependency 'webmock', '~> 3.1', '>= 3.1.0'
-  spec.add_development_dependency 'vcr', '~> 3.0', '>= 3.0.3'
-  spec.add_development_dependency 'simplecov', '~> 0.15.1'
-  spec.add_development_dependency 'yard', '~> 0.9.9'
-  spec.add_development_dependency 'pry', '~> 0.11.1'
+  spec.add_development_dependency 'webmock', '~> 3.5', '>= 3.5.1'
+  spec.add_development_dependency 'vcr', '~> 4.0', '>= 4.0.0'
+  spec.add_development_dependency 'simplecov', '~> 0.16.1'
+  spec.add_development_dependency 'yard', '~> 0.9.18'
+  spec.add_development_dependency 'pry', '~> 0.12.2'
+  spec.add_development_dependency 'rb-readline', '~> 0.5', '>= 0.5.5'
   spec.add_development_dependency 'awesome_print', '~> 1.7', '>= 1.7.0'
   spec.add_development_dependency 'delorean', '~> 2.1', '>= 2.1.0'
 
-  spec.add_dependency 'krang', '0.0.1rc13'
+  spec.add_dependency 'radiator', '~> 0.4', '>= 0.4.3'
   spec.add_dependency 'rdiscount', '~> 2.2', '>= 2.2.0.1'
-  spec.add_dependency 'steem_api', '~> 1.1', '>= 1.1.1'
-  spec.add_dependency 'golos_cloud', '~> 1.1', '>= 1.1.1'
+  spec.add_dependency 'steem_api', '~> 1.1', '>= 1.1.2'
+  spec.add_dependency 'activerecord', '5.1.6.1'
   spec.add_dependency 'lru_redux', '~> 1.1', '>= 1.1.0'
 end

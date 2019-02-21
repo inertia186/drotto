@@ -1,4 +1,4 @@
-require 'krang'
+require 'radiator'
 require 'awesome_print'
 require 'yaml'
 require 'lru_redux'
@@ -19,9 +19,6 @@ module DrOtto
   
   extend self
   
-  app_key :drotto
-  agent_id AGENT_ID
-  
   BLOCK_OVERLAP = 45 # for overlap between votes
   
   ERROR_LEVEL_VOTING_POWER_FAILED_SANITY_CHECK = 1
@@ -41,22 +38,22 @@ module DrOtto
     job = BounceJob.new('today', starting_block)
     
     if job.transfer_ids.any?
-      krang_info "Looking for new bids to #{account_name}; using account history; current time: #{time} ..."
-      krang_info "Total transfers to check: #{job.transfer_ids.size}."
+      drotto_info "Looking for new bids to #{account_name}; using account history; current time: #{time} ..."
+      drotto_info "Total transfers to check: #{job.transfer_ids.size}."
       
       job.transfer_ids.each do |trx_id|
         process_bid(job: job, id: trx_id, bids: bids)
       end
     else
-      krang_info "Looking for new bids to #{account_name}; starting at block #{starting_block}; current time: #{time} ..."
-      krang_info "Last block in this timeframe is: #{block_num} (#{block_num - starting_block} blocks)."
+      drotto_info "Looking for new bids to #{account_name}; starting at block #{starting_block}; current time: #{time} ..."
+      drotto_info "Last block in this timeframe is: #{block_num} (#{block_num - starting_block} blocks)."
       
       loop do
         begin
           api.get_blocks(starting_block..block_num) do |block, number|
             unless defined? block.transaction_ids
               # Happens on Golos, see: https://github.com/GolosChain/golos/issues/281
-              krang_error "Blockchain does not provide transaction ids in blocks, giving up."
+              drotto_error "Blockchain does not provide transaction ids in blocks, giving up."
               return -1
             end
               
@@ -68,7 +65,7 @@ module DrOtto
             end
           end
         rescue => e
-          krang_warning "Retrying at block: #{starting_block} (#{e})", e
+          drotto_warning "Retrying at block: #{starting_block} (#{e})", e
           reset_api
           sleep backoff
           redo
@@ -79,15 +76,15 @@ module DrOtto
     end
     
     if bids.size == 0
-      krang_info 'No bids collected.'
+      drotto_info 'No bids collected.'
     else
-      krang_info "Bids collected.  Ready to vote.  Processing bids: #{bids.size}"
+      drotto_info "Bids collected.  Ready to vote.  Processing bids: #{bids.size}"
       result = vote(bids)
       @threads = result.values
     end
     
     elapsed = (Time.now.utc - time).to_i
-    krang_info "Bidding closed for current timeframe at block #{block_num}, took #{elapsed} seconds to run."
+    drotto_info "Bidding closed for current timeframe at block #{block_num}, took #{elapsed} seconds to run."
     elapsed
   end
   
@@ -130,9 +127,9 @@ module DrOtto
         a = a.to_f
         fee = a * (no_comment_fee / 10000.0)
         amount = "#{('%.3f' % (a - fee))} #{asset}"
-        krang_info "Bid from #{from} for #{amount} (fee: #{fee} #{asset})."
+        drotto_info "Bid from #{from} for #{amount} (fee: #{fee} #{asset})."
       else
-        krang_info "Bid from #{from} for #{amount}."
+        drotto_info "Bid from #{from} for #{amount}."
       end
       
       invert_vote_weight = if flag_prefix.nil?
@@ -163,7 +160,7 @@ module DrOtto
         end.compact
         
         if alive.size > 0
-          krang_info "Still voting: #{alive.size}"
+          drotto_info "Still voting: #{alive.size}"
           sleep Random.rand(3..20) # stagger procssing
         else
           break
@@ -223,7 +220,7 @@ module DrOtto
     
     begin
       error_state = if voting_power < 90.0
-        krang_error 'Current voting power has failed sanity check.'
+        drotto_error 'Current voting power has failed sanity check.'
         
         ERROR_LEVEL_VOTING_POWER_FAILED_SANITY_CHECK
       elsif voting_power == 100.0
@@ -232,7 +229,7 @@ module DrOtto
         error_state = ERROR_LEVEL_VOTING_POWER_OK
       end
     rescue => e
-      krang_error "Unable to check current state: #{e}", backtrace: e.backtrace
+      drotto_error "Unable to check current state: #{e}", backtrace: e.backtrace
       
       error_state = ERROR_LEVEL_VOTING_POWER_FATAL
     ensure

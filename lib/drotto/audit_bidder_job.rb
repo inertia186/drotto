@@ -1,18 +1,12 @@
 require 'steem_api'
-require 'golos_cloud'
 
 module DrOtto
   class AuditBidderJob
     include Config
     
-    def initialize
-      app_key DrOtto.app_key
-      agent_id DrOtto.agent_id
-    end
-    
     def perform(options = {})
       unless ['steem', 'golos'].include? chain_options[:chain]
-        krang_warning "Audit data not available for #{chain_options[:chain]}.  Showing STEEM usage instead."
+        drotto_warning "Audit data not available for #{chain_options[:chain]}.  Showing STEEM usage instead."
       end
       
       account_name = options[:account_name] || account_name

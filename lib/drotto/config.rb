@@ -1,8 +1,55 @@
 module DrOtto
   module Config
-    include Krang::Config
-
     MAX_BASE_BLOCK_SPAN = 2880
+    
+    @@override_config = nil
+      
+    def override_config(override_config)
+      @@override_config = override_config
+    end
+    
+    def config
+      return @@override_config if !!@@override_config
+      
+      config_yml = 'config.yml'
+      config = if File.exist?(config_yml)
+        YAML.load_file(config_yml)
+      else
+        raise "Create a file: #{config_yml}"
+      end
+    end
+    
+    def agent_id(agent_id = nil)
+      @agent_id = agent_id unless agent_id.nil?
+      @agent_id || Krang::AGENT_ID
+    end
+    
+    def default_value(key)
+      ENV["DROTTO_#{key.to_s.upcase}"]
+    end
+    
+    def block_mode
+      default_value(:blockmode) || config[:drotto][:block_mode]
+    end
+    
+    def chain_options
+      @default_chain_options ||= {
+        logger: logger
+      }
+      
+      chain_options = config[:chain_options].merge(@default_chain_options)
+      
+      chain = default_value(:chain_options_chain)
+      chain_options = chain_options.merge(chain: chain.to_s) if !!chain
+      url = default_value(:chain_options_url)
+      chain_options = chain_options.merge(url: url) if !!url
+      
+      chain_options.dup
+    end
+    
+    def logger
+      @default_logger ||= Logger.new("drotto.log")
+    end
     
     def block_mode
       default_value(:drotto_block_mode) || config[:drotto][:block_mode]

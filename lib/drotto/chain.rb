@@ -14,9 +14,73 @@ module DrOtto
   BOUNCE_CACHE_FILE = 'bounce-cache.txt'
   
   module Chain
-    include Krang::Chain
     include Config
     include Utils
+    
+    def reset_api
+      @api = nil
+    end
+    
+    def backoff
+      Random.rand(3..20)
+    end
+    
+    def api
+      with_api
+    end
+    
+    def with_api(&block)
+      loop do
+        @api ||= Radiator::Api.new(chain_options)
+        
+        return @api if block.nil?
+        
+        begin
+          yield @api
+          break
+        rescue => e
+          drotto_warning "API exception, retrying (#{e})", e
+          reset_api
+          sleep backoff
+          redo
+        end
+      end
+    end
+    
+    def reset_properties
+      @properties = nil
+      @latest_properties = nil
+    end
+    
+    def properties
+      if !@latest_properties.nil? && Time.now - @latest_properties > 30
+        @properties = nil
+        @latest_properties = nil
+      end
+      
+      return @properties unless @properties.nil?
+      
+      response = nil
+      with_api { |api| response = api.get_dynamic_global_properties }
+      response.result.tap do |properties|
+        @latest_properties = Time.parse(properties.time + 'Z')
+        @properties = properties
+      end
+    end
+    
+    def block_time
+      Time.parse(properties.time + 'Z')
+    end
+    
+    def find_comment(author, permlink)
+      response = nil
+      with_api { |api| response = api.get_content(author, permlink) }
+      comment = response.result
+      
+      drotto_trace comment
+      
+      comment unless comment.id ==  0
+    end
     
     def head_block
       case block_mode
@@ -44,12 +108,12 @@ module DrOtto
     def comment_too_old_cache_hit?(author, permlink)
       cache_key = "#{author}/#{permlink}"
       if COMMENT_TOO_OLD_CACHE[cache_key]
-        krang_debug "In-memory too old cache hit: #{cache_key}"
+        drotto_debug "In-memory too old cache hit: #{cache_key}"
         return true
       end
       
       if comment_too_old_cache_file_hit?(cache_key)
-        krang_debug "In-file comment too old cache hit: #{cache_key}"
+        drotto_debug "In-file comment too old cache hit: #{cache_key}"
         return true
       end
 
@@ -96,12 +160,12 @@ module DrOtto
     def vote_cache_hit?(author, permlink)
       cache_key = "#{author}/#{permlink}"
       if VOTE_CACHE[cache_key]
-        krang_debug "In-memory vote cache hit: #{cache_key}"
+        drotto_debug "In-memory vote cache hit: #{cache_key}"
         return true
       end
       
       if vote_cache_file_hit?(cache_key)
-        krang_debug "In-file vote cache hit: #{cache_key}"
+        drotto_debug "In-file vote cache hit: #{cache_key}"
         return true
       end
 
@@ -147,12 +211,12 @@ module DrOtto
     
     def bounce_cache_hit?(trx_id)
       if BOUNCE_CACHE[trx_id]
-        krang_debug "In-memory bounce cache hit: #{trx_id}"
+        drotto_debug "In-memory bounce cache hit: #{trx_id}"
         return true
       end
       
       if bounce_cache_file_hit?(trx_id)
-        krang_debug "In-file bounce cache hit: #{trx_id}"
+        drotto_debug "In-file bounce cache hit: #{trx_id}"
         return true
       end
       
@@ -203,11 +267,11 @@ module DrOtto
       voters = comment.active_votes
       
       if voters.map(&:voter).include? voter_account_name
-        krang_debug "Already voted for: #{comment.author}/#{comment.permlink} (id: #{comment.id})"
+        drotto_debug "Already voted for: #{comment.author}/#{comment.permlink} (id: #{comment.id})"
         vote_cache_file_append_cache_key "#{comment.author}/#{comment.permlink}"
         true
       else
-        # krang_debug "No vote found for: #{comment.author}/#{comment.permlink} (id: #{comment.id})"
+        # drotto_debug "No vote found for: #{comment.author}/#{comment.permlink} (id: #{comment.id})"
         false
       end
     end
@@ -231,7 +295,7 @@ module DrOtto
       return false unless comment.allow_votes
       
       if !allow_comment_bids && comment.parent_author != ''
-        krang_debug "Cannot vote for comment (slug: @#{comment.author}/#{comment.permlink})"
+        drotto_debug "Cannot vote for comment (slug: @#{comment.author}/#{comment.permlink})"
         return false
       end
       
@@ -250,7 +314,7 @@ module DrOtto
       if use_cashout_time
         too_old = cashout_time < Time.now.utc
        
-        krang_debug "Cashout Time Passed: #{too_old} (slug: @#{comment.author}/#{comment.permlink})"
+        drotto_debug "Cashout Time Passed: #{too_old} (slug: @#{comment.author}/#{comment.permlink})"
         
         if too_old
           comment_too_old_cache_file_append_cache_key cache_key
@@ -263,9 +327,9 @@ module DrOtto
         cashout_hours_from_now = ((cashout_time - Time.now.utc) / 60.0 / 60.0)
         
         if cashout_hours_from_now < 0
-          krang_debug "Too old: #{too_old} (slug: @#{comment.author}/#{comment.permlink})"
+          drotto_debug "Too old: #{too_old} (slug: @#{comment.author}/#{comment.permlink})"
         else
-          krang_debug "Too old: #{too_old} (slug: @#{comment.author}/#{comment.permlink}); hours remaining: #{('%.1f' % cashout_hours_from_now)}"
+          drotto_debug "Too old: #{too_old} (slug: @#{comment.author}/#{comment.permlink}); hours remaining: #{('%.1f' % cashout_hours_from_now)}"
         end
         
         if too_old
@@ -305,11 +369,11 @@ module DrOtto
           when 'SBD', 'GBG'
             "%.3f #{minimum_bid_asset}" % (a / ratio)
           else
-            krang_error 'Unsupported asset for bid.', bid
+            drotto_error 'Unsupported asset for bid.', bid
             "0.000 #{minimum_bid_asset}"
           end
           
-          krang_info "Evaluating bid at #{bid[:amount]} as #{market_amount} (ratio: #{ratio})"
+          drotto_info "Evaluating bid at #{bid[:amount]} as #{market_amount} (ratio: #{ratio})"
           
           market_amount
         end
@@ -358,7 +422,7 @@ module DrOtto
         effective_weight = (weight = batch_vote_weight * coeff).to_i.abs
         
         if bid[:invert_vote_weight].uniq.size > 1
-          krang_info "Removing bid from #{bid[:from].join(', ')}, in-window-flag-war detected."
+          drotto_info "Removing bid from #{bid[:from].join(', ')}, in-window-flag-war detected."
           total -= amount.to_f
           next
         end
@@ -366,14 +430,14 @@ module DrOtto
         if effective_weight < min_effective_weight
           # Bid didn't meet min_effective_weight, remove it from the total so it
           # doesn't impact everybody else's bids in the same batch.
-          krang_info "Removing bid from #{bid[:from].join(', ')}, effective_weight too low: #{effective_weight}"
+          drotto_info "Removing bid from #{bid[:from].join(', ')}, effective_weight too low: #{effective_weight}"
           total -= amount.to_f
           next
         end
         
         if max_effective_weight > 0.0 && effective_weight >= max_effective_weight
           # Setting this value only once, in order of bid receipt.
-          krang_info "Only processing bid from #{bid[:from].join(', ')}, effective_weight maximum found: #{effective_weight} (max_effective_weight: #{max_effective_weight})."
+          drotto_info "Only processing bid from #{bid[:from].join(', ')}, effective_weight maximum found: #{effective_weight} (max_effective_weight: #{max_effective_weight})."
           
           max_bid ||= bid
         end
@@ -401,8 +465,8 @@ module DrOtto
         total_weight += effective_weight
         break if total_weight > batch_vote_weight.abs
         
-        krang_info "Total: #{total}; amount: #{amount};"
-        krang_info "total_weight: #{total_weight}; effective_weight: #{effective_weight}; reserve_vote_weight: #{reserve_vote_weight}"
+        drotto_info "Total: #{total}; amount: #{amount};"
+        drotto_info "total_weight: #{total_weight}; effective_weight: #{effective_weight}; reserve_vote_weight: #{reserve_vote_weight}"
         
         # We are using asynchronous voting because sometimes the blockchain
         # rejects votes that happen too quickly.
@@ -422,14 +486,14 @@ module DrOtto
           timestamp = bid[:timestamp]
             
           if invert_vote_weight
-            krang_info "Flagging #{author}/#{permlink} with a coefficnent of #{coeff}."
+            drotto_info "Flagging #{author}/#{permlink} with a coefficnent of #{coeff}."
           else
-            krang_info "Voting for #{author}/#{permlink} with a coefficnent of #{coeff}."
+            drotto_info "Voting for #{author}/#{permlink} with a coefficnent of #{coeff}."
           end
         
           loop do
             if BounceJob.new.bounced?(bid[:trx_id])
-              krang_warning "Bid was bounce just before voting: @#{author}/#{permlink}"
+              drotto_warning "Bid was bounce just before voting: @#{author}/#{permlink}"
               break
             end
             
@@ -488,124 +552,124 @@ module DrOtto
                   response = voting_tx.process(true)
                 end
               rescue => e
-                krang_warning "Unable to vote: #{e}", e
+                drotto_warning "Unable to vote: #{e}", e
                 break
               end
               
               if !!response && !!response.error
                 message = response.error.message
                 if message.to_s =~ /You have already voted in a similar way./
-                  krang_error "Failed vote: duplicate vote."
+                  drotto_error "Failed vote: duplicate vote."
                   # break
                 elsif message.to_s =~ /Can only vote once every 3 seconds./
-                  krang_warning "Retrying vote: voting too quickly."
+                  drotto_warning "Retrying vote: voting too quickly."
                   sleep Random.rand(3..6) # stagger retry
                   redo
                 elsif message.to_s =~ /Voting weight is too small, please accumulate more voting power or steem power./
-                  krang_error "Failed vote: voting weight too small"
+                  drotto_error "Failed vote: voting weight too small"
                   break
                 elsif message.to_s =~ /Vote weight cannot be 0/
-                  krang_error "Failed vote: vote weight cannot be zero."
+                  drotto_error "Failed vote: vote weight cannot be zero."
                   break
                 elsif message.to_s =~ /STEEMIT_UPVOTE_LOCKOUT_HF17/
-                  krang_error "Failed vote: upvote lockout (last twelve hours before payout)"
+                  drotto_error "Failed vote: upvote lockout (last twelve hours before payout)"
                   if auto_bounce_on_lockout && !(no_bounce.include?(from))
                     BounceJob.new.force_bounce!(bid[:trx_id])
                   end
                   break
                 elsif message.to_s =~ /missing required posting authority/
-                  krang_error "Failed vote: Check posting key."
+                  drotto_error "Failed vote: Check posting key."
                   break
                 elsif message.to_s =~ /unknown key/
-                  krang_error "Failed vote: unknown key (testing?)"
+                  drotto_error "Failed vote: unknown key (testing?)"
                   break
                 elsif message.to_s =~ /tapos_block_summary/
-                  krang_warning "Retrying vote/comment: tapos_block_summary (?)"
+                  drotto_warning "Retrying vote/comment: tapos_block_summary (?)"
                   redo
                 elsif message.to_s =~ /now < trx.expiration/
-                  krang_warning "Retrying vote/comment: now < trx.expiration (?)"
+                  drotto_warning "Retrying vote/comment: now < trx.expiration (?)"
                   redo
                 elsif message.to_s =~ /transaction expiration exception/
-                  krang_warning "Retrying vote/comment: transaction expiration exception"
+                  drotto_warning "Retrying vote/comment: transaction expiration exception"
                   redo
                 elsif message.to_s =~ /!check_max_block_age( _max_block_age ):/
-                  krang_warning "Retrying vote/comment: !check_max_block_age( _max_block_age ):"
+                  drotto_warning "Retrying vote/comment: !check_max_block_age( _max_block_age ):"
                   redo
                 elsif message.to_s =~ /signature is not canonical/
-                  krang_warning "Retrying vote/comment: signature was not canonical (bug in Radiator?)"
+                  drotto_warning "Retrying vote/comment: signature was not canonical (bug in Radiator?)"
                   redo
                 end
               end
             end
             
-            krang_info response unless response.nil?
+            drotto_info response unless response.nil?
             
             begin
               semaphore.synchronize do
                 response = tx.process(true)
               end
             rescue => e
-              krang_warning "Unable to vote and comment, retrying with just vote: #{e}", e
+              drotto_warning "Unable to vote and comment, retrying with just vote: #{e}", e
             end
             
             if !!response && !!response.error
               message = response.error.message
               if message.to_s =~ /You have already voted in a similar way./
-                krang_error "Failed vote: duplicate vote."
+                drotto_error "Failed vote: duplicate vote."
                 break
               elsif message.to_s =~ /You may only comment once every 20 seconds./
-                krang_warning "Retrying vote/comment: commenting too quickly."
+                drotto_warning "Retrying vote/comment: commenting too quickly."
                 sleep Random.rand(20..40) # stagger retry
                 redo
               elsif message.to_s =~ /Can only vote once every 3 seconds./
-                krang_warning "Retrying vote: voting too quickly."
+                drotto_warning "Retrying vote: voting too quickly."
                 sleep Random.rand(3..6) # stagger retry
                 redo
               elsif message.to_s =~ /STEEMIT_MAX_PERMLINK_LENGTH: permlink is too long/
-                krang_error "Failed comment: permlink too long; only vote"
+                drotto_error "Failed comment: permlink too long; only vote"
                 # just flunking comment
               elsif message.to_s =~ /Voting weight is too small, please accumulate more voting power or steem power./
-                krang_error "Failed vote: voting weight too small"
+                drotto_error "Failed vote: voting weight too small"
                 break
               elsif message.to_s =~ /Vote weight cannot be 0/
-                krang_error "Failed vote: vote weight cannot be zero."
+                drotto_error "Failed vote: vote weight cannot be zero."
                 break
               elsif message.to_s =~ /STEEMIT_UPVOTE_LOCKOUT_HF17/
-                krang_error "Failed vote: upvote lockout (last twelve hours before payout)"
+                drotto_error "Failed vote: upvote lockout (last twelve hours before payout)"
                 if auto_bounce_on_lockout && !(no_bounce.include?(from))
                   BounceJob.new.force_bounce!(bid[:trx_id])
                 end
                 break
               elsif message.to_s =~ /missing required posting authority/
-                krang_error "Failed vote: Check posting key."
+                drotto_error "Failed vote: Check posting key."
                 break
               elsif message.to_s =~ /unknown key/
-                krang_error "Failed vote: unknown key (testing?)"
+                drotto_error "Failed vote: unknown key (testing?)"
                 break
               elsif message.to_s =~ /tapos_block_summary/
-                krang_warning "Retrying vote/comment: tapos_block_summary (?)"
+                drotto_warning "Retrying vote/comment: tapos_block_summary (?)"
                 redo
               elsif message.to_s =~ /now < trx.expiration/
-                krang_warning "Retrying vote/comment: now < trx.expiration (?)"
+                drotto_warning "Retrying vote/comment: now < trx.expiration (?)"
                 redo
               elsif message.to_s =~ /transaction expiration exception/
-                krang_warning "Retrying vote/comment: transaction expiration exception"
+                drotto_warning "Retrying vote/comment: transaction expiration exception"
                 redo
               elsif message.to_s =~ /!check_max_block_age( _max_block_age ):/
-                krang_warning "Retrying vote/comment: !check_max_block_age( _max_block_age ):"
+                drotto_warning "Retrying vote/comment: !check_max_block_age( _max_block_age ):"
                 redo
               elsif message.to_s =~ /signature is not canonical/
-                krang_warning "Retrying vote/comment: signature was not canonical (bug in Radiator?)"
+                drotto_warning "Retrying vote/comment: signature was not canonical (bug in Radiator?)"
                 redo
               end
             end
 
             if response.nil? || !!response.error
               if !!response && !!response.result && !!response.result.trx_id
-                krang_warning "Problem while voting, but the transaction was found."
+                drotto_warning "Problem while voting, but the transaction was found."
                 response.delete(:error)
               else
-                krang_warning "Problem while voting.  Retrying with just vote: #{response}"
+                drotto_warning "Problem while voting.  Retrying with just vote: #{response}"
                 tx.operations = [vote]
                 
                 begin
@@ -613,12 +677,12 @@ module DrOtto
                     response = tx.process(true)
                   end
                 rescue => e
-                  krang_error "Unable to vote: #{e}", e
+                  drotto_error "Unable to vote: #{e}", e
                 end
               end
             end
             
-            krang_info response unless response.nil?
+            drotto_info response unless response.nil?
             
             block_nums = []
             block_nums << @last_broadcast_block.to_i if !!@last_broadcast_block
@@ -649,13 +713,13 @@ module DrOtto
       recharge = ((100.0 - current_voting_power) / VOTE_RECHARGE_PER_SEC) / 60
       
       if !!options[:log]
-        krang_info "Remaining voting power: #{('%.2f' % current_voting_power)} % (recharged #{('%.2f' % diff)} % since last vote)"
+        drotto_info "Remaining voting power: #{('%.2f' % current_voting_power)} % (recharged #{('%.2f' % diff)} % since last vote)"
       
         if voting_elapse > 0 && recharge > 0
-          krang_info "Last vote: #{voting_elapse.to_i / 60} minutes ago; #{('%.1f' % recharge)} minutes remain until 100.00 %"
+          drotto_info "Last vote: #{voting_elapse.to_i / 60} minutes ago; #{('%.1f' % recharge)} minutes remain until 100.00 %"
         else
           if voting_elapse > 0
-            krang_info "Last vote: #{voting_elapse.to_i / 60} minutes ago; #{('%.1f' % recharge.abs)} minutes of recharge power unused in 100.00 %"
+            drotto_info "Last vote: #{voting_elapse.to_i / 60} minutes ago; #{('%.1f' % recharge.abs)} minutes of recharge power unused in 100.00 %"
           end
         end
       end
@@ -664,14 +728,14 @@ module DrOtto
     end
     
     def base_to_debt_ratio
-      @last_base_to_debt_ratio = market_history_api.get_ticker do |ticker|
+      @last_base_to_debt_ratio = market_history_api.get_ticker do |ticker, error|
         latest = ticker.latest.to_f
         bid = ticker.highest_bid.to_f
         ask = ticker.lowest_ask.to_f
         [latest, bid, ask].reduce(0, :+) / 3.0
       end
     rescue => e
-      krang_warning "Unable to query market data.", e
+      drotto_warning "Unable to query market data.", e
       reset_market_history_api
     ensure
       @last_base_to_debt_ratio || 1.0
