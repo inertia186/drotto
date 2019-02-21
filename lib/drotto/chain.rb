@@ -342,6 +342,7 @@ module DrOtto
     
     def vote(bids)
       result = {}
+      memo_tx = nil
       
       # Vote stacking is where multiple bids are created for the same post.  Any
       # number of transfers from any number of accounts can bid on the same
@@ -532,20 +533,10 @@ module DrOtto
               parent_author: author
             }
             
-            memo = {
-              type: :transfer,
-              from: account_name,
-              to: author,
-              amount: '0.001 STEEM',
-              memo: merge(merge_options.merge(markup: :none))
-            }
-            
             voting_tx = nil
-            wif = enable_vote_memo? ? active_wif : posting_wif
-            tx = Radiator::Transaction.new(chain_options.merge(wif: wif))
+            tx = Radiator::Transaction.new(chain_options.merge(wif: posting_wif))
             tx.operations << vote
             tx.operations << comment if vote_comment_enabled
-            tx.operations << memo if enable_vote_memo?
             
             if account_name != voter_account_name
               voting_tx = Radiator::Transaction.new(chain_options.merge(wif: voting_wif))
@@ -555,6 +546,21 @@ module DrOtto
                 author: author,
                 permlink: permlink,
                 weight: invert_vote_weight ? -effective_weight : effective_weight
+              }
+            end
+            
+            if enable_vote_memo?
+              # Due to steemd implementation, we must use a separate transaction
+              # for transfer ops.
+              #
+              # See: https://github.com/steemit/steem/blob/a6c807f02e37a2efdf6620616c35b184c36d8d4d/libraries/protocol/include/steem/protocol/transaction_util.hpp#L32-L35
+              memo_tx ||= Radiator::Transaction.new(chain_options.merge(wif: active_wif))
+              memo_tx.operations << {
+                type: :transfer,
+                from: account_name,
+                to: author,
+                amount: '0.001 STEEM',
+                memo: merge(merge_options.merge(markup: :none))
               }
             end
             
@@ -708,6 +714,16 @@ module DrOtto
         end
         
         result[bid] = thread
+      end
+      
+      if !!memo_tx && memo_tx.operations.any?
+        begin
+          semaphore.synchronize do
+            response = memo_tx.process(true)
+          end
+        rescue => e
+          drotto_warning "Unable to send transfer memos: #{e}", e
+        end
       end
       
       result
