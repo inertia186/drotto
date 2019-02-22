@@ -36,7 +36,6 @@ module DrOtto
     starting_block = block_num - block_span(offset)
     bids = []
     job = BounceJob.new('today', starting_block)
-    result = nil
     
     if job.transfer_ids.any?
       drotto_info "Looking for new bids to #{account_name}; using account history; current time: #{time} ..."
@@ -76,19 +75,17 @@ module DrOtto
       end
     end
     
-    if bids.size == 0
+    result = if bids.size == 0
       drotto_info 'No bids collected.'
+      {}
     else
       drotto_info "Bids collected.  Ready to vote.  Processing bids: #{bids.size}"
-      result = vote(bids)
-      @threads = result.values
+      vote(bids)
     end
-    
-    send_vote_memos(result) if !!result && enable_vote_memo?
     
     elapsed = (Time.now.utc - time).to_i
     drotto_info "Bidding closed for current timeframe at block #{block_num}, took #{elapsed} seconds to run."
-    elapsed
+    result.merge(elapsed: elapsed)
   end
   
   def process_bid(options = {})
@@ -156,32 +153,41 @@ module DrOtto
   end
   
   # Only sends transfers after voting is done and only for successful bids.
-  def send_vote_memos(vote_result)
-    Thread.new do
-      @threads.each(&:join) if !!@threads
-      
-      if !!vote_result[:memo_ops] && vote_result[:memo_ops].any?
-        begin
-          # Due to steemd implementation, we must use a separate transaction
-          # for transfer ops.
-          #
-          # See: https://github.com/steemit/steem/blob/a6c807f02e37a2efdf6620616c35b184c36d8d4d/libraries/protocol/include/steem/protocol/transaction_util.hpp#L32-L35
-          memo_tx = Radiator::Transaction.new(chain_options.merge(wif: active_wif))
-          memo_tx.operations = vote_result[:memo_ops]
-          
-          response = memo_tx.process(true)
-          drotto_info response unless response.nil?
-        rescue => e
-          drotto_warning "Unable to send transfer memos: #{e}", e
-        end
+  def send_vote_memos(memo_ops, bids = nil)
+    stats_op = if !!bids && bids.any?
+      {
+        type: :custom_json,
+        id: :drotto,
+        required_auths: [account_name],
+        required_posting_auths: [],
+        json: {
+          bids: bids
+        }.to_json
+      }
+    end
+    
+    if !!memo_ops && memo_ops.any?
+      begin
+        # Due to steemd implementation, we must use a separate transaction
+        # for transfer ops.
+        #
+        # See: https://github.com/steemit/steem/blob/a6c807f02e37a2efdf6620616c35b184c36d8d4d/libraries/protocol/include/steem/protocol/transaction_util.hpp#L32-L35
+        memo_tx = Radiator::Transaction.new(chain_options.merge(wif: active_wif))
+        memo_tx.operations = memo_ops
+        memo_tx.operations << stats_op if !!stats_op && stats_op.to_json.size < 2000
+        
+        response = memo_tx.process(true)
+        drotto_info response unless response.nil?
+      rescue => e
+        drotto_warning "Unable to send transfer memos: #{e}", e
       end
     end
   end
   
-  def join_threads
-    unless @threads.nil?
+  def join_threads(threads)
+    unless threads.nil?
       loop do
-        alive = @threads.map do |thread|
+        alive = threads.map do |thread|
           thread if thread.alive?
         end.compact
         
@@ -218,25 +224,30 @@ module DrOtto
     return if current_voting_power < 100.0
     
     offset = (base_block_span * 2.10).to_i
-    elapsed = find_bids(offset)
-    join_threads
+    result = find_bids(offset)
+    elapsed = result[:elapsed]
+    join_threads(result[:bids].values)
+    send_vote_memos(result[:memo_ops], result[:bids]) if enable_vote_memo?
   end
   
   def run
     loop do
       if current_voting_power < 100.0
-          sleep 60
-          redo
-        end
+        sleep 60
+        redo
+      end
       
       offset = (base_block_span * 2.10).to_i
-      elapsed = find_bids(offset)
+      result = find_bids(offset)
+      elapsed = result[:elapsed]
       
       if elapsed == -1
         sleep 60
       else
-        join_threads
+        join_threads(result[:bids].values)
       end
+      
+      send_vote_memos(result[:memo_ops], result[:bids]) if enable_vote_memo?
     end
   end
   

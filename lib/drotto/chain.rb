@@ -341,7 +341,7 @@ module DrOtto
     end
     
     def vote(bids)
-      result = {}
+      result = {bids: {}, memo_ops: []}
       
       # Vote stacking is where multiple bids are created for the same post.  Any
       # number of transfers from any number of accounts can bid on the same
@@ -694,7 +694,6 @@ module DrOtto
             @last_broadcast_block = block_nums.max
             
             if enable_vote_memo?
-              result[:memo_ops] ||= []
               result[:memo_ops] << {
                 type: :transfer,
                 from: account_name,
@@ -708,7 +707,7 @@ module DrOtto
           end
         end
         
-        result[bid] = thread
+        result[:bids][bid] = thread
       end
       
       result

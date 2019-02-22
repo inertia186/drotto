@@ -116,8 +116,9 @@ module DrOtto
       
       vcr_cassette('vote', match_requests_on: [:method, :uri]) do
         result = DrOtto.vote([bid1, bid2, bid3])
-        bids = result.keys
-        result.values.map { |thread| thread.join(1000) }
+        bids = result[:bids].keys
+        threads = result[:bids].values
+        threads.map { |thread| thread.join(1000) }
         assert_equal 1, bids.size
         assert_equal expected_stacked_bid[:from], bids.first[:from]
         assert_equal expected_stacked_bid[:author], bids.first[:author]
@@ -162,8 +163,9 @@ module DrOtto
       
       vcr_cassette('vote_for_anonymous_bid', match_requests_on: [:method, :uri]) do
         result = DrOtto.vote([bid])
-        bids = result.keys
-        result.values.map { |thread| thread.join(1000) }
+        bids = result[:bids].keys
+        threads = result[:bids].values
+        threads.map { |thread| thread.join(1000) }
         assert_equal 1, bids.size
       end
     end
@@ -182,8 +184,9 @@ module DrOtto
       
       vcr_cassette('vote_with_base_asset', match_requests_on: [:method, :uri]) do
         result = DrOtto.vote([bid])
-        bids = result.keys
-        result.values.map { |thread| thread.join(1000) }
+        bids = result[:bids].keys
+        threads = result[:bids].values
+        threads.map { |thread| thread.join(1000) }
         assert_equal 1, bids.size, 'expect base asset bid to be accepted at market rate'
         assert_equal 'SBD', bids.last[:amount].last.split(' ').last, 'expect base asset bid to evaluate as debt asset'
       end
@@ -205,8 +208,9 @@ module DrOtto
       
       vcr_cassette('flag_with_base_asset', match_requests_on: [:method, :uri]) do
         result = DrOtto.vote([bid])
-        bids = result.keys
-        result.values.map { |thread| thread.join(1000) }
+        bids = result[:bids].keys
+        threads = result[:bids].values
+        threads.map { |thread| thread.join(1000) }
         assert_equal 1, bids.size, 'expect base asset bid to be accepted at market rate'
         assert_equal 'SBD', bids.last[:amount].last.split(' ').last, 'expect base asset bid to evaluate as debt asset'
         assert_equal true, bids.last[:invert_vote_weight].last, 'expect invert_vote_weight flag to be set'
