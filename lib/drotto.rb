@@ -169,10 +169,8 @@ module DrOtto
           memo_tx = Radiator::Transaction.new(chain_options.merge(wif: active_wif))
           memo_tx.operations = vote_result[:memo_ops]
           
-          semaphore.synchronize do
-            response = memo_tx.process(true)
-            drotto_info response unless response.nil?
-          end
+          response = memo_tx.process(true)
+          drotto_info response unless response.nil?
         rescue => e
           drotto_warning "Unable to send transfer memos: #{e}", e
         end
