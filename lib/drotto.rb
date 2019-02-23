@@ -155,6 +155,31 @@ module DrOtto
   # Only sends transfers after voting is done and only for successful bids.
   def send_vote_memos(memo_ops, bids = nil)
     stats_op = if !!bids && bids.any?
+      bids = bids.map do |bid|
+        transformed_bid = {
+          trx_id: bid[:trx_id],
+          author: bid[:author],
+          permlink: bid[:permlink]
+        }
+        
+        if bid[:from].size > 1
+          transformed_bid[:from] = bid[:from]
+        else
+          transformed_bid[:from] = bid[:from][0]
+        end
+        
+        if bid[:amount].size > 1
+          transformed_bid[:amount] = bid[:amount]
+        else
+          transformed_bid[:amount] = bid[:amount][0]
+        end
+
+        transformed_bid[:invert_vote_weight] = bid[:invert_vote_weight] if !!bid[:invert_vote_weight]
+        transformed_bid[:timestamp] = bid[:timestamp] if !!bid[:timestamp]
+        
+        transformed_bid
+      end
+      
       {
         type: :custom_json,
         id: :drotto,
@@ -174,9 +199,10 @@ module DrOtto
         # See: https://github.com/steemit/steem/blob/a6c807f02e37a2efdf6620616c35b184c36d8d4d/libraries/protocol/include/steem/protocol/transaction_util.hpp#L32-L35
         memo_tx = Radiator::Transaction.new(chain_options.merge(wif: active_wif))
         memo_tx.operations = memo_ops
-        memo_tx.operations << stats_op if !!stats_op && stats_op.to_json.size < 8000
+        memo_tx.operations << stats_op if !!stats_op && stats_op[:json].size < 2000
         
         response = memo_tx.process(true)
+        
         drotto_info response unless response.nil?
       rescue => e
         drotto_warning "Unable to send transfer memos: #{e}", e
