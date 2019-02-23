@@ -52,5 +52,21 @@ module DrOtto
         assert DrOtto.find_bids(0)
       end
     end
+    
+    def test_send_vote_memos
+      bid = {
+        from: ['from', 'from', 'from'],
+        author: 'author',
+        permlink: 'permlink',
+        parent_permlink: 'parent_permlink',
+        parent_author: 'parent_author',
+        amount: ['2.000 SBD', '0.200 SBD', '0.020 SBD'],
+        timestamp: 'timestamp',
+        trx_id: 'id'
+      }
+      
+      result = DrOtto.send_vote_memos(nil, [bid, bid, bid, bid, bid, bid, bid])
+      assert_nil result
+    end
   end
 end

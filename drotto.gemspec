@@ -28,6 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'yard', '~> 0.9.18'
   spec.add_development_dependency 'pry', '~> 0.12.2'
   spec.add_development_dependency 'rb-readline', '~> 0.5', '>= 0.5.5'
+  spec.add_development_dependency 'irb', '~> 1.0', '>= 1.0.0'
   spec.add_development_dependency 'awesome_print', '~> 1.7', '>= 1.7.0'
   spec.add_development_dependency 'delorean', '~> 2.1', '>= 2.1.0'
 

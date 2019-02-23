@@ -174,7 +174,7 @@ module DrOtto
         # See: https://github.com/steemit/steem/blob/a6c807f02e37a2efdf6620616c35b184c36d8d4d/libraries/protocol/include/steem/protocol/transaction_util.hpp#L32-L35
         memo_tx = Radiator::Transaction.new(chain_options.merge(wif: active_wif))
         memo_tx.operations = memo_ops
-        memo_tx.operations << stats_op if !!stats_op && stats_op.to_json.size < 2000
+        memo_tx.operations << stats_op if !!stats_op && stats_op.to_json.size < 8000
         
         response = memo_tx.process(true)
         drotto_info response unless response.nil?
@@ -227,7 +227,7 @@ module DrOtto
     result = find_bids(offset)
     elapsed = result[:elapsed]
     join_threads(result[:bids].values)
-    send_vote_memos(result[:memo_ops], result[:bids]) if enable_vote_memo?
+    send_vote_memos(result[:memo_ops], result[:bids].keys) if enable_vote_memo?
   end
   
   def run
@@ -247,7 +247,7 @@ module DrOtto
         join_threads(result[:bids].values)
       end
       
-      send_vote_memos(result[:memo_ops], result[:bids]) if enable_vote_memo?
+      send_vote_memos(result[:memo_ops], result[:bids].keys) if enable_vote_memo?
     end
   end
   

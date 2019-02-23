@@ -48,6 +48,7 @@ GEM
       domain_name (~> 0.5)
     i18n (1.5.3)
       concurrent-ruby (~> 1.0)
+    irb (1.0.0)
     json (2.1.0)
     little-plugger (1.1.4)
     logging (2.2.2)
@@ -125,6 +126,7 @@ DEPENDENCIES
   bundler (~> 2.0, >= 2.0.1)
   delorean (~> 2.1, >= 2.1.0)
   drotto!
+  irb (~> 1.0, >= 1.0.0)
   minitest (~> 5.10, >= 5.10.2)
   minitest-line (~> 0.6.3)
   minitest-proveit (~> 1.0, >= 1.0.0)
