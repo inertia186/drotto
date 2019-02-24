@@ -174,7 +174,10 @@ module DrOtto
           transformed_bid[:amount] = bid[:amount][0]
         end
 
-        transformed_bid[:invert_vote_weight] = bid[:invert_vote_weight] if !!bid[:invert_vote_weight]
+        if !!bid[:invert_vote_weight] && bid[:invert_vote_weight].include?(true)
+          transformed_bid[:invert_vote_weight] = true
+        end
+        
         transformed_bid[:timestamp] = bid[:timestamp] if !!bid[:timestamp]
         
         transformed_bid
