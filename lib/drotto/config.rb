@@ -47,6 +47,10 @@ module DrOtto
       chain_options.dup
     end
     
+    def steem_engine_chain_options
+      default_value(:steem_engine_chain_options) || config[:steem_engine_chain_options]
+    end
+    
     def logger
       @default_logger ||= Logger.new("drotto.log")
     end
@@ -153,6 +157,10 @@ module DrOtto
     
     def enable_vote_memo?
       (default_value(:drotto_enable_vote_memo) || config[:drotto][:enable_vote_memo]).to_s == 'true'
+    end
+    
+    def steem_engine_reward
+      default_value(:drotto_steem_engine_reward) || config[:drotto][:steem_engine_reward]
     end
     
     def auto_bounce_on_lockout

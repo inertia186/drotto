@@ -99,6 +99,19 @@
   # you can do both if you're that kind of person.
   :enable_vote_memo: false
   
+  # If enabled, send a Steem Engine reward in these tokens instead of adding
+  # drotto stats custom_json op.  Note, if you issue a Steem Engine reward, for
+  # using your bot, please ensure your bidders know that this bot is not
+  # configured to directly accept your Steem Engine tokens for bids.  Instead,
+  # the top *n* staked accounts get an increased bid.  Also, see
+  # steem engine_chain_options group, below.
+  #
+  # :steem_engine_reward:
+  #   :symbol: YOUR_TOKEN_SYMBOL
+  #   :precision: 8
+  #   :top_staked: 0
+  #   :staked_incentive_bid: 0.00 %
+  
   # Automatically bounce bids for posts that are locked out since they are
   # 12-hours until cashout and cannot be upvoted.  By default, the `max_age`
   # option set at 7200 precludes the need to set this option to true.  But if
@@ -112,3 +125,8 @@
 :chain_options:
   :chain: steem
   :url: https://api.steemit.com
+
+# Required for steem_engine_reward group.
+#
+# :steem_engine_chain_options:
+#   :root_url: https://api.steem-engine.com/rpc
