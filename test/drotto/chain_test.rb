@@ -20,11 +20,19 @@ module DrOtto
           enable_vote_comment: true,
           no_vote_comment: 'bittrex poloniex openledger',
           no_vote_comment_fee: '0.00 %',
-          enable_vote_memo: false
+          enable_vote_memo: false,
+          steem_engine_reward: {
+            symbol: 'DROTTO',
+            precision: 8,
+            top_staked: 10,
+            staked_incentive_bid: '10.00 %'
+          }
         }, chain_options: {
           chain: 'steem',
           url: 'https://api.steemit.com',
           fallback_urls: ['https://api.steemit.com']
+        }, steem_engine_chain_options: {
+          root_url: 'https://api.steem-engine.com/rpc'
         }
       )
     end
@@ -192,6 +200,63 @@ module DrOtto
       end
     end
     
+    def test_vote_with_base_asset_and_staked_accounts
+      original_config = DrOtto.config
+      DrOtto.override_config(
+        drotto: {
+          block_mode: 'irreversible',
+          account_name: 'bittrex',
+          posting_wif: '5JrvPrQeBBvCRdjv29iDvkwn3EQYZ9jqfAHzrCyUvfbEbRkrYFC',
+          active_wif: '5JrvPrQeBBvCRdjv29iDvkwn3EQYZ9jqfAHzrCyUvfbEbRkrYFC',
+          batch_vote_weight: '3.13 %',
+          flag_prefix: '!!!',
+          reserve_vote_weight: '0.00 %',
+          minimum_bid: '2.000 SBD',
+          max_effective_weight: '90.00 %',
+          alternative_assets: 'STEEM',
+          blacklist: 'mikethemug',
+          no_bounce: 'bittrex poloniex openledger',
+          enable_vote_comment: true,
+          no_vote_comment: 'bittrex poloniex openledger',
+          no_vote_comment_fee: '0.00 %',
+          enable_vote_memo: false,
+          steem_engine_reward: {
+            symbol: 'ENG',
+            precision: 3,
+            top_staked: 10,
+            staked_incentive_bid: '10.00 %'
+          }
+        }, chain_options: {
+          chain: 'steem',
+          url: 'https://api.steemit.com',
+          fallback_urls: ['https://api.steemit.com']
+        }, steem_engine_chain_options: {
+          root_url: 'https://api.steem-engine.com/rpc'
+        }
+      )
+      
+      bid = {
+        from: 'from',
+        author: 'sct', # top staker
+        permlink: 'permlink',
+        parent_permlink: 'parent_permlink',
+        parent_author: 'parent_author',
+        amount: '2.211 STEEM',
+        timestamp: 'timestamp',
+        trx_id: 'id'
+      }
+      
+      vcr_cassette('vote_with_base_asset_and_staked_accounts', match_requests_on: [:method, :uri]) do
+        result = DrOtto.vote([bid])
+        bids = result[:bids].keys
+        threads = result[:bids].values
+        threads.map { |thread| thread.join(1000) }
+        assert_equal 1, bids.size, 'expect base asset bid to be accepted at market rate'
+        assert_equal 'SBD', bids.last[:amount].last.split(' ').last, 'expect base asset bid to evaluate as debt asset'
+      end
+      
+      DrOtto.override_config(original_config)
+    end
     
     def test_flag_with_base_asset
       bid = {
@@ -241,6 +306,18 @@ module DrOtto
     def test_current_voting_power
       vcr_cassette('current_voting_power', match_requests_on: [:method, :uri]) do
         assert DrOtto.current_voting_power
+      end
+    end
+    
+    def test_top_steem_engine_stakers
+      vcr_cassette('top_steem_engine_stakers', match_requests_on: [:method, :uri]) do
+        assert DrOtto.top_steem_engine_stakers
+      end
+    end
+    
+    def test_top_steem_engine_stakers_banjo
+      vcr_cassette('top_steem_engine_stakers_banjo', match_requests_on: [:method, :uri]) do
+        assert_equal 10, DrOtto.top_steem_engine_stakers('BANJO', 10).size
       end
     end
   end

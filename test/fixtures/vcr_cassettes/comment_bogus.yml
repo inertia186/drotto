@@ -5,12 +5,12 @@ http_interactions:
     uri: https://api.steemit.com/
     body:
       encoding: UTF-8
-      string: '{"jsonrpc":"2.0","method":"condenser_api.get_content","params":["bogus","bogus"],"id":3}'
+      string: '{"jsonrpc":"2.0","method":"condenser_api.get_content","params":["bogus","bogus"],"id":1}'
     headers:
       Content-Type:
       - application/json
       User-Agent:
-      - radiator/0.4.4
+      - radiator/0.4.6
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
       Accept:
@@ -25,7 +25,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Thu, 21 Feb 2019 04:33:38 GMT
+      - Thu, 11 Jul 2019 23:32:36 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -35,9 +35,9 @@ http_interactions:
       Server:
       - nginx
       X-Jussi-Request-Id:
-      - '000446274643277818'
+      - '000243824677693431'
       X-Amzn-Trace-Id:
-      - Root=1-5c6e2a22-2665d183f02a707e97715212
+      - Root=1-5d27c714-f336d332647ae1a8a6c0ee06
       Access-Control-Allow-Origin:
       - "*"
       Access-Control-Allow-Methods:
@@ -54,7 +54,7 @@ http_interactions:
         STEEM","curator_payout_value":"0.000 STEEM","author_rewards":0,"net_votes":0,"root_author":"","root_permlink":"","max_accepted_payout":"0.000
         STEEM","percent_steem_dollars":0,"allow_replies":false,"allow_votes":false,"allow_curation_rewards":false,"beneficiaries":[],"url":"","root_title":"","pending_payout_value":"0.000
         STEEM","total_pending_payout_value":"0.000 STEEM","active_votes":[],"replies":[],"author_reputation":0,"promoted":"0.000
-        STEEM","body_length":0,"reblogged_by":[]},"id":3}'
+        STEEM","body_length":0,"reblogged_by":[]},"id":1}'
     http_version: 
-  recorded_at: Thu, 21 Feb 2019 04:33:38 GMT
+  recorded_at: Thu, 11 Jul 2019 23:32:36 GMT
 recorded_with: VCR 4.0.0

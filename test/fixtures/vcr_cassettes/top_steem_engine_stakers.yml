@@ -1,0 +1,89 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.steem-engine.com/rpc/contracts
+    body:
+      encoding: UTF-8
+      string: '{"method":"find","params":{"contract":"tokens","table":"transfers","query":{"symbol":""},"limit":0},"jsonrpc":"2.0","id":6}'
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - radiator/0.4.6
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - '30'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.10.3 (Ubuntu)
+      Date:
+      - Thu, 11 Jul 2019 23:32:43 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '38'
+      Connection:
+      - keep-alive
+      X-Powered-By:
+      - Express
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: UTF-8
+      string: '{"jsonrpc":"2.0","id":6,"result":null}'
+    http_version: 
+  recorded_at: Thu, 11 Jul 2019 23:32:43 GMT
+- request:
+    method: post
+    uri: https://api.steem-engine.com/rpc/contracts
+    body:
+      encoding: UTF-8
+      string: '{"method":"find","params":{"contract":"tokens","table":"balances","query":{"symbol":"DROTTO"},"limit":1000,"offset":0},"jsonrpc":"2.0","id":5}'
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - radiator/0.4.6
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - '30'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.10.3 (Ubuntu)
+      Date:
+      - Thu, 11 Jul 2019 23:32:44 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '36'
+      Connection:
+      - keep-alive
+      X-Powered-By:
+      - Express
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: UTF-8
+      string: '{"jsonrpc":"2.0","id":5,"result":[]}'
+    http_version: 
+  recorded_at: Thu, 11 Jul 2019 23:32:44 GMT
+recorded_with: VCR 4.0.0

@@ -5,7 +5,7 @@ http_interactions:
     uri: https://api.steemit.com/
     body:
       encoding: UTF-8
-      string: '{"jsonrpc":"2.0","method":"condenser_api.get_dynamic_global_properties","params":[],"id":2}'
+      string: '{"jsonrpc":"2.0","method":"condenser_api.get_dynamic_global_properties","params":[],"id":3}'
     headers:
       Content-Type:
       - application/json
@@ -25,7 +25,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Thu, 11 Jul 2019 23:32:37 GMT
+      - Thu, 11 Jul 2019 23:32:35 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -37,9 +37,9 @@ http_interactions:
       X-Jussi-Cache-Hit:
       - appbase.condenser_api.get_dynamic_global_properties.params=[]
       X-Jussi-Request-Id:
-      - '000427813504071098'
+      - '000961147883439159'
       X-Amzn-Trace-Id:
-      - Root=1-5d27c715-5d558878d1e94a4a290cd8d7
+      - Root=1-5d27c713-f7e8c9302c6e502d3d67d9d8
       Access-Control-Allow-Origin:
       - "*"
       Access-Control-Allow-Methods:
@@ -52,12 +52,12 @@ http_interactions:
       - upgrade-insecure-requests
     body:
       encoding: ASCII-8BIT
-      string: '{"id":2,"jsonrpc":"2.0","result":{"head_block_number":34581767,"head_block_id":"020fad0758bf3591dac606603f21e86e0caff849","time":"2019-07-11T23:32:36","current_witness":"smooth.witness","total_pow":514415,"num_pow_witnesses":172,"virtual_supply":"340799029.987
+      string: '{"id":3,"jsonrpc":"2.0","result":{"head_block_number":34581767,"head_block_id":"020fad0758bf3591dac606603f21e86e0caff849","time":"2019-07-11T23:32:36","current_witness":"smooth.witness","total_pow":514415,"num_pow_witnesses":172,"virtual_supply":"340799029.987
         STEEM","current_supply":"314575269.825 STEEM","confidential_supply":"0.000
         STEEM","init_sbd_supply":"0.000 SBD","current_sbd_supply":"8889854.695 SBD","confidential_sbd_supply":"0.000
         SBD","total_vesting_fund_steem":"198204715.540 STEEM","total_vesting_shares":"394012963994.281758
         VESTS","total_reward_fund_steem":"0.000 STEEM","total_reward_shares2":"0","pending_rewarded_vesting_shares":"666708503.264481
         VESTS","pending_rewarded_vesting_steem":"330503.715 STEEM","sbd_interest_rate":0,"sbd_print_rate":10000,"maximum_block_size":65536,"current_aslot":34684252,"recent_slots_filled":"340282366920938463463374607431768211455","participation_count":128,"last_irreversible_block_num":34581752,"vote_power_reserve_rate":10,"delegation_return_period":432000,"reverse_auction_seconds":900,"sbd_stop_percent":1000,"sbd_start_percent":900}}'
     http_version: 
-  recorded_at: Thu, 11 Jul 2019 23:33:08 GMT
+  recorded_at: Thu, 11 Jul 2019 23:32:36 GMT
 recorded_with: VCR 4.0.0

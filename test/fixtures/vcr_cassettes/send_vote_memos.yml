@@ -1,0 +1,170 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.steemit.com/
+    body:
+      encoding: UTF-8
+      string: '{"jsonrpc":"2.0","method":"condenser_api.get_dynamic_global_properties","params":[],"id":1}'
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - radiator/0.4.6
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 11 Jul 2019 23:32:01 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Server:
+      - nginx
+      X-Jussi-Cache-Hit:
+      - appbase.condenser_api.get_dynamic_global_properties.params=[]
+      X-Jussi-Request-Id:
+      - '000566542626901135'
+      X-Amzn-Trace-Id:
+      - Root=1-5d27c6f1-6471d480cab5d5a264222d0f
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Headers:
+      - DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range
+      Strict-Transport-Security:
+      - max-age=31557600; includeSubDomains; preload
+      Content-Security-Policy:
+      - upgrade-insecure-requests
+    body:
+      encoding: ASCII-8BIT
+      string: '{"id":1,"jsonrpc":"2.0","result":{"head_block_number":34581755,"head_block_id":"020facfb4abf7ca3967290668e8b61be5eb9b4d8","time":"2019-07-11T23:32:00","current_witness":"cervantes","total_pow":514415,"num_pow_witnesses":172,"virtual_supply":"340798997.843
+        STEEM","current_supply":"314575245.295 STEEM","confidential_supply":"0.000
+        STEEM","init_sbd_supply":"0.000 SBD","current_sbd_supply":"8889852.114 SBD","confidential_sbd_supply":"0.000
+        SBD","total_vesting_fund_steem":"198204707.342 STEEM","total_vesting_shares":"394012957431.199929
+        VESTS","total_reward_fund_steem":"0.000 STEEM","total_reward_shares2":"0","pending_rewarded_vesting_shares":"666684727.287579
+        VESTS","pending_rewarded_vesting_steem":"330491.755 STEEM","sbd_interest_rate":0,"sbd_print_rate":10000,"maximum_block_size":65536,"current_aslot":34684240,"recent_slots_filled":"340282366920938463463374607431768211455","participation_count":128,"last_irreversible_block_num":34581739,"vote_power_reserve_rate":10,"delegation_return_period":432000,"reverse_auction_seconds":900,"sbd_stop_percent":1000,"sbd_start_percent":900}}'
+    http_version: 
+  recorded_at: Thu, 11 Jul 2019 23:32:01 GMT
+- request:
+    method: post
+    uri: https://api.steemit.com/
+    body:
+      encoding: UTF-8
+      string: '{"jsonrpc":"2.0","method":"condenser_api.get_block","params":[34581739],"id":2}'
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - radiator/0.4.6
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 11 Jul 2019 23:32:02 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Server:
+      - nginx
+      X-Jussi-Cache-Hit:
+      - appbase.condenser_api.get_block.params=[34581739]
+      X-Jussi-Request-Id:
+      - '000583455903786234'
+      X-Amzn-Trace-Id:
+      - Root=1-5d27c6f2-0eda787a290284ea4b273fb8
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Headers:
+      - DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range
+      Strict-Transport-Security:
+      - max-age=31557600; includeSubDomains; preload
+      Content-Security-Policy:
+      - upgrade-insecure-requests
+    body:
+      encoding: ASCII-8BIT
+      string: '{"id":2,"jsonrpc":"2.0","result":{"previous":"020faceaea380ec9fb0d147f43a9d3f4d9dca7be","timestamp":"2019-07-11T23:31:12","witness":"someguy123","transaction_merkle_root":"0d69f731fa10de2fc337c4bf5d572dcd1b56a6ec","extensions":[],"witness_signature":"20b7854c2e0913fbf6dfab93214a0a09bbcc2120ff42a2acaeb368a062119bb97c4d4af6ad01a6280e2b1556dd6e40cbaa425edc99352ad14fa96af16aba29c8a0","transactions":[{"ref_block_num":44246,"ref_block_prefix":807510595,"expiration":"2019-07-11T23:41:06","operations":[["comment",{"parent_author":"forums.tokenbb","parent_permlink":"tokenbb-category-all-fights-1553179324035","author":"venzam","permlink":"tokenbb-topic-check-my-latest-fight-venzam-vs--1562887868220","title":"Check
+        my latest fight ! venzam vs drisers","body":"### [Topic: Check my latest fight
+        ! venzam vs drisers](https:\/\/drugwars.tokenbb.io\/topics\/venzam\/tokenbb-topic-check-my-latest-fight-venzam-vs--1562887868220)\n\n---\n\n![dw](https:\/\/res.cloudinary.com\/hightouch\/image\/upload\/v1562887835\/drugwars\/jzppdntphsfupdyvry4y.jpg)\n\n---\n\n[View
+        this topic on TokenBB](https:\/\/drugwars.tokenbb.io\/topics\/venzam\/tokenbb-topic-check-my-latest-fight-venzam-vs--1562887868220)","json_metadata":"{\"app\":\"tokenbb\/0.1.1\",\"format\":\"markdown\",\"tags\":[\"tokenbb\",\"drugwars\"],\"url\":\"https:\/\/drugwars.tokenbb.io\/topics\/venzam\/tokenbb-topic-check-my-latest-fight-venzam-vs--1562887868220\",\"forum_name\":\"drugwars\",\"category_name\":\"All
+        Fights\",\"topic_name\":\"Check my latest fight ! venzam vs drisers\"}"}],["comment_options",{"author":"venzam","permlink":"tokenbb-topic-check-my-latest-fight-venzam-vs--1562887868220","max_accepted_payout":"1000000.000
+        SBD","percent_steem_dollars":0,"allow_votes":true,"allow_curation_rewards":true,"extensions":[[0,{"beneficiaries":[{"account":"drugwars","weight":600},{"account":"drugwars-dealer","weight":800},{"account":"tokenbb","weight":100}]}]]}]],"extensions":[],"signatures":["1f2c16e6cafcdea26d6b07cd169f1477fab2605545741b1f4fc21cd38c09bc3b401954911b004993c2ce786edfb6afcbf05b453113b22f83a9d4b2ac330a4f52fb"],"transaction_id":"89ae7be600c9cb8caeff28428b80fad000f6337d","block_num":34581739,"transaction_num":0},{"ref_block_num":44261,"ref_block_prefix":586572063,"expiration":"2019-07-11T23:32:05","operations":[["vote",{"voter":"profquax","author":"rjoshicool","permlink":"agri10x-blockchain-powered-marketplace-connecting-farmers-to-traders","weight":123}]],"extensions":[],"signatures":["206b1ab97e5030c3ad326d667bec7fe550a9fa706b15652460d80a832c128c13d80cf004ff9b578239291cda7b4bd96cbaf05dafa955b7c8430138e038c2c1b0ad"],"transaction_id":"63d8a365ca2e1bb75643d0fb82da13b8680c1201","block_num":34581739,"transaction_num":1},{"ref_block_num":44246,"ref_block_prefix":807510595,"expiration":"2019-07-11T23:41:06","operations":[["vote",{"voter":"musatokmak","author":"techwizardry","permlink":"techwizardry-1562886943655-google-admits-workers-listen-to-private-audio-recordings-from-google-home-smart-speakers","weight":10000}]],"extensions":[],"signatures":["2014ac12a7a045ae4bcef008eb90669324479f127b5c3024633c2ace8140d855265f713bfe8200438b93396f74b76f8180810a41a479fffa632e56dc73298c2a38"],"transaction_id":"9a74d8bb9dedceab6f0b95ef8dbc3ee844bf93a5","block_num":34581739,"transaction_num":2},{"ref_block_num":44246,"ref_block_prefix":807510595,"expiration":"2019-07-11T23:41:06","operations":[["vote",{"voter":"amir777","author":"techwizardry","permlink":"techwizardry-1562886943655-google-admits-workers-listen-to-private-audio-recordings-from-google-home-smart-speakers","weight":10000}]],"extensions":[],"signatures":["1f5d002809f445e328e9e9655f2069207b07fe15f07232135802004e5160a54bcf1ead6abcd1a1f488ba5b8fc161d052283d52c24b4d9c44f34e60815e2f444dd0"],"transaction_id":"e2024f0fadee7752b1c0fbc4052d7adfb027cdb6","block_num":34581739,"transaction_num":3},{"ref_block_num":44246,"ref_block_prefix":807510595,"expiration":"2019-07-11T23:41:06","operations":[["custom_json",{"required_auths":[],"required_posting_auths":["bengiles"],"id":"sm_find_match","json":"{\"match_type\":\"Ranked\",\"app\":\"steemmonsters\/0.6.2\"}"}]],"extensions":[],"signatures":["1f1a2adcf21c2a59813ec4ba28b1ee834d3ada3925f8de5f1754a5762d8c27d8b5712d0f677e340e546e7095dfdb4a3de4a20d874b614eb72c6f745e6b61df5a81"],"transaction_id":"197f49a8ed0754f6b7a47c1b5441e011c380206e","block_num":34581739,"transaction_num":4},{"ref_block_num":44246,"ref_block_prefix":807510595,"expiration":"2019-07-11T23:41:06","operations":[["vote",{"voter":"thereliye","author":"techwizardry","permlink":"techwizardry-1562886943655-google-admits-workers-listen-to-private-audio-recordings-from-google-home-smart-speakers","weight":10000}]],"extensions":[],"signatures":["1f17669dcdd950e74f760c012295ae710e620719ab89dedfe015bd6d4024b27e2a30ea96d865c41ed2319b177a56ce8ea48078d1db2bf1cab79f82ce76bb8bb69f"],"transaction_id":"53cc9d28bf1f9cfcde9e35b4bb442237bcd1159e","block_num":34581739,"transaction_num":5},{"ref_block_num":44262,"ref_block_prefix":3741918903,"expiration":"2019-07-11T23:32:06","operations":[["transfer",{"from":"deadspace","to":"epicdice","amount":"0.400
+        STEEM","memo":"Below 50"}]],"extensions":[],"signatures":["2053173772ac0bc4ea5f8fe98baacdc8c6fd665fa80bd4a7daf3d66dccd3178c64603ea33a6452fbbaeb4a4f7731d5b0e629c98f8e7b48ab29b94d2af0578ba1bf"],"transaction_id":"568f46fc2affdf0f8410a8e51db41cbafe08a72e","block_num":34581739,"transaction_num":6},{"ref_block_num":44246,"ref_block_prefix":807510595,"expiration":"2019-07-11T23:41:06","operations":[["claim_reward_balance",{"account":"fabi1315","reward_steem":"0.000
+        STEEM","reward_sbd":"0.000 SBD","reward_vests":"3.975927 VESTS"}]],"extensions":[],"signatures":["1f7395bfba2ba8097b7ac179980e607ccc911de6a84d5cea0a058dfd2ddb2981840826a9b2dcf3b165353bfc0350b59c165a51ded30debbbe76fb2d2779b09b1c9"],"transaction_id":"9f6f367e859c8bc2e163844e6dec6da5beed806c","block_num":34581739,"transaction_num":7},{"ref_block_num":44246,"ref_block_prefix":807510595,"expiration":"2019-07-11T23:41:03","operations":[["vote",{"voter":"fyrstikken","author":"cflclosers","permlink":"gval7xbv2t5","weight":100}]],"extensions":[],"signatures":["1c6bbc7f73b7b96e1ea9fcf3305c8c49d8c6b269ea9f7676bf241b66ecfd111b6d6f75ce8fd4851ad2aff00373134a2244e99f6c6154dd6fa8abe2783142091c82"],"transaction_id":"daa17e02835aed616ea9b5be48d0423dd830a909","block_num":34581739,"transaction_num":8},{"ref_block_num":44247,"ref_block_prefix":3223833122,"expiration":"2019-07-11T23:41:09","operations":[["vote",{"voter":"kisom1","author":"techwizardry","permlink":"techwizardry-1562886943655-google-admits-workers-listen-to-private-audio-recordings-from-google-home-smart-speakers","weight":10000}]],"extensions":[],"signatures":["202fb4d200d19dbf223098a5041df45f54f089b7eabc19188fef15841646cab2ab5bd2d01590a0859253abcb148b5592fc3009f09a193bfbdcc7799084cd8aa446"],"transaction_id":"96e90d93e909e8a834c82d9ebb7c4f99c9b2aeda","block_num":34581739,"transaction_num":9},{"ref_block_num":44247,"ref_block_prefix":3223833122,"expiration":"2019-07-11T23:41:09","operations":[["vote",{"voter":"aerithe77","author":"techwizardry","permlink":"techwizardry-1562886943655-google-admits-workers-listen-to-private-audio-recordings-from-google-home-smart-speakers","weight":10000}]],"extensions":[],"signatures":["1f4d72f7a8085bdfe486b166b125de6b7a399b20b51b6e3461febcacec86c84bd141d6fbd2eeb177b477a46273546f36158694df0f8f4d3f8fec1ee2f55449d9d2"],"transaction_id":"21b1a31702dab42a58c9854103d79bf04a9def34","block_num":34581739,"transaction_num":10},{"ref_block_num":44247,"ref_block_prefix":3223833122,"expiration":"2019-07-11T23:41:09","operations":[["vote",{"voter":"intellihandling","author":"profquax","permlink":"actifit-profquax-20190711t203903223z","weight":5000}]],"extensions":[],"signatures":["206b65ba32672a15a5684b859e0a230dfe6f46e0cf9879c521d3820be37bc523690d9efb9d072cb29245a6dd3d151699ba98201ce7b6fd310190eec00f68ffdb75"],"transaction_id":"1d2d3d7b9563e68db35ecceb6aeeeea424613347","block_num":34581739,"transaction_num":11},{"ref_block_num":44246,"ref_block_prefix":807510595,"expiration":"2019-07-11T23:41:06","operations":[["vote",{"voter":"internutter","author":"internutter","permlink":"challenge-02375-f185-call-it-a-win","weight":10000}]],"extensions":[],"signatures":["1f45ad8e6fd172182d70f4a6c8c032af5b8550e7337f43cdc618e514c356df3db6607f584e417a06bf57fd23cc6406fab15e2cf751f2d650d35da43a9f38c710e4"],"transaction_id":"868a0a0c2c6d753ff0d4d88d03b35ac963bab1a0","block_num":34581739,"transaction_num":12},{"ref_block_num":44265,"ref_block_prefix":730886898,"expiration":"2019-07-11T23:31:39","operations":[["vote",{"voter":"fructose","author":"zizzling","permlink":"steem-monster-190706-zcr603rl","weight":10000}]],"extensions":[],"signatures":["1f39bf769b0a8f1b07498fb32938f1c72593961e0487a8e96a89d2ef8939dd002c3d69b6e74f9bc8d8980239ae7df423c1b13f262520ca38e57d2f057693251683"],"transaction_id":"14080873aec8e8cfec3c677d989e16ef0b41a8f3","block_num":34581739,"transaction_num":13},{"ref_block_num":44247,"ref_block_prefix":3223833122,"expiration":"2019-07-11T23:41:09","operations":[["vote",{"voter":"machroezar","author":"fitinfunfood","permlink":"what-does-ccc-stand-for-what-does-ccc-mean-to-me-contest-entry-2-05","weight":300}]],"extensions":[],"signatures":["2051f2eb4cb91dd40b57d233e0ccbde15a77ba7255f58f8ed0e188281f4865b7821e87dbdfe79ae68fb6d6b81a15db857c2703abfe285361642a88751a9e15dd2f"],"transaction_id":"5b7068655b679dcb1d4033015502846806435d05","block_num":34581739,"transaction_num":14},{"ref_block_num":44265,"ref_block_prefix":730886898,"expiration":"2019-07-11T23:31:40","operations":[["custom_json",{"required_auths":[],"required_posting_auths":["dactylous"],"id":"follow","json":"[\"follow\",
+        {\"following\": \"www163mx\", \"follower\": \"dactylous\", \"what\": [\"blog\"]}]"}]],"extensions":[],"signatures":["2049b2f0469df8d66e1f67ee3d2866554b56494cb07cdfa8607fc2243129ace8cc4c61c2551d19ab3326884efb4366908c34283ae697577e974bc97c6349d58225"],"transaction_id":"043423909ec10ab70dda7af203e60aa2feee7af0","block_num":34581739,"transaction_num":15},{"ref_block_num":44247,"ref_block_prefix":3223833122,"expiration":"2019-07-11T23:41:09","operations":[["vote",{"voter":"louis.random","author":"techwizardry","permlink":"techwizardry-1562886943655-google-admits-workers-listen-to-private-audio-recordings-from-google-home-smart-speakers","weight":10000}]],"extensions":[],"signatures":["1f3f94634e2825b21f0e5771498a0dfa446cfaf37d9fb04708e01e653ecfcff9bd68bb012781ce07de3d3b65b102c8e038a5bc455965e621f7e7fea745cc0b4e3f"],"transaction_id":"abca41c2b9bae78d46720b734a9e1d82221714cc","block_num":34581739,"transaction_num":16},{"ref_block_num":44262,"ref_block_prefix":3741918903,"expiration":"2019-07-11T23:32:06","operations":[["custom_json",{"required_auths":[],"required_posting_auths":["xhaman"],"id":"sm_submit_team","json":"{\"trx_id\":\"a78bf6cb405c0155a3b7a91148ab42e55be5effa\",\"team_hash\":\"fe0d4e85890ff6333f1d5f3757d7e735\",\"app\":\"steemmonsters\/0.6.2\"}"}]],"extensions":[],"signatures":["201a20d3c719d3626e53d60326a8709a2f084993893f885fe636bbc1ab5a8cbf286dedb3c8d3ea76b1be707950e67b07c48c38c767e2fed0ec2fc06b2b59552c82"],"transaction_id":"54da122175001f323dd83a217d177371e1356d72","block_num":34581739,"transaction_num":17},{"ref_block_num":44247,"ref_block_prefix":3223833122,"expiration":"2019-07-11T23:41:09","operations":[["vote",{"voter":"indianteam","author":"techwizardry","permlink":"techwizardry-1562886943655-google-admits-workers-listen-to-private-audio-recordings-from-google-home-smart-speakers","weight":10000}]],"extensions":[],"signatures":["1f3173d21bc73198a5bcb2ae563d722c55825b0239383b36dc70806e17e9420e816af9bdba47996fac29caf4201c8d6e2c00fc694c3e57a8f4241f25fa8a32b2b9"],"transaction_id":"37d671c2588495c013cca802ba43a22950ef5640","block_num":34581739,"transaction_num":18},{"ref_block_num":44246,"ref_block_prefix":807510595,"expiration":"2019-07-11T23:41:06","operations":[["custom_json",{"required_auths":[],"required_posting_auths":["heberwords"],"id":"sm_find_match","json":"{\"match_type\":\"Ranked\",\"app\":\"steemmonsters\/0.6.2\"}"}]],"extensions":[],"signatures":["1f1a1c00c74526d9621bf0e9cdf7c57b010004a3921af661981f92fdf4d6b367445f33226db4bfff0584ccfd97f8190a03f4c83e74c4e734ee54a35246a1c3c79e"],"transaction_id":"5f99b9d28d06ac21d7c1c4d68397151958d3f366","block_num":34581739,"transaction_num":19}],"block_id":"020faceba94e5d031d62064190626fb3322ef069","signing_key":"STM8Em8V6CHEZxthbreow3QxvgS9DghckG3jCTMyVi4Qz19oGAVZf","transaction_ids":["89ae7be600c9cb8caeff28428b80fad000f6337d","63d8a365ca2e1bb75643d0fb82da13b8680c1201","9a74d8bb9dedceab6f0b95ef8dbc3ee844bf93a5","e2024f0fadee7752b1c0fbc4052d7adfb027cdb6","197f49a8ed0754f6b7a47c1b5441e011c380206e","53cc9d28bf1f9cfcde9e35b4bb442237bcd1159e","568f46fc2affdf0f8410a8e51db41cbafe08a72e","9f6f367e859c8bc2e163844e6dec6da5beed806c","daa17e02835aed616ea9b5be48d0423dd830a909","96e90d93e909e8a834c82d9ebb7c4f99c9b2aeda","21b1a31702dab42a58c9854103d79bf04a9def34","1d2d3d7b9563e68db35ecceb6aeeeea424613347","868a0a0c2c6d753ff0d4d88d03b35ac963bab1a0","14080873aec8e8cfec3c677d989e16ef0b41a8f3","5b7068655b679dcb1d4033015502846806435d05","043423909ec10ab70dda7af203e60aa2feee7af0","abca41c2b9bae78d46720b734a9e1d82221714cc","54da122175001f323dd83a217d177371e1356d72","37d671c2588495c013cca802ba43a22950ef5640","5f99b9d28d06ac21d7c1c4d68397151958d3f366"]}}'
+    http_version: 
+  recorded_at: Thu, 11 Jul 2019 23:32:02 GMT
+- request:
+    method: post
+    uri: https://api.steemit.com/
+    body:
+      encoding: UTF-8
+      string: '{"jsonrpc":"2.0","method":"condenser_api.broadcast_transaction_synchronous","params":[{"expiration":"2019-07-11T23:42:00","ref_block_num":44266,"ref_block_prefix":3373152490,"operations":[["custom_json",{"required_auths":["bittrex"],"required_posting_auths":[],"id":"ssc-mainnet1","json":"[{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}}]"}]],"extensions":[],"signatures":["1c3032513101eb539d7015868a02ac7eed68379ff957cdde390a1a598b5941f76023381182f79c74b0a9aabe7ebb911baac393fb211a3bd6d7af73f43730e25b19"]}],"id":3}'
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - radiator/0.4.6
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 11 Jul 2019 23:32:02 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Server:
+      - nginx
+      X-Jussi-Request-Id:
+      - '000573282762360422'
+      X-Amzn-Trace-Id:
+      - Root=1-5d27c6f2-e5dd5df99c5db6e37b34e66e
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Headers:
+      - DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range
+      Strict-Transport-Security:
+      - max-age=31557600; includeSubDomains; preload
+      Content-Security-Policy:
+      - upgrade-insecure-requests
+    body:
+      encoding: ASCII-8BIT
+      string: '{"jsonrpc":"2.0","error":{"code":-32000,"message":"missing required
+        active authority:Missing Active Authority bittrex","data":{"code":3010000,"name":"tx_missing_active_auth","message":"missing
+        required active authority","stack":[{"context":{"level":"error","file":"transaction_util.hpp","line":88,"method":"verify_authority","hostname":"","timestamp":"2019-07-11T23:32:02"},"format":"Missing
+        Active Authority ${id}","data":{"id":"bittrex","auth":{"weight_threshold":1,"account_auths":[],"key_auths":[["STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF",1]]},"owner":{"weight_threshold":1,"account_auths":[],"key_auths":[["STM6xNqvVTWvftzpcRu75LfPx6SVVQuFJ8BMYQjkBf6x8HJe6g7CF",1]]}}},{"context":{"level":"warn","file":"transaction_util.hpp","line":103,"method":"verify_authority","hostname":"","timestamp":"2019-07-11T23:32:02"},"format":"","data":{"auth_containers":[{"type":"custom_json_operation","value":{"required_auths":["bittrex"],"required_posting_auths":[],"id":"ssc-mainnet1","json":"[{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}}]"}}],"sigs":["STM5ctejUsoZ9FwfCaVbNvWYYgNMBo9TVsHSE8wHrqAmNJi6sDctt"]}},{"context":{"level":"warn","file":"transaction.cpp","line":232,"method":"verify_authority","hostname":"","timestamp":"2019-07-11T23:32:02"},"format":"","data":{"*this":{"ref_block_num":44266,"ref_block_prefix":3373152490,"expiration":"2019-07-11T23:42:00","operations":[{"type":"custom_json_operation","value":{"required_auths":["bittrex"],"required_posting_auths":[],"id":"ssc-mainnet1","json":"[{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}}]"}}],"extensions":[],"signatures":["1c3032513101eb539d7015868a02ac7eed68379ff957cdde390a1a598b5941f76023381182f79c74b0a9aabe7ebb911baac393fb211a3bd6d7af73f43730e25b19"]}}},{"context":{"level":"warn","file":"database.cpp","line":3504,"method":"_apply_transaction","hostname":"","timestamp":"2019-07-11T23:32:02"},"format":"","data":{"trx":{"ref_block_num":44266,"ref_block_prefix":3373152490,"expiration":"2019-07-11T23:42:00","operations":[{"type":"custom_json_operation","value":{"required_auths":["bittrex"],"required_posting_auths":[],"id":"ssc-mainnet1","json":"[{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}}]"}}],"extensions":[],"signatures":["1c3032513101eb539d7015868a02ac7eed68379ff957cdde390a1a598b5941f76023381182f79c74b0a9aabe7ebb911baac393fb211a3bd6d7af73f43730e25b19"]}}},{"context":{"level":"warn","file":"database.cpp","line":907,"method":"push_transaction","hostname":"","timestamp":"2019-07-11T23:32:02"},"format":"","data":{"trx":{"ref_block_num":44266,"ref_block_prefix":3373152490,"expiration":"2019-07-11T23:42:00","operations":[{"type":"custom_json_operation","value":{"required_auths":["bittrex"],"required_posting_auths":[],"id":"ssc-mainnet1","json":"[{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}},{\"contractName\":\"tokens\",\"contractAction\":\"transfer\",\"contractPayload\":{\"symbol\":\"DROTTO\",\"to\":\"from\",\"quantity\":\"2.00000000\"}}]"}}],"extensions":[],"signatures":["1c3032513101eb539d7015868a02ac7eed68379ff957cdde390a1a598b5941f76023381182f79c74b0a9aabe7ebb911baac393fb211a3bd6d7af73f43730e25b19"]}}}]}},"id":3}'
+    http_version: 
+  recorded_at: Thu, 11 Jul 2019 23:32:02 GMT
+recorded_with: VCR 4.0.0
