@@ -137,7 +137,7 @@ module DrOtto
     end
     
     def comment_too_old_cache_file_exists?
-      File.exists?(COMMENT_TOO_OLD_CACHE_FILE)
+      File.exist?(COMMENT_TOO_OLD_CACHE_FILE)
     end
     
     def comment_too_old_cache_file_reader
@@ -189,7 +189,7 @@ module DrOtto
     end
     
     def vote_cache_file_exists?
-      File.exists?(VOTE_CACHE_FILE)
+      File.exist?(VOTE_CACHE_FILE)
     end
     
     def vote_cache_file_reader
@@ -240,7 +240,7 @@ module DrOtto
     end
     
     def bounce_cache_file_exists?
-      File.exists?(BOUNCE_CACHE_FILE)
+      File.exist?(BOUNCE_CACHE_FILE)
     end
     
     def bounce_cache_file_reader
@@ -352,6 +352,8 @@ module DrOtto
       # the current window and all others are processed later.
       max_bid = nil
       
+      top_stakers = top_steem_engine_stakers
+      
       bids.each do |bid|
         stacked_bids[bid[:author] => bid[:permlink]] ||= {}
         stacked_bid = stacked_bids[bid[:author] => bid[:permlink]]
@@ -462,6 +464,20 @@ module DrOtto
         effective_weight = (weight = batch_vote_weight * coeff).to_i
         weight = invert_vote_weight ? -weight : weight
         
+        if top_stakers.include? bid[:author]
+          staked_incentive_bid = steem_engine_reward[:staked_incentive_bid].to_f / 100.0
+          new_effective_weight = (effective_weight + (effective_weight * staked_incentive_bid)).to_i
+          new_effective_weight = [new_effective_weight, batch_vote_weight].min
+          
+          if new_effective_weight == batch_vote_weight
+            drotto_info "Staked author (#{bid[:author]}) effective_weight (#{effective_weight}) is the batch_vote_weight (#{batch_vote_weight})"
+          else
+            drotto_info "Staked author (#{bid[:author]}) effective_weight: #{effective_weight} becomes #{new_effective_weight}"
+          end
+          
+          effective_weight = new_effective_weight
+        end
+        
         total_weight += effective_weight
         break if total_weight > batch_vote_weight.abs
         
@@ -517,6 +533,7 @@ module DrOtto
               account_name: account_name,
               from: from,
               from_first: [from].flatten.first,
+              vote_author: author,
               vote_permlink: permlink,
               vote_trx_id: [bid[:trx_id]].flatten.join(', ')
             }
@@ -786,6 +803,45 @@ module DrOtto
       reset_properties
       
       @last_broadcast_block.to_i + 7 > properties.head_block_number
+    end
+    
+    def top_steem_engine_stakers(symbol = steem_engine_reward[:symbol], count = steem_engine_reward[:top_staked])
+      return [] if steem_engine_chain_options.nil?
+      return [] if count.nil?
+      return [] if steem_engine_reward[:top_staked] == 0
+      
+      @contracts ||= Radiator::SSC::Contracts.new(steem_engine_chain_options)
+      richlist = []
+      
+      loop do
+        sub_list = @contracts.find(
+          contract: 'tokens',
+          table: 'balances',
+          query: {
+            symbol: symbol
+          },
+          limit: 1000,
+          offset: richlist.size
+        ) rescue nil
+        
+        sub_list ||= []
+        break if sub_list.size == 0
+        richlist += sub_list
+      end
+      
+      # Only staked and/or delegated.
+      
+      richlist = richlist.select do |balance|
+        balance['stake'].to_f + balance['delegationsIn'].to_f > 0.0
+      end
+      
+      # Sorted by staked plus delegated, decending.
+      
+      richlist = richlist.sort_by do |balance|
+        balance['stake'].to_f + balance['delegationsIn'].to_f
+      end.reverse.first(count)
+      
+      richlist.map{|balance| balance['account']}
     end
   end
 end

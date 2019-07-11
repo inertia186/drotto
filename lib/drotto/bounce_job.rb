@@ -7,6 +7,7 @@ module DrOtto
     def initialize(limit = nil, starting_block = nil)
       @limit = limit
       @starting_block = starting_block
+      @transactions = nil
       
       override_config DrOtto.config
       init_transactions unless @limit.nil?

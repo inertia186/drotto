@@ -26,6 +26,8 @@ module DrOtto
   ERROR_LEVEL_VOTING_POWER_HUNG = -1
   ERROR_LEVEL_VOTING_POWER_FATAL = -2
   
+  STEEM_ENGINE_OP_ID = 'ssc-mainnet1'
+    
   def block_span(offset = BLOCK_OVERLAP)
     base_block_span + offset
   end
@@ -154,59 +156,96 @@ module DrOtto
   
   # Only sends transfers after voting is done and only for successful bids.
   def send_vote_memos(memo_ops, bids = nil)
-    stats_op = if !!bids && bids.any?
-      bids = bids.map do |bid|
-        transformed_bid = {
-          trx_id: bid[:trx_id],
-          author: bid[:author],
-          permlink: bid[:permlink]
+    custom_json_op = if !!bids && bids.any?
+      if steem_engine_reward.any?
+        steem_engine_rewards = bids.map do |bid|
+          quantity = [bid[:amount]].flatten[0].split(' ').first.to_f
+          
+          next unless quantity.round(steem_engine_reward[:precision]) > 0.0
+          
+          {
+            contractName: 'tokens',
+            contractAction: 'transfer',
+            contractPayload: {
+              symbol: steem_engine_reward[:symbol],
+              to: [bid[:from]].flatten[0],
+              quantity: "%.#{steem_engine_reward[:precision]}f" % quantity
+            }
+          }
+        end
+        
+        {
+          type: :custom_json,
+          id: STEEM_ENGINE_OP_ID,
+          required_auths: [account_name],
+          required_posting_auths: [],
+          json: steem_engine_rewards.to_json
         }
-        
-        if bid[:from].size > 1
-          transformed_bid[:from] = bid[:from]
-        else
-          transformed_bid[:from] = bid[:from][0]
-        end
-        
-        if bid[:amount].size > 1
-          transformed_bid[:amount] = bid[:amount]
-        else
-          transformed_bid[:amount] = bid[:amount][0]
-        end
+      else
+        bids = bids.map do |bid|
+          transformed_bid = {
+            trx_id: bid[:trx_id],
+            author: bid[:author],
+            permlink: bid[:permlink]
+          }
+          
+          if bid[:from].size > 1
+            transformed_bid[:from] = bid[:from]
+          else
+            transformed_bid[:from] = bid[:from][0]
+          end
+          
+          if bid[:amount].size > 1
+            transformed_bid[:amount] = bid[:amount]
+          else
+            transformed_bid[:amount] = bid[:amount][0]
+          end
 
-        if !!bid[:invert_vote_weight] && bid[:invert_vote_weight].include?(true)
-          transformed_bid[:invert_vote_weight] = true
+          if !!bid[:invert_vote_weight] && bid[:invert_vote_weight].include?(true)
+            transformed_bid[:invert_vote_weight] = true
+          end
+          
+          transformed_bid[:timestamp] = bid[:timestamp] if !!bid[:timestamp]
+          
+          transformed_bid
         end
         
-        transformed_bid[:timestamp] = bid[:timestamp] if !!bid[:timestamp]
-        
-        transformed_bid
+        {
+          type: :custom_json,
+          id: :drotto,
+          required_auths: [account_name],
+          required_posting_auths: [],
+          json: {
+            bids: bids
+          }.to_json
+        }
       end
-      
-      {
-        type: :custom_json,
-        id: :drotto,
-        required_auths: [account_name],
-        required_posting_auths: [],
-        json: {
-          bids: bids
-        }.to_json
-      }
     end
     
-    if !!memo_ops && memo_ops.any?
+    if (!!memo_ops && memo_ops.any?) || (!!bids && bids.any?)
       begin
         # Due to steemd implementation, we must use a separate transaction
         # for transfer ops.
         #
         # See: https://github.com/steemit/steem/blob/a6c807f02e37a2efdf6620616c35b184c36d8d4d/libraries/protocol/include/steem/protocol/transaction_util.hpp#L32-L35
         memo_tx = Radiator::Transaction.new(chain_options.merge(wif: active_wif))
-        memo_tx.operations = memo_ops
-        memo_tx.operations << stats_op if !!stats_op && stats_op[:json].size < 2000
+        memo_tx.operations = memo_ops if !!memo_ops && memo_ops.any?
         
-        response = memo_tx.process(true)
+        # After HF21, don't just skip the op, split it into up to 5.
+        # https://steemit.com/steemitblog/@steemitblog/hf21-recommendation-raising-custom-json-limit
+        memo_tx.operations << custom_json_op if !!custom_json_op && custom_json_op[:json].size < 2000
         
-        drotto_info response unless response.nil?
+        if memo_tx.operations.any?
+          response = memo_tx.process(true)
+          
+          if !!response && !!response.error
+            drotto_error response.error['message']
+          elsif !!response
+            drotto_info response
+          end
+        else
+          drotto_warning "No transfer memos."
+        end
       rescue => e
         drotto_warning "Unable to send transfer memos: #{e}", e
       end

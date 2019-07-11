@@ -160,7 +160,7 @@ module DrOtto
     end
     
     def steem_engine_reward
-      default_value(:drotto_steem_engine_reward) || config[:drotto][:steem_engine_reward]
+      default_value(:drotto_steem_engine_reward) || config[:drotto][:steem_engine_reward] || {}
     end
     
     def auto_bounce_on_lockout
