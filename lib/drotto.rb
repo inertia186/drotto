@@ -159,7 +159,9 @@ module DrOtto
     custom_json_op = if !!bids && bids.any?
       if steem_engine_reward.any?
         steem_engine_rewards = bids.map do |bid|
+          multiplier = steem_engine_reward[:multiplier] || 1.0
           quantity = [bid[:amount]].flatten[0].split(' ').first.to_f
+          quantity = quantity * multiplier
           
           next unless quantity.round(steem_engine_reward[:precision]) > 0.0
           
