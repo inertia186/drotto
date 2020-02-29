@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_development_dependency 'bundler', '~> 1.15', '>= 1.15.4'
-  spec.add_development_dependency 'rake', '~> 12.1', '>= 12.1.0'
+  spec.add_development_dependency 'rake', '>= 12.1.0', '~> 13.0'
   spec.add_development_dependency 'minitest', '~> 5.9', '>= 5.9.0'
   spec.add_development_dependency 'minitest-line', '~> 0.6.3'
   spec.add_development_dependency 'minitest-proveit', '~> 1.0', '>= 1.0.0'
